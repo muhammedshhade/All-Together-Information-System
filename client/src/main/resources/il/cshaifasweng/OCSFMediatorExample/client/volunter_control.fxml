@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.VolunterControl">
+   <children>
+      <TextField fx:id="Choosetask_request" layoutX="48.0" layoutY="54.0" onAction="#choosetask" prefHeight="38.0" prefWidth="146.0" style="-fx-background-color: gray;" text="Choose Task:">
+         <font>
+            <Font name="Franklin Gothic Demi" size="21.0" />
+         </font>
+      </TextField>
+      <ComboBox fx:id="COMchoosetask" layoutX="237.0" layoutY="52.0" onAction="#com_chosetask" prefHeight="42.0" prefWidth="257.0" />
+      <ImageView fitHeight="150.0" fitWidth="246.0" layoutX="10.0" layoutY="302.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../../../../Downloads/ATIS.jpg" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="150.0" fitWidth="383.0" layoutX="345.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../../../../Downloads/הורדה.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="136.0" fitWidth="278.0" layoutX="29.0" layoutY="146.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../../../../Downloads/imm.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

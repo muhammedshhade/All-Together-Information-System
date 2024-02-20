@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.RequestController">
+   <children>
+      <ComboBox fx:id="COMchoose" layoutX="333.0" layoutY="40.0" onAction="#com_chose" prefHeight="42.0" prefWidth="240.0" />
+      <TextField fx:id="Choose_request" layoutX="60.0" layoutY="42.0" onAction="#choose" prefHeight="34.0" prefWidth="258.0" style="-fx-background-color: gray;" text="Choose Request Help:">
+         <font>
+            <Font name="Franklin Gothic Demi" size="21.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="text_another_request" layoutX="60.0" layoutY="122.0" onAction="#txt_another" prefHeight="42.0" prefWidth="301.0" style="-fx-background-color: gray;" text="Choose another help request:">
+         <font>
+            <Font name="Franklin Gothic Demi" size="21.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="choose_another" layoutX="36.0" layoutY="188.0" onAction="#another_help" prefHeight="58.0" prefWidth="526.0" />
+      <ImageView fitHeight="140.0" fitWidth="162.0" layoutX="412.0" layoutY="252.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../../../../Downloads/unnamed.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="150.0" fitWidth="246.0" layoutY="292.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../../../../Downloads/ATIS.jpg" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
