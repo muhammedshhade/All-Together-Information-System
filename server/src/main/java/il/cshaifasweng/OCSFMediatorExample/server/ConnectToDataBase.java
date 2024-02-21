@@ -13,9 +13,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ConnectToDataBase {
     private static Session session;
@@ -30,7 +28,7 @@ public class ConnectToDataBase {
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
         return configuration.buildSessionFactory(serviceRegistry);
     }
-    private static List<User> getAllUsers() throws Exception {
+    static List<User> getAllUsers() throws Exception {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<User> query = builder.createQuery(User.class);
         query.from(User.class);
@@ -46,6 +44,7 @@ public class ConnectToDataBase {
         return data;
     }
     public static void CreateData() throws Exception {
+        System.out.println("Ko");
         User user1 = new User("212930697", "Moataz", "Odeh", false, "Community 1", "MoatazODA", "MoatazODA12345", "Yaffa Nazareth","Moataz.ody44@gmail.com", User.Role.Manager);
         User user7 = new User("212930697", "Moataz", "Odeh", false, "Community 1", "MoatazOD", "MoatazO123", "Yaffa Nazareth","Moataz.ody44@gmail.com", User.Role.USER);
         User user2 = new User("213011398", "Adan", "Hammoud", false, "Community 2", "AdanHa", "AdanH123", " Kabul ","Adanhammod@gmail.com", User.Role.USER);
@@ -98,5 +97,27 @@ public class ConnectToDataBase {
         uploadedTaskList.getTasks().add(task4);
         uploadedTaskList.getTasks().add(task5);
         uploadedTaskList.getTasks().add(task6);
+    }
+    public static void initializeDatabase() throws IOException
+    {
+        try {
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            System.out.println("MOTAZ");
+            CreateData();
+            users = getAllUsers();
+            session.getTransaction().commit();
+        } catch (Exception exception) {
+            if (session != null) {
+                session.getTransaction().rollback();
+            }
+            System.err.println("An error occured, changes have been rolled back.");
+            exception.printStackTrace();
+        }
+    }
+    public static void EndConnection(){
+        session.getTransaction().commit(); // Save everything.
+        session.close();
     }
 }

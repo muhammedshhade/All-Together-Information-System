@@ -1,46 +1,73 @@
-/**
- * Sample Skeleton for 'primary.fxml' Controller Class
- */
 
 package il.cshaifasweng.OCSFMediatorExample.client;
+import javafx.fxml.FXMLLoader;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.io.IOException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 public class PrimaryController {
 
-	@FXML // ResourceBundle that was given to the FXMLLoader
-	private ResourceBundle resources;
+	@FXML
+	private Button Canceldistressbt1;
 
-	@FXML // URL location of the FXML file that was given to the FXMLLoader
-	private URL location;
+	@FXML
+	private Label LabelUser;
 
-	@FXML // fx:id="Canceldistressbt1"
-	private Button Canceldistressbt1; // Value injected by FXMLLoader
+	@FXML
+	private Button Log_In_button;
 
-	@FXML // fx:id="Log_In_button"
-	private Button Log_In_button; // Value injected by FXMLLoader
+	@FXML
+	private PasswordField Password_button;
 
-	@FXML // fx:id="Password_button"
-	private PasswordField Password_button; // Value injected by FXMLLoader
+	@FXML
+	private Button distressbut;
 
-	@FXML // fx:id="Password_tx"
-	private TextField Password_tx; // Value injected by FXMLLoader
+	@FXML
+	private Label passwordlabel;
 
-	@FXML // fx:id="distressbut"
-	private Button distressbut; // Value injected by FXMLLoader
+	@FXML
+	private TextField txt_usrn;
+	@FXML
+	void sendWarning(ActionEvent event) {
+		try {
+			SimpleClient.getClient().sendToServer("#warning");
+		} catch (IOException e) {
+			showAlert("Error", "Failed to send warning: " + e.getMessage());
+		}
+	}
+	@FXML
+	void User_Name(ActionEvent event) {
 
-	@FXML // fx:id="user_namd_tx"
-	private TextField user_namd_tx; // Value injected by FXMLLoader
+	}
 
-	@FXML // fx:id="user_name_button"
-	private Button user_name_button; // Value injected by FXMLLoader
+	private void showAlert(String title, String message) {
+		// Display an alert dialog to the user
+		Alert alert = new Alert(Alert.AlertType.ERROR);
+		alert.setTitle(title);
+		alert.setContentText(message);
+		alert.showAndWait();
+	}
 
+
+	@FXML
+	void ClientProfileLoad(ActionEvent event) {
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("clientHomePage.fxml"));
+			AnchorPane newScene = loader.load();
+
+			Stage currentStage = App.getStage();
+			Scene scene = new Scene(newScene);
+			currentStage.setTitle("Client Home Page");
+			currentStage.setScene(scene);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	@FXML
 	void CancelDistress1(ActionEvent event) {
 
@@ -48,39 +75,29 @@ public class PrimaryController {
 
 	@FXML
 	void Log_In(ActionEvent event) {
-	}
+		String username = txt_usrn.getText();
+		String password = Password_button.getText();
 
+		// Check username and password locally
+			// Username and password are valid, sending a message to the server for further validation
+			try {
+				String messageToSend = "#LogInAttempt," + username + "@" + password;
+				// Send message to the server for additional validation
+				SimpleClient.getClient().sendToServer(messageToSend);
+				// You might want to add further logic here based on the server response
+			} catch (IOException e) {
+				showAlert("Error", "Failed to Get Login message!" + e.getMessage());
+				e.printStackTrace();
+			}
+	}
 	@FXML
 	void Password(ActionEvent event) {
 
 	}
 
-	@FXML
-	void User_Name(ActionEvent event) {
-
-
-	}
-
-	@FXML
-	void User_name(ActionEvent event) {
-
-	}
 
 	@FXML
 	void distress(ActionEvent event) {
 
 	}
-
-	@FXML // This method is called by the FXMLLoader when initialization is complete
-	void initialize() {
-		assert Canceldistressbt1 != null : "fx:id=\"Canceldistressbt1\" was not injected: check your FXML file 'primary.fxml'.";
-		assert Log_In_button != null : "fx:id=\"Log_In_button\" was not injected: check your FXML file 'primary.fxml'.";
-		assert Password_button != null : "fx:id=\"Password_button\" was not injected: check your FXML file 'primary.fxml'.";
-		assert Password_tx != null : "fx:id=\"Password_tx\" was not injected: check your FXML file 'primary.fxml'.";
-		assert distressbut != null : "fx:id=\"distressbut\" was not injected: check your FXML file 'primary.fxml'.";
-		assert user_namd_tx != null : "fx:id=\"user_namd_tx\" was not injected: check your FXML file 'primary.fxml'.";
-		assert user_name_button != null : "fx:id=\"user_name_button\" was not injected: check your FXML file 'primary.fxml'.";
-
-	}
-
 }

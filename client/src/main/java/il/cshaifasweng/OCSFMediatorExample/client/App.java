@@ -21,9 +21,11 @@ public class App extends Application {
 
     private static Scene scene;
     private SimpleClient client;
+    private static Stage primaryStage;
 
     @Override
     public void start(Stage stage) throws IOException {
+        primaryStage = stage;
     	EventBus.getDefault().register(this);
     	client = SimpleClient.getClient();
     	client.openConnection();
@@ -62,6 +64,14 @@ public class App extends Application {
     	});
     	
     }
+    public static Scene getScene(){
+        return scene;
+    }
+
+    public static Stage getStage(){
+        return primaryStage ;
+    }
+
 
 	public static void main(String[] args) {
         launch();
