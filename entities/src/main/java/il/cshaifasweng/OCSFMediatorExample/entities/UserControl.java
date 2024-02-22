@@ -1,4 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 public class UserControl extends User {
@@ -22,8 +24,8 @@ public class UserControl extends User {
     public boolean verifyPassword(String inputPassword) {
         // Implement password verification logic here
         // This should compare the input password with the stored password hash
-        String inputPasswordHash = hashPassword(inputPassword, getSalt());
-        return inputPasswordHash.equals(getPasswordHash());
+        String hashedPassword = hashPassword(inputPassword, getSalt());
+        return hashedPassword.equals(getPasswordHash());
     }
 
     public boolean checkInput() {
@@ -42,4 +44,23 @@ public class UserControl extends User {
         // Implement cancel request logic here
         // This method could handle the cancellation of a particular request
     }
+    String hashPassword(String password, String salt) {
+		try {
+			String passwordWithSalt = password + salt;
+			MessageDigest md = MessageDigest.getInstance("SHA-512");
+			byte[] hashedPassword = md.digest(passwordWithSalt.getBytes());
+			return bytesToHex(hashedPassword);
+		} catch (NoSuchAlgorithmException e) {
+			// Handle the exception
+			return null;
+		}
+	}
+
+	private String bytesToHex(byte[] bytes) {
+		StringBuilder result = new StringBuilder();
+		for (byte b : bytes) {
+			result.append(String.format("%02x", b));
+		}
+		return result.toString();
+	}
 }

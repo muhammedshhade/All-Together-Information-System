@@ -72,24 +72,48 @@ public class PrimaryController {
 	void CancelDistress1(ActionEvent event) {
 
 	}
-
 	@FXML
-	void Log_In(ActionEvent event) {
+	 void Log_In(ActionEvent event) throws IOException {
 		String username = txt_usrn.getText();
 		String password = Password_button.getText();
-
-		// Check username and password locally
-			// Username and password are valid, sending a message to the server for further validation
-			try {
+		System.out.println(username);
+		System.out.println(password);
+		try {
 				String messageToSend = "#LogInAttempt," + username + "@" + password;
 				// Send message to the server for additional validation
 				SimpleClient.getClient().sendToServer(messageToSend);
+				Thread.sleep(500);
 				// You might want to add further logic here based on the server response
 			} catch (IOException e) {
 				showAlert("Error", "Failed to Get Login message!" + e.getMessage());
 				e.printStackTrace();
+			System.out.println("LOGIN_FAIL");
 			}
+		    catch (InterruptedException e) {
+                throw new RuntimeException(e);
+
+            }
+		App.setRoot("secondary");
+
 	}
+
+
+
+	// Check username and password locally
+			// Username and password are valid, sending a message to the server for further validation
+//			try {
+//				String messageToSend = "#LogInAttempt," + username + "@" + password;
+//				// Send message to the server for additional validation
+//				SimpleClient.getClient().sendToServer(messageToSend);
+//				Thread.sleep(500);
+//				// You might want to add further logic here based on the server response
+//			} catch (IOException e) {
+//				showAlert("Error", "Failed to Get Login message!" + e.getMessage());
+//				e.printStackTrace();
+//			} catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
+
 	@FXML
 	void Password(ActionEvent event) {
 

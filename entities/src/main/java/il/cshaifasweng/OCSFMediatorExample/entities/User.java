@@ -4,7 +4,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -13,6 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -21,11 +25,11 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "ID", nullable = false)
+    @Column(name = "User_ID", nullable = false)
     private String Id;
-    @Column(name = " First Name", nullable = false)
+    @Column(name = "First_Name", nullable = false)
     private String first_name;
-    @Column(name = " Last Name", nullable = false)
+    @Column(name = "Last_Name", nullable = false)
     private String last_name;
 
     @Column(name = "is_connected")
@@ -52,17 +56,17 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
     private Role role;
+    private String password;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
-    private List<Task> tasks;
+    private Set<Task> tasks=new HashSet<>();
 
     // Constructor, getters, and setters...
 
-    public List<Task> getTasks() {
+    public Set<Task> getTasks() {
         return tasks;
     }
-
-    public void setTasks(List<Task> tasks) {
-        this.tasks = tasks;
+    public Set<Task> getTreatments() {
+        return tasks;
     }
 
     public User(String id,String first_name,String
@@ -75,13 +79,15 @@ public class User {
         this.commentary = commentary;
         this.username = username;
         this.salt = generateSalt();
+        this.password=Password;
         this.passwordHash = hashPassword(Password, this.salt);
         this.address = address;
         this.email=emil;
         this.role = role;
+
     }
     public User(){
-
+        tasks = new HashSet<>();
     }
     public enum Role {
         Manager, USER
@@ -121,6 +127,12 @@ public class User {
     public String getID() {
         return Id;
     }
+    public void setPas(String Pas){
+        this.password=Pas;
+    }
+    public String getPassword() {
+        return this.password;
+    }
     public void setId(String ID){
         this.Id=ID;
     }
@@ -146,7 +158,7 @@ public class User {
         this.last_name = name;
     }
 
-    public boolean isConnected() {
+    public boolean getisConnected() {
         return isConnected;
     }
 

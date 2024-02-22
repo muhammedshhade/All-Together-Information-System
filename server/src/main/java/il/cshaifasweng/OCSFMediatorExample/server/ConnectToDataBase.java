@@ -13,6 +13,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConnectToDataBase {
@@ -29,6 +30,7 @@ public class ConnectToDataBase {
         return configuration.buildSessionFactory(serviceRegistry);
     }
     static List<User> getAllUsers() throws Exception {
+        System.out.println("getALlUsers");
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<User> query = builder.createQuery(User.class);
         query.from(User.class);
@@ -44,7 +46,7 @@ public class ConnectToDataBase {
         return data;
     }
     public static void CreateData() throws Exception {
-        System.out.println("Ko");
+        System.out.print("Data Creation Start");
         User user1 = new User("212930697", "Moataz", "Odeh", false, "Community 1", "MoatazODA", "MoatazODA12345", "Yaffa Nazareth","Moataz.ody44@gmail.com", User.Role.Manager);
         User user7 = new User("212930697", "Moataz", "Odeh", false, "Community 1", "MoatazOD", "MoatazO123", "Yaffa Nazareth","Moataz.ody44@gmail.com", User.Role.USER);
         User user2 = new User("213011398", "Adan", "Hammoud", false, "Community 2", "AdanHa", "AdanH123", " Kabul ","Adanhammod@gmail.com", User.Role.USER);
@@ -66,14 +68,15 @@ public class ConnectToDataBase {
         session.flush();
         session.save(user7);
         session.flush();
-        Task task1 = new Task(LocalDate.of(2024, 2, 19), LocalTime.of(8, 0), 0, "Walk my dog", "", 0.0f);
-        Task task2 = new Task(LocalDate.of(2024, 2, 20), LocalTime.of(9, 30), 0, "Buy Medicine", "", 0.0f);
+        Task task1 = new Task(LocalDate.of(2024, 2, 22), LocalTime.of(3 ,50), 0, "Walk my dog", "", 0.0f);
+        Task task2 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(9, 30), 0, "Buy Medicine", "", 0.0f);
         Task task3 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(11, 15), 0, "Nanny", "", 0.0f);
-        Task task4 = new Task(LocalDate.of(2024, 2, 22), LocalTime.of(13, 45), 0, "Transportation", "I want to go to the Hospital", 0.0f);
-        Task task5 = new Task(LocalDate.of(2024, 2, 23), LocalTime.of(15, 20), 0, "Transportation", "", 0.0f);
-        Task task6 = new Task(LocalDate.of(2024, 2, 24), LocalTime.of(17, 10), 0, "Buy Medicine", "", 0.0f);
+        Task task4 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(13, 4), 0, "Transportation", "I want to go to the Hospital", 0.0f);
+        Task task5 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(15, 20), 0, "Transportation", "", 0.0f);
+        Task task6 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(17, 10), 0, "Buy Medicine", "", 0.0f);
         session.save(task1);
         session.flush();
+        System.out.println(LocalTime.now().getHour());
         session.save(task2);
         session.flush();
         session.save(task3);
@@ -84,19 +87,28 @@ public class ConnectToDataBase {
         session.flush();
         session.save(task6);
         session.flush();
-        user7.getTasks().add(task1);
+
+        user1.getTasks().add(task1);
         user2.getTasks().add(task2);
+        task1.setUser(user1);
         user3.getTasks().add(task3);
         user4.getTasks().add(task4);
         user5.getTasks().add(task5);
         user6.getTasks().add(task6);
-        UploadedTaskList uploadedTaskList = new UploadedTaskList();
-        uploadedTaskList.getTasks().add(task1);
-        uploadedTaskList.getTasks().add(task2);
-        uploadedTaskList.getTasks().add(task3);
-        uploadedTaskList.getTasks().add(task4);
-        uploadedTaskList.getTasks().add(task5);
-        uploadedTaskList.getTasks().add(task6);
+        task2.setUser(user2);
+        task3.setUser(user3);
+        task4.setUser(user4);
+        task5.setUser(user5);
+        task6.setUser(user6);
+//        UploadedTaskList uploadedTaskList = new UploadedTaskList();
+//        uploadedTaskList.getTasks().add(task1);
+//        uploadedTaskList.getTasks().add(task2);
+//        uploadedTaskList.getTasks().add(task3);
+//        uploadedTaskList.getTasks().add(task4);
+//        uploadedTaskList.getTasks().add(task5);
+//        uploadedTaskList.getTasks().add(task6);
+        System.out.print("Data Creation Finish");
+
     }
     public static void initializeDatabase() throws IOException
     {
