@@ -73,29 +73,40 @@ public class PrimaryController {
 
 	}
 	@FXML
-	 void Log_In(ActionEvent event) throws IOException {
+	void Log_In(ActionEvent event) throws IOException {
 		String username = txt_usrn.getText();
 		String password = Password_button.getText();
 		System.out.println(username);
 		System.out.println(password);
 		try {
-				String messageToSend = "#LogInAttempt," + username + "@" + password;
-				// Send message to the server for additional validation
-				SimpleClient.getClient().sendToServer(messageToSend);
-				Thread.sleep(500);
-				// You might want to add further logic here based on the server response
-			} catch (IOException e) {
-				showAlert("Error", "Failed to Get Login message!" + e.getMessage());
-				e.printStackTrace();
+			String messageToSend = "#LogInAttempt," + username + "@" + password;
+
+			// Send message to the server for validation
+			SimpleClient.getClient().sendToServer(messageToSend);
+
+			// Receive response from the server
+		} catch (IOException e) {
+			showAlert("Error", "Failed to Get Login message!" + e.getMessage());
+			e.printStackTrace();
 			System.out.println("LOGIN_FAIL");
-			}
-		    catch (InterruptedException e) {
-                throw new RuntimeException(e);
+		}
 
-            }
 		App.setRoot("secondary");
-
 	}
+	void receiveFromServer(String message) {
+		// Method to handle the message received from the server
+		if (message.equals("LOGIN_SUCCESS")) {
+			// Handle login success
+			System.out.println("Login successful");
+		} else if (message.equals("LOGIN_FAIL")) {
+			// Handle login failure
+			System.out.println("Login failed");
+		} else {
+			// Handle other types of messages
+			System.out.println("Received message: " + message);
+		}
+	}
+
 
 
 

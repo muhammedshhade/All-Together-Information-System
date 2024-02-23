@@ -28,4 +28,5 @@ public class SimpleClient extends AbstractClient {
 		return client;
 	}
 
+
 }
