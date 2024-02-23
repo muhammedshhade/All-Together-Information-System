@@ -91,7 +91,7 @@ public class PrimaryController {
 			System.out.println("LOGIN_FAIL");
 		}
 
-		App.setRoot("secondary");
+
 	}
 	void receiveFromServer(String message) {
 		// Method to handle the message received from the server

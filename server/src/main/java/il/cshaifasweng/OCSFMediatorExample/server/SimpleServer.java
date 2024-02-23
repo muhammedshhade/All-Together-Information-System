@@ -1,5 +1,4 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
-
 import com.mysql.cj.xdevapi.Client;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
