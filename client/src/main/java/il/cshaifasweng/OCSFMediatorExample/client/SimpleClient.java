@@ -43,7 +43,14 @@ public class SimpleClient extends AbstractClient {
 
 
 			else{
-				App.setRoot("secondary");
+				if("LOGIN_SUCCESS".equals(message))
+				{
+					App.setRoot("secondary");
+				}
+				else {
+					App.setRoot("manager_control");
+				}
+
 			}
 
 

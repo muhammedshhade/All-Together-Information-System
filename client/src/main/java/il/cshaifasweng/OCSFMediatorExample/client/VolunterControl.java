@@ -7,10 +7,12 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 public class VolunterControl {
 
@@ -59,7 +61,17 @@ public class VolunterControl {
     }
 
     @FXML
-    void PICK_TASK(ActionEvent event) {
+    void PICK_TASK(ActionEvent event)throws IOException {
+        Alert alert = new Alert((Alert.AlertType.INFORMATION));
+        alert.setTitle("Task Volunteering");
+        alert.setHeaderText(selectedTask.getServiceType());
+        SimpleClient.getClient().sendToServer("modify " + selectedTask.getIdNum());
+        if (selectedTask.getStatus()==0) {
+            alert.setContentText(selectedTask.getServiceType() + " was picked");
+        } else {
+            alert.setContentText(selectedTask.getServiceType() + " is already picked");
+        }
+        alert.showAndWait();
 
     }
 
@@ -69,7 +81,8 @@ public class VolunterControl {
     }
 
     @FXML
-    void homepage(ActionEvent event) {
+    void homepage(ActionEvent event) throws IOException {
+        App.setRoot("secondary");
 
     }
 

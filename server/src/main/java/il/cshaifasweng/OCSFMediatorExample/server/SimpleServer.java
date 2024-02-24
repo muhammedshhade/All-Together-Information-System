@@ -9,16 +9,56 @@ import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.annotations.Parent;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.cfg.Configuration;
+import org.hibernate.service.ServiceRegistry;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 
 
 public class SimpleServer extends AbstractServer {
+	private long key;
+	public long getKey() {
+		return key;
+	}
+
+	// Setter method for key
+	public void setKey(long key) {
+		this.key = key;
+	}
+//	private static Session session;
+//	private static SessionFactory sessionFactory = getSessionFactory();
+
 	public SimpleServer(int port) {
 		super(port);
+	}
+//	public static SessionFactory getSessionFactory() throws HibernateException {
+//		Configuration configuration = new Configuration();
+//		configuration.addAnnotatedClass(Task.class);
+//		configuration.addAnnotatedClass(User.class);
+//		ServiceRegistry serviceRegistry = (new StandardServiceRegistryBuilder())
+//				.applySettings(configuration.getProperties()).build();
+//		return configuration.buildSessionFactory(serviceRegistry);
+//	}
+	private static void modifyTask(int TaskID) {
+		try {
+			List<Task> tasks = ConnectToDataBase.getAllTasks();
+			for (Task task : tasks) {
+				if (task.getIdNum() == TaskID)
+					task.setStatus(1);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
 	}
 
 	@Override
@@ -26,11 +66,22 @@ public class SimpleServer extends AbstractServer {
 		try {
 			String message = (String) msg;
 			if (message.equals("get tasks")) {
-				List<Task> alltasks=ConnectToDataBase.getAllTasks();
-				client.sendToClient(alltasks);
+
+				if(getKey()!=-1) {
+					List<Task> alltasks = ConnectToDataBase.getAllTasks();
+					alltasks.removeIf(task -> task.getUser().getkeyId().equals(key));
+					client.sendToClient(alltasks);
+
+
+				}
+
 				System.out.println("suck");
 
-
+			}
+			else if(message.startsWith("modify")){
+				String taskid= message.split(" ")[1];
+				modifyTask(Integer.parseInt(taskid));
+				client.sendToClient(ConnectToDataBase.getAllTasks());
 			}
 
 			if (message.startsWith("#LogInAttempt")) {
@@ -72,7 +123,14 @@ public class SimpleServer extends AbstractServer {
 					if (isValidLogin) {
 						// Send a success response back to the client
 						try {
+							if(username.startsWith("*"))
+							{
+								client.sendToClient("Manager_LOGIN_SUCCESS");
+								setKey(user.getkeyId());
+
+							}
 							client.sendToClient("LOGIN_SUCCESS");
+							setKey(user.getkeyId());
 						} catch (IOException e) {
 							e.printStackTrace();
 						}

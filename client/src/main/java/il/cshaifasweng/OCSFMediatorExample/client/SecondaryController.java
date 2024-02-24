@@ -76,16 +76,11 @@ public class SecondaryController {
 //        System.out.println(savedUsername);
         try {
             SimpleClient.getClient().sendToServer("get tasks");
-            Thread.sleep(500);
-
-
 
             // Receive response from the server
         } catch (IOException e) {
             showAlert("Error", "Failed to Get Login message!" + e.getMessage());
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
         }
     }
     private void showAlert(String title, String message) {

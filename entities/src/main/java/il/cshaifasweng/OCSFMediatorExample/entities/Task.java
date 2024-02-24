@@ -33,23 +33,22 @@ public class Task implements Serializable {
 
     @Column(name = "executionTime")
      float executionTime;
-    @Column(name = "time_passing")
-     LocalTime timer;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
      User user;
-    @ManyToOne(fetch = FetchType.LAZY) // Assuming you want to use lazy loading
-     UploadedTaskList uploadedTaskList;
+//    @ManyToOne(fetch = FetchType.LAZY) // Assuming you want to use lazy loading
+//     UploadedTaskList uploadedTaskList;
 
     // ... existing constructors, getters, and setters ...
 
-    public UploadedTaskList getUploadedTaskList() {
-        return uploadedTaskList;
-    }
+//    public UploadedTaskList getUploadedTaskList() {
+//        return uploadedTaskList;
+//    }
 
-    public void setUploadedTaskList(UploadedTaskList uploadedTaskList) {
-        this.uploadedTaskList = uploadedTaskList;
-    }
+//    public void setUploadedTaskList(UploadedTaskList uploadedTaskList) {
+//        this.uploadedTaskList = uploadedTaskList;
+//    }
 
 
     public User getUser() {
@@ -72,34 +71,8 @@ public class Task implements Serializable {
         this.serviceType = serviceType;
         this.note = note;
         this.executionTime = executionTime;
-        int hoursDifference =  LocalTime.now().getHour() - time.getHour();
-        int minutes = LocalTime.now().getMinute() - time.getMinute();
-        if(hoursDifference<0)
-        {
-            hoursDifference=24-time.getHour()+LocalTime.now().getHour();
-        }
-        if (minutes < 0) {
-            hoursDifference -= 1;
-            if(hoursDifference==-1)
-            {
-                minutes=time.getMinute()-LocalTime.now().getMinute();
-            }
-            else{
-                minutes = (60 - time.getMinute()) + LocalTime.now().getMinute();
-            }
-            System.out.println(minutes);
-            if(hoursDifference==-1)
-            {
-                this.timer = LocalTime.of(0, (int) minutes);
-            }
-            else{
-                this.timer = LocalTime.of(hoursDifference, (int) minutes);
-            }
 
-        } else {
-            this.timer = LocalTime.of((int) hoursDifference, (int) minutes);
 
-        }
     }
 
     // Getters and Setters
@@ -122,12 +95,6 @@ public class Task implements Serializable {
         return time;
     }
 
-    public void setTimer(LocalTime timer) {
-        this.timer = timer;
-    }
-    public LocalTime getTimer() {
-        return timer;
-    }
 
     public void setTime(LocalTime time) {
         this.time = time;

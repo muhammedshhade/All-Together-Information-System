@@ -25,7 +25,7 @@ public class ConnectToDataBase {
         configuration.addAnnotatedClass(User.class);
         configuration.addAnnotatedClass(Task.class);
         configuration.addAnnotatedClass(UserControl.class);
-        configuration.addAnnotatedClass(UploadedTaskList.class);
+//        configuration.addAnnotatedClass(UploadedTaskList.class);
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
         return configuration.buildSessionFactory(serviceRegistry);
     }
