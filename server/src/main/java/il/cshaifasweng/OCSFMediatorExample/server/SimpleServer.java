@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 import com.mysql.cj.xdevapi.Client;
+import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
@@ -22,14 +23,28 @@ public class SimpleServer extends AbstractServer {
 
 	@Override
 	protected void handleMessageFromClient(Object msg, ConnectionToClient client)  {
-		String msgString = msg.toString();
-		if (msgString.startsWith("#LogInAttempt")) {
-            try {
-                handleLoginAttempt(msgString, client);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        }
+		try {
+			String message = (String) msg;
+			if (message.equals("get tasks")) {
+				List<Task> alltasks=ConnectToDataBase.getAllTasks();
+				client.sendToClient(alltasks);
+				System.out.println("suck");
+
+
+			}
+
+			if (message.startsWith("#LogInAttempt")) {
+				try {
+					handleLoginAttempt(message, client);
+				} catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+
+
 		// Add more message handling as needed
 	}
 

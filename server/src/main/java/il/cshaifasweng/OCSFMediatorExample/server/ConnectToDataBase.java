@@ -38,7 +38,7 @@ public class ConnectToDataBase {
         return data;
     }
 
-    private static List<Task> getAllTasks() throws Exception {
+    static List<Task> getAllTasks() throws Exception {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Task> query = builder.createQuery(Task.class);
         query.from(Task.class);
@@ -47,7 +47,7 @@ public class ConnectToDataBase {
     }
     public static void CreateData() throws Exception {
         System.out.print("Data Creation Start");
-        User user1 = new User("212930697", "Moataz", "Odeh", false, "Community 1", "MoatazODA", "MoatazODA12345", "Yaffa Nazareth","Moataz.ody44@gmail.com", User.Role.Manager);
+        User user1 = new User("212930697", "Moataz", "Odeh", false, "Community 1", "1", "2", "Yaffa Nazareth","Moataz.ody44@gmail.com", User.Role.Manager);
         User user7 = new User("212930697", "Moataz", "Odeh", false, "Community 1", "MoatazOD", "MoatazO123", "Yaffa Nazareth","Moataz.ody44@gmail.com", User.Role.USER);
         User user2 = new User("213011398", "Adan", "Hammoud", false, "Community 2", "AdanHa", "AdanH123", " Kabul ","Adanhammod@gmail.com", User.Role.USER);
         User user3 = new User("213298664", "Adan", "Sulaimani", false, "Community 3", "AdanSul", "AdanS123", "Nazareth","Adaslemany@gmail.com" ,User.Role.USER);

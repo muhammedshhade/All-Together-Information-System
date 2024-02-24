@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import javafx.scene.control.Alert;
 import org.greenrobot.eventbus.EventBus;
 
@@ -7,6 +8,8 @@ import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
 
 import java.io.IOException;
+import java.util.List;
+
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 
@@ -37,14 +40,24 @@ public class SimpleClient extends AbstractClient {
 				});
 			}
 
+
+
 			else{
 				App.setRoot("secondary");
 			}
+
 
 		}
 		if(msg.getClass().equals(Warning.class))
 		{
 			EventBus.getDefault().post(new WarningEvent((Warning)msg));
+		}
+		if (msg instanceof List)
+		{
+			System.out.println("x");
+			VolunterControl.tasks = (List<Task>) msg;
+			System.out.println("x");
+			App.setRoot("volunter_control");
 		}
 	}
 	

@@ -1,44 +1,45 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
-
 @Table(name = "tasks")
-public class Task {
+public class Task implements Serializable {
+    private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idNum")
-    private int idNum;
+     int idNum;
 
     @Column(name = "date")
-    private LocalDate date;
+     LocalDate date;
 
     @Column(name = "time")
-    private LocalTime time;
+     LocalTime time;
 
     @Column(name = "status")
-    private int status;
+     int status;
 
     @Column(name = "serviceType")
-    private String serviceType;
+     String serviceType;
 
     @Column(name = "note")
-    private String note;
+     String note;
 
     @Column(name = "executionTime")
-    private float executionTime;
+     float executionTime;
     @Column(name = "time_passing")
-    private LocalTime timer;
+     LocalTime timer;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+     User user;
     @ManyToOne(fetch = FetchType.LAZY) // Assuming you want to use lazy loading
-    private UploadedTaskList uploadedTaskList;
+     UploadedTaskList uploadedTaskList;
 
     // ... existing constructors, getters, and setters ...
 

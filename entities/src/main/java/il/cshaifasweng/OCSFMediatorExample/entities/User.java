@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 import javax.persistence.*;
+import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -20,45 +21,45 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+     Long id;
     @Column(name = "User_ID", nullable = false)
-    private String Id;
+     String Id;
     @Column(name = "First_Name", nullable = false)
-    private String first_name;
+     String first_name;
     @Column(name = "Last_Name", nullable = false)
-    private String last_name;
+     String last_name;
 
     @Column(name = "is_connected")
-    private boolean isConnected;
+     boolean isConnected;
 
     @Column(name = "commentary")
-    private String commentary;
+     String commentary;
 
     @Column(name = "username", nullable = false, unique = true)
-    private String username;
+     String username;
 
     @Column(name = "password_hash")
-    private String passwordHash;
+     String passwordHash;
 
     @Column(name = "salt")
-    private String salt;
+     String salt;
 
 
     @Column(name = "address")
-    private String address;
+     String address;
     @Column(name = "Email")
-    private String email;
+     String email;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-    private Role role;
-    private String password;
+     Role role;
+     String password;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
-    private Set<Task> tasks=new HashSet<>();
+     Set<Task> tasks=new HashSet<>();
 
     // Constructor, getters, and setters...
 
