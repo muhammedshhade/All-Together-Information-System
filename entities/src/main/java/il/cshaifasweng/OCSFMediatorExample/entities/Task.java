@@ -131,4 +131,8 @@ public class Task implements Serializable {
     public void setExecutionTime(float executionTime) {
         this.executionTime = executionTime;
     }
+    @Override
+    public String toString(){
+        return String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %d\nState: ", this.idNum, this.serviceType,user.getFirstName(),user.getID(), this.status);
+    }
 }

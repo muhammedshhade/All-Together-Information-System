@@ -52,7 +52,8 @@ public class SecondaryController {
     }
 
     @FXML
-    void LOGOUT(ActionEvent event) {
+    void LOGOUT(ActionEvent event) throws IOException {
+        App.setRoot("primary");
 
     }
 

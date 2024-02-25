@@ -76,7 +76,20 @@ public class VolunterControl {
     }
 
     @FXML
-    void TASKDETAILS(ActionEvent event) {
+    void TASKDETAILS(ActionEvent event) throws IOException {
+
+            if(selectedTask != null){
+                int id= selectedTask.getIdNum();
+                String serviceType= selectedTask.getServiceType();
+                String fitst=selectedTask.getUser().getFirstName();
+                String userid=selectedTask.getUser().getID();
+                int status=selectedTask.getStatus();
+                String x = String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nState: %d", id, serviceType, fitst, userid, status);
+
+                showAlert(x);
+                SimpleClient.getClient().sendToServer(selectedTask);
+            }
+
 
     }
 
