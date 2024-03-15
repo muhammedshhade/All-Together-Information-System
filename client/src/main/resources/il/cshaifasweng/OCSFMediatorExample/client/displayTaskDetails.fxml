@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.displayTaskController">
+   <children>
+      <Label layoutX="53.0" layoutY="25.0" prefHeight="38.0" prefWidth="400.0" text="Request details successfully registered." textFill="#74caea">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <TextField layoutX="53.0" layoutY="73.0" style="-fx-background-color: white;" text="Task is:" />
+      <TextField layoutX="53.0" layoutY="119.0" style="-fx-background-color: white;" text="Request submission Date:" />
+      <TextField layoutX="53.0" layoutY="158.0" style="-fx-background-color: white;" text="Request submission Time:" />
+      <TextField fx:id="date" layoutX="234.0" layoutY="119.0" style="-fx-background-color: without;" />
+      <TextField layoutX="53.0" layoutY="194.0" style="-fx-background-color: white;" text="Service Type:" />
+      <TextField fx:id="idTask" layoutX="234.0" layoutY="73.0" style="-fx-background-color: without;" />
+      <TextField layoutX="53.0" layoutY="236.0" style="-fx-background-color: white;" text="Note:" />
+      <TextField layoutX="53.0" layoutY="272.0" style="-fx-background-color: white;" text="Sent by:" />
+      <TextField layoutX="53.0" layoutY="305.0" style="-fx-background-color: white;" text="Email:" />
+      <TextField fx:id="time" layoutX="234.0" layoutY="158.0" style="-fx-background-color: without;" />
+      <TextField fx:id="service" layoutX="234.0" layoutY="194.0" style="-fx-background-color: without;" />
+      <TextField fx:id="note" layoutX="234.0" layoutY="249.0" style="-fx-background-color: without;" />
+      <TextField fx:id="submmiter" layoutX="234.0" layoutY="285.0" style="-fx-background-color: without;" />
+      <TextField fx:id="email" layoutX="234.0" layoutY="331.0" style="-fx-background-color: without;" />
+   </children>
+</AnchorPane>

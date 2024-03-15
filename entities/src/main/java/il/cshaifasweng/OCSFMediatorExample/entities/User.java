@@ -145,7 +145,7 @@ public class User implements Serializable {
     public void setfirstName(String name) {
         this.first_name = name;
     }
-    public String getLasttName() {
+    public String getLastName() {
         return last_name;
     }
     public void setemail(String email) {

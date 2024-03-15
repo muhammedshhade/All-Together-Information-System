@@ -4,7 +4,15 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 public class UserControl extends User {
+     static User loggedInUser;
 
+    public static User getLoggedInUser() {
+        return loggedInUser;
+    }
+
+    public static void setLoggedInUser(User user) {
+        loggedInUser = user;
+    }
     public UserControl(String ID,String first_name,String
             Last_name,boolean isConnected, String commentary,
                        String username, String Password, String address,String email, Role role){
@@ -44,6 +52,7 @@ public class UserControl extends User {
         // Implement cancel request logic here
         // This method could handle the cancellation of a particular request
     }
+    
     String hashPassword(String password, String salt) {
 		try {
 			String passwordWithSalt = password + salt;
