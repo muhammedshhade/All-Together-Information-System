@@ -14,7 +14,7 @@ public class Task implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idNum")
-     int idNum;
+     int idNum=0;
 
     @Column(name = "date")
      LocalDate date;
@@ -61,7 +61,7 @@ public class Task implements Serializable {
 
     // Constructors
     public Task() {
-        // Default constructor required by Hibernate
+         // Assign the next available ID to the task
     }
 
     public Task(LocalDate date, LocalTime time, int status, String serviceType, String note, float executionTime) {

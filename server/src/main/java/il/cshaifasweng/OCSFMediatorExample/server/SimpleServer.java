@@ -6,7 +6,9 @@ import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
@@ -25,22 +27,15 @@ import javax.persistence.criteria.Root;
 
 
 public class SimpleServer extends AbstractServer {
-	private long key;
-	public long getKey() {
-		return key;
-	}
+    private long key;
 
-	// Setter method for key
-	public void setKey(long key) {
-		this.key = key;
-	}
 //	private static Session session;
 //	private static SessionFactory sessionFactory = getSessionFactory();
 
-	public SimpleServer(int port) {
-		super(port);
-	}
-//	public static SessionFactory getSessionFactory() throws HibernateException {
+    public SimpleServer(int port) {
+        super(port);
+    }
+    //	public static SessionFactory getSessionFactory() throws HibernateException {
 //		Configuration configuration = new Configuration();
 //		configuration.addAnnotatedClass(Task.class);
 //		configuration.addAnnotatedClass(User.class);
@@ -48,108 +43,123 @@ public class SimpleServer extends AbstractServer {
 //				.applySettings(configuration.getProperties()).build();
 //		return configuration.buildSessionFactory(serviceRegistry);
 //	}
-	private static void modifyTask(int TaskID) {
-		try {
-			List<Task> tasks = ConnectToDataBase.getAllTasks();
-			for (Task task : tasks) {
-				if (task.getIdNum() == TaskID)
-					task.setStatus(1);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
+    private static void modifyTask(int TaskID) {
+        try {
+            List<Task> tasks = ConnectToDataBase.getAllTasks();
+            for (Task task : tasks) {
+                if (task.getIdNum() == TaskID)
+                    task.setStatus(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
 
-		}
-	}
+        }
+    }
 
-	@Override
-	protected void handleMessageFromClient(Object msg, ConnectionToClient client)  {
-		try {
-			String message = (String) msg;
-			if (message.equals("get tasks")) {
+    @Override
+    protected void handleMessageFromClient(Object msg, ConnectionToClient client)  {
+        try {
+            if (msg instanceof Task) {
+                try {
+                    ConnectToDataBase.addTask((Task) msg);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+            String message = (String) msg;
+            if (message.equals("get tasks")) {
+                List<Task> alltasks = ConnectToDataBase.getAllTasks();
+                client.sendToClient(alltasks);
+                System.out.println("suck");
 
-				if(getKey()!=-1) {
-					List<Task> alltasks = ConnectToDataBase.getAllTasks();
-					alltasks.removeIf(task -> task.getUser().getkeyId().equals(key));
-					client.sendToClient(alltasks);
+            }
+            else if(message.startsWith("modify")){
+                String taskid= message.split(" ")[1];
+                modifyTask(Integer.parseInt(taskid));
+                client.sendToClient(ConnectToDataBase.getAllTasks());
+            }
+
+            if (message.startsWith("#LogInAttempt")) {
+                try {
+                    handleLoginAttempt(message, client);
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
 
-				}
+        // Add more message handling as needed
+    }
 
-				System.out.println("suck");
+    private void handleLoginAttempt(String message, ConnectionToClient client) throws Exception {
+        String[] parts = message.split(",");
+        if (parts.length == 2) {
+            String[] credentials = parts[1].split("@");
+            if (credentials.length == 2) {
+                String username = credentials[0];
+                String password = credentials[1];
 
-			}
-			else if(message.startsWith("modify")){
-				String taskid= message.split(" ")[1];
-				modifyTask(Integer.parseInt(taskid));
-				client.sendToClient(ConnectToDataBase.getAllTasks());
-			}
+                // Perform password validation here by querying the database
+                List<UserControl> userControls = new ArrayList<>();
+                List<User> allUsers = ConnectToDataBase.getAllUsers();
+                for (User user : allUsers) {
+                    UserControl userControl = new UserControl(user.getID(), user.getFirstName(), user.getLastName(), user.getisConnected(), user.getCommentary(), user.getUsername(), "0", user.getAddress(), user.getEmail(), user.getRole());
+                    userControl.setSalt(user.getSalt());
+                    userControl.setPasswordHash(user.getPasswordHash());
+                    userControls.add(userControl);
+                }
 
-			if (message.startsWith("#LogInAttempt")) {
-				try {
-					handleLoginAttempt(message, client);
-				} catch (Exception e) {
-					throw new RuntimeException(e);
-				}
-			}
-		}catch (Exception e){
-			e.printStackTrace();
-		}
+                boolean isValidLogin = false;
+                for (UserControl user : userControls) {
+                    isValidLogin = user.login(username, password);
+                    if (isValidLogin) {
 
 
-		// Add more message handling as needed
-	}
+                        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                        try (ObjectOutputStream out = new ObjectOutputStream(bos)) {
+                            out.writeObject(user);  // assuming 'user' is your User object
+                            out.flush();
+                        } catch (IOException e) {
+                            // Handle serialization exception
+                            e.printStackTrace();
+                        }
 
-	private void handleLoginAttempt(String message, ConnectionToClient client) throws Exception {
-		String[] parts = message.split(",");
-		if (parts.length == 2) {
-			String[] credentials = parts[1].split("@");
-			if (credentials.length == 2) {
-				String username = credentials[0];
-				String password = credentials[1];
+                        byte[] userBytes = bos.toByteArray();
+                        client.sendToClient(userBytes);
 
-				// Perform password validation here by querying the database
-				List<UserControl> userControls = new ArrayList<>();
-				List<User> allUsers = ConnectToDataBase.getAllUsers();
-				for (User user : allUsers) {
-					UserControl userControl = new UserControl(user.getID(), user.getFirstName(), user.getLasttName(), user.getisConnected(), user.getCommentary(), user.getUsername(), "0", user.getAddress(), user.getEmail(), user.getRole());
-					userControl.setSalt(user.getSalt());
-					userControl.setPasswordHash(user.getPasswordHash());
-					userControls.add(userControl);
-				}
 
-				boolean isValidLogin = false;
-				for (UserControl user : userControls) {
-					isValidLogin = user.login(username, password);
-					if (isValidLogin) {
-						// Send a success response back to the client
-						try {
-							if(username.startsWith("*"))
-							{
-								client.sendToClient("Manager_LOGIN_SUCCESS");
-								setKey(user.getkeyId());
+                        // Send a success response back to the client
+                        try {
+                            if(username.startsWith("*"))
+                            {
+                                client.sendToClient("Manager_LOGIN_SUCCESS");
 
-							}
-							client.sendToClient("LOGIN_SUCCESS");
-							setKey(user.getkeyId());
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-						return; // exit the loop since login is valid
-					}
-				}
 
-				// If the loop ends and the login is not valid, send a failure response back to the client
-				try {
-					System.out.println("LOGIN_FAIL");
-					client.sendToClient("LOGIN_FAIL");
+                            }
+                            client.sendToClient("LOGIN_SUCCESS");
 
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        return; // exit the loop since login is valid
+                    }
+                }
 
-		}
-	}
+                // If the loop ends and the login is not valid, send a failure response back to the client
+                try {
+                    System.out.println("LOGIN_FAIL");
+                    client.sendToClient("LOGIN_FAIL");
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        }
+    }
 }
 
 
@@ -201,4 +211,3 @@ public class SimpleServer extends AbstractServer {
 //		}
 //		return result.toString();
 //	}
-

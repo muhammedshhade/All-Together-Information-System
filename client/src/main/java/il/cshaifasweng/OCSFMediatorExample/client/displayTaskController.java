@@ -5,14 +5,20 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 import com.google.protobuf.StringValue;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
+import javafx.scene.control.Button;
+import javafx.event.ActionEvent;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class displayTaskController {
-
+    @FXML // fx:id="close"
+    private Button close; // Value injected by FXMLLoader
     @FXML // fx:id="date"
     private TextField date; // Value injected by FXMLLoader
 
@@ -33,16 +39,22 @@ public class displayTaskController {
 
     @FXML // fx:id="time"
     private TextField time; // Value injected by FXMLLoader
-
+    @FXML
+    void closePage(ActionEvent event) throws IOException {
+        Stage stage = (Stage) close.getScene().getWindow();
+        // Close the stage
+        stage.close();
+    }
     public void initData(Task task) {
         // Update UI elements with task details
+
         idTask.setText(String.valueOf(task.getIdNum()));
         date.setText(String.valueOf(task.getDate()));
         time.setText(String.valueOf(task.getTime()));
         service.setText(task.getServiceType());
-        //email.setText(task.getUser().getEmail());
+        email.setText(task.getUser().getEmail());
         User user = UserControl.getLoggedInUser();
-       // submmiter.setText(user.getFirstName()+ " "+user.getLastName());
+       submmiter.setText(user.getFirstName()+ " "+user.getLastName());
         note.setText(task.getNote());
     }
 }

@@ -15,10 +15,12 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class ConnectToDataBase {
     private static Session session;
     private static List<User> users;
+
     private static SessionFactory getSessionFactory() throws HibernateException {
         Configuration configuration = new Configuration();
         // Add ALL of your entities here. You can also try adding a whole package.
@@ -29,6 +31,7 @@ public class ConnectToDataBase {
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
         return configuration.buildSessionFactory(serviceRegistry);
     }
+
     static List<User> getAllUsers() throws Exception {
         System.out.println("getALlUsers");
         CriteriaBuilder builder = session.getCriteriaBuilder();
@@ -45,15 +48,31 @@ public class ConnectToDataBase {
         List<Task> data = session.createQuery(query).getResultList();
         return data;
     }
+
+     static void addTask(Task task) throws Exception {
+         try {
+             session.beginTransaction(); // Begin transaction
+             session.save(task);
+             session.getTransaction().commit(); // Commit transaction after saving
+             System.out.println("Task added successfully to the database.");
+         } catch (Exception e) {
+             if (session.getTransaction() != null && session.getTransaction().isActive()) {
+                 session.getTransaction().rollback(); // Rollback transaction if an exception occurs
+             }
+             System.err.println("Failed to add task to the database.");
+             e.printStackTrace();
+         }
+    }
+
     public static void CreateData() throws Exception {
         System.out.print("Data Creation Start");
-        User user1 = new User("212930697", "Moataz", "Odeh", false, "Community 1", "1", "2", "Yaffa Nazareth","Moataz.ody44@gmail.com", User.Role.Manager);
-        User user7 = new User("212930697", "Moataz", "Odeh", false, "Community 1", "MoatazOD", "MoatazO123", "Yaffa Nazareth","Moataz.ody44@gmail.com", User.Role.USER);
-        User user2 = new User("213011398", "Adan", "Hammoud", false, "Community 2", "AdanHa", "AdanH123", " Kabul ","Adanhammod@gmail.com", User.Role.USER);
-        User user3 = new User("213298664", "Adan", "Sulaimani", false, "Community 3", "AdanSul", "AdanS123", "Nazareth","Adaslemany@gmail.com" ,User.Role.USER);
-        User user4 = new User("212022263", "Mohammed", "Shhade", false, "Community 4", "MoShhade", "MoShhade123", "Kukab","hijaze.Najm@gmail.com" ,User.Role.USER);
-        User user5 = new User("212270565", "Nejem", "Higazy", false, "Community 5", "NejemH", "NejemH123", "Tamra","Muhammed.sh.181@gmail.com", User.Role.USER);
-        User user6 = new User("319050241", "Siraj", "Jabareen", false, "Community 6", "SirajJ", "SirajJ123", "UMM El Fahem","SerajWazza@gmail.com", User.Role.USER);
+        User user1 = new User("212930697", "Moataz", "Odeh", false, "Community 1", "1", "2", "Yaffa Nazareth", "Moataz.ody44@gmail.com", User.Role.Manager);
+        User user7 = new User("212930697", "Moataz", "Odeh", false, "Community 1", "MoatazOD", "MoatazO123", "Yaffa Nazareth", "Moataz.ody44@gmail.com", User.Role.USER);
+        User user2 = new User("213011398", "Adan", "Hammoud", false, "Community 2", "AdanHa", "AdanH123", " Kabul ", "Adanhammod@gmail.com", User.Role.USER);
+        User user3 = new User("213298664", "Adan", "Sulaimani", false, "Community 3", "AdanSul", "AdanS123", "Nazareth", "Adaslemany@gmail.com", User.Role.USER);
+        User user4 = new User("212022263", "Mohammed", "Shhade", false, "Community 4", "MoShhade", "MoShhade123", "Kukab", "hijaze.Najm@gmail.com", User.Role.USER);
+        User user5 = new User("212270565", "Nejem", "Higazy", false, "Community 5", "NejemH", "NejemH123", "Tamra", "Muhammed.sh.181@gmail.com", User.Role.USER);
+        User user6 = new User("319050241", "Siraj", "Jabareen", false, "Community 6", "SirajJ", "SirajJ123", "UMM El Fahem", "SerajWazza@gmail.com", User.Role.USER);
         session.save(user1);
         session.flush();
         session.save(user2);
@@ -68,7 +87,7 @@ public class ConnectToDataBase {
         session.flush();
         session.save(user7);
         session.flush();
-        Task task1 = new Task(LocalDate.of(2024, 2, 22), LocalTime.of(3 ,50), 0, "Walk my dog", "", 0.0f);
+        Task task1 = new Task(LocalDate.of(2024, 2, 22), LocalTime.of(3, 50), 0, "Walk my dog", "", 0.0f);
         Task task2 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(9, 30), 0, "Buy Medicine", "", 0.0f);
         Task task3 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(11, 15), 0, "Nanny", "", 0.0f);
         Task task4 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(13, 4), 0, "Transportation", "I want to go to the Hospital", 0.0f);
@@ -110,8 +129,8 @@ public class ConnectToDataBase {
         System.out.print("Data Creation Finish");
 
     }
-    public static void initializeDatabase() throws IOException
-    {
+
+    public static void initializeDatabase() throws IOException {
         try {
             SessionFactory sessionFactory = getSessionFactory();
             session = sessionFactory.openSession();
@@ -128,7 +147,8 @@ public class ConnectToDataBase {
             exception.printStackTrace();
         }
     }
-    public static void EndConnection(){
+
+    public static void EndConnection() {
         session.getTransaction().commit(); // Save everything.
         session.close();
     }
