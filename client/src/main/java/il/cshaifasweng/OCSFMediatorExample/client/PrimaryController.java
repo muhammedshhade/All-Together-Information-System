@@ -1,6 +1,7 @@
 
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import javafx.fxml.FXMLLoader;
 
 import java.io.IOException;
@@ -48,6 +49,7 @@ public class PrimaryController implements Initializable {
 
     @FXML // fx:id="txt_usrn"
     private TextField txt_usrn; // Value injected by FXMLLoader
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
