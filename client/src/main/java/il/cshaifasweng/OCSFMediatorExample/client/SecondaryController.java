@@ -36,7 +36,6 @@ public class SecondaryController {
     private Button cansel_REQUESTBT;
 
 
-
     @FXML
     void CANCELREQUST(ActionEvent event) {
 
@@ -56,6 +55,7 @@ public class SecondaryController {
     void LOGOUT(ActionEvent event) throws IOException {
         App.setRoot("primary");
     }
+
     @FXML
     void Requesthelp(ActionEvent event) throws IOException {
         App.setRoot("request_control");
@@ -77,13 +77,12 @@ public class SecondaryController {
 //        System.out.println(savedUsername);
         try {
             SimpleClient.getClient().sendToServer("get tasks");
-
-            // Receive response from the server
         } catch (IOException e) {
             showAlert("Error", "Failed to Get Login message!" + e.getMessage());
             e.printStackTrace();
         }
     }
+
     private void showAlert(String title, String message) {
         // Display an alert dialog to the user
         Alert alert = new Alert(Alert.AlertType.ERROR);

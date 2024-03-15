@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: grey;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.VolunterControl">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.VolunterControl">
    <children>
       <ImageView fitHeight="150.0" fitWidth="246.0" layoutX="10.0" layoutY="302.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -25,25 +25,25 @@
             <Image url="@../../../../../../../../../../Downloads/imm.png" />
          </image>
       </ImageView>
-      <Label layoutX="247.0" layoutY="53.0" prefHeight="24.0" prefWidth="57.0" style="-fx-background-color: yellow;" text="Tasks">
+      <Label alignment="BOTTOM_CENTER" layoutX="247.0" layoutY="53.0" prefHeight="31.0" prefWidth="82.0" style="-fx-background-color: #7ad0ea;" text="Tasks" textAlignment="CENTER">
          <font>
             <Font name="Franklin Gothic Demi" size="21.0" />
          </font>
       </Label>
-      <ListView fx:id="TasksList" layoutX="101.0" layoutY="102.0" prefHeight="200.0" prefWidth="408.0" style="-fx-background-color: rgb(200,200,200);" />
-      <Button fx:id="Task_Details_btn" layoutX="77.0" layoutY="326.0" mnemonicParsing="false" onAction="#TASKDETAILS" prefHeight="43.0" prefWidth="157.0" style="-fx-background-color: yellow;" text="Task Details">
+      <ListView fx:id="TasksList" layoutX="101.0" layoutY="102.0" prefHeight="200.0" prefWidth="400.0" style="-fx-background-color: white; -fx-border-color: rgba(122,208,234,0.85);" />
+      <Button fx:id="Task_Details_btn" layoutX="125.0" layoutY="323.0" mnemonicParsing="false" onAction="#TASKDETAILS" style="-fx-background-color: rgba(122,208,234,0.85);" text="Task Details">
          <font>
-            <Font size="20.0" />
+            <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="PICK_TASK_BTN" layoutX="305.0" layoutY="324.0" mnemonicParsing="false" onAction="#PICK_TASK" prefHeight="46.0" prefWidth="148.0" style="-fx-background-color: yellow;" text="Pick Task">
+      <Button fx:id="PICK_TASK_BTN" layoutX="329.0" layoutY="323.0" mnemonicParsing="false" onAction="#PICK_TASK" style="-fx-background-color: rgba(122,208,234,0.85);" text="Pick Task">
          <font>
-            <Font size="22.0" />
+            <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="homepagebtn" layoutX="32.0" layoutY="391.0" mnemonicParsing="false" onAction="#homepage" prefHeight="43.0" prefWidth="158.0" text="Home Page">
+      <Button fx:id="homepagebtn" layoutX="31.0" layoutY="391.0" mnemonicParsing="false" onAction="#homepage" text="Home Page">
          <font>
-            <Font name="Franklin Gothic Demi" size="23.0" />
+            <Font size="18.0" />
          </font>
       </Button>
    </children>

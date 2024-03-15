@@ -90,24 +90,19 @@ public class RequestController {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        System.out.println("/********************");
         Task task = new Task();
         task.setNote(explainService.getText());
         task.setDate(LocalDate.now());
         task.setTime(LocalTime.now());
         task.setServiceType(services.getValue());
         task.setStatus(3);
-       // task.setUser(UserControl.getLoggedInUser());
-       // User loggedInUser = UserControl.getLoggedInUser();
-       // System.out.println(UserControl.getLoggedInUser().getAddress());
-       // System.out.println("******");
-
-      /*  if (loggedInUser != null) {
+      User loggedInUser = UserControl.getLoggedInUser();
+      if (loggedInUser != null) {
             task.setUser(loggedInUser);
         } else {
             showAlert("Error", "No user logged in. Please log in before submitting a request.");
             return;
-        }*/
+        }
         App.displayTaskDetails(task);
         try {
             SimpleClient.getClient().sendToServer(task);
