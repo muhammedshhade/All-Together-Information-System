@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -54,12 +55,11 @@ public class SecondaryController {
     @FXML
     void LOGOUT(ActionEvent event) throws IOException {
         App.setRoot("primary");
-
     }
-
     @FXML
-    void Requesthelp(ActionEvent event) {
-
+    void Requesthelp(ActionEvent event) throws IOException {
+        App.setRoot("request_control");
+        SimpleClient.getClient().sendToServer("Create task");
     }
 
     @FXML

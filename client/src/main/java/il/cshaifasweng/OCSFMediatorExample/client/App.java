@@ -1,4 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
+import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -26,12 +27,32 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         primaryStage = stage;
-    	EventBus.getDefault().register(this);
-    	client = SimpleClient.getClient();
-    	client.openConnection();
-        scene = new Scene(loadFXML("primary"), 600, 630);
+        EventBus.getDefault().register(this);
+        client = SimpleClient.getClient();
+        client.openConnection();
+        scene = new Scene(loadFXML("primary"), 600, 500);
         stage.setScene(scene);
         stage.show();
+    }
+
+    public static void displayTaskDetails(Task task) {
+        try {
+            FXMLLoader loader = new FXMLLoader(App.class.getResource("displayTaskDetails.fxml"));
+            Parent root = loader.load();
+
+            // Get the controller instance
+            il.cshaifasweng.OCSFMediatorExample.client.displayTaskController controller = loader.getController();
+
+            // Call the initData method to pass the task
+            controller.initData(task);
+
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Task Details");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     static void setRoot(String fxml) throws IOException {
@@ -42,38 +63,36 @@ public class App extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
-    
-    
 
     @Override
-	public void stop() throws Exception {
-		// TODO Auto-generated method stub
-    	EventBus.getDefault().unregister(this);
-		super.stop();
-	}
-    
+    public void stop() throws Exception {
+        // TODO Auto-generated method stub
+        EventBus.getDefault().unregister(this);
+        super.stop();
+    }
+
     @Subscribe
     public void onWarningEvent(WarningEvent event) {
-    	Platform.runLater(() -> {
-    		Alert alert = new Alert(AlertType.WARNING,
-        			String.format("Message: %s\nTimestamp: %s\n",
-        					event.getWarning().getMessage(),
-        					event.getWarning().getTime().toString())
-        	);
-        	alert.show();
-    	});
-    	
+        Platform.runLater(() -> {
+            Alert alert = new Alert(AlertType.WARNING,
+                    String.format("Message: %s\nTimestamp: %s\n",
+                            event.getWarning().getMessage(),
+                            event.getWarning().getTime().toString())
+            );
+            alert.show();
+        });
     }
-    public static Scene getScene(){
+
+    public static Scene getScene() {
         return scene;
     }
 
-    public static Stage getStage(){
-        return primaryStage ;
+    public static Stage getStage() {
+        return primaryStage;
     }
 
 
-	public static void main(String[] args) {
+    public static void main(String[] args) {
         launch();
     }
 
