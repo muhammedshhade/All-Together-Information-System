@@ -74,7 +74,7 @@ public class RequestController {
     }
 
     @FXML
-    void submitRequest(ActionEvent event) throws IOException {
+    private void submitRequest(ActionEvent event) throws IOException {
 
         if (services.getValue() == null) {
             showAlert("Error", "Please choose one service.");

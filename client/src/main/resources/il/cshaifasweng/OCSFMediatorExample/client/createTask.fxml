@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane fx:id="note" prefHeight="386.0" prefWidth="339.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.RequestController">
+<AnchorPane prefHeight="386.0" prefWidth="339.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.RequestController">
    <children>
       <TextField layoutX="29.0" layoutY="24.0" prefHeight="60.0" prefWidth="276.0" style="-fx-background-color: without;" text="     Submit Service Request">
          <font>
@@ -30,7 +29,7 @@
          </font>
       </TextField>
       <TextField fx:id="serviceType" layoutX="40.0" layoutY="220.0" style="-fx-background-color: without;" text="Service type:" />
-      <TextField fx:id="note" layoutX="40.0" layoutY="270.0" style="-fx-background-color: without;" text="Note:">
+      <TextField fx:id="note_" layoutX="40.0" layoutY="270.0" style="-fx-background-color: without;" text="Note:">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
@@ -41,6 +40,6 @@
       <ChoiceBox fx:id="services" layoutX="130.0" layoutY="220.0" prefWidth="150.0" />
       <TextField fx:id="explainService" layoutX="130.0" layoutY="260.0" prefHeight="50.0" prefWidth="150.0" />
       <Button fx:id="previousPage" layoutX="40.0" layoutY="335.0" mnemonicParsing="false" onAction="#getPrevious" text="Back" />
-      <Button fx:id="submit" layoutX="164.0" layoutY="335.0" mnemonicParsing="false" onAction="#askManager" text="Submit Request" />
+      <Button fx:id="submit" layoutX="164.0" layoutY="335.0" mnemonicParsing="false" onAction="#submitRequest" text="Submit Request" />
    </children>
 </AnchorPane>
