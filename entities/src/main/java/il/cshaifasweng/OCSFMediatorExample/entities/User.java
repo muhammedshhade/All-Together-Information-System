@@ -22,7 +22,6 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
      Long id;
@@ -36,8 +35,8 @@ public class User implements Serializable {
     @Column(name = "is_connected")
      boolean isConnected;
 
-    @Column(name = "commentary")
-     String commentary;
+    @Column(name = "community")
+     String community;
 
     @Column(name = "username", nullable = false, unique = true)
      String username;
@@ -47,7 +46,6 @@ public class User implements Serializable {
 
     @Column(name = "salt")
      String salt;
-
 
     @Column(name = "address")
      String address;
@@ -71,13 +69,13 @@ public class User implements Serializable {
     }
 
     public User(String id,String first_name,String
-                Last_name,boolean isConnected, String commentary,
+                Last_name,boolean isConnected, String community,
                 String username, String Password, String address,String emil, Role role) {
         this.Id=id;
         this.first_name = first_name;
         this.last_name=Last_name;
         this.isConnected = isConnected;
-        this.commentary = commentary;
+        this.community = community;
         this.username = username;
         this.salt = generateSalt();
         this.password=Password;
@@ -167,12 +165,12 @@ public class User implements Serializable {
         isConnected = connected;
     }
 
-    public String getCommentary() {
-        return commentary;
+    public String getCommunity() {
+        return community;
     }
 
-    public void setCommentary(String commentary) {
-        this.commentary = commentary;
+    public void setCommunity(String community) {
+        this.community = community;
     }
 
     public String getUsername() {
@@ -219,8 +217,5 @@ public class User implements Serializable {
         this.salt = generateSalt();
         this.passwordHash = hashPassword(password, this.salt);
     }
-
-
-    // Getters and setters for other fields, and any other necessary code would go here
 }
 

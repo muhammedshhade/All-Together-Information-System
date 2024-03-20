@@ -105,7 +105,10 @@ public class RequestController {
         }
         App.displayTaskDetails(task);
         try {
-            SimpleClient.getClient().sendToServer(task);
+            Object[] array = new Object[2];
+            array[0] = "add task to database."; // Assign a String object to the first index
+            array[1] = task;
+            SimpleClient.getClient().sendToServer(array);
         } catch (IOException e) {
 
             e.printStackTrace();

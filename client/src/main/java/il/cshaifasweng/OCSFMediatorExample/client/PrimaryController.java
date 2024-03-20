@@ -50,7 +50,14 @@ public class PrimaryController implements Initializable {
     @FXML // fx:id="txt_usrn"
     private TextField txt_usrn; // Value injected by FXMLLoader
 
+    @FXML
+    private ImageView im;
 
+   /* Image myImage=new Image(getClass().getResourceAsStream("im.png"));
+    public void displayIm(){
+        im.setImage(myImage);
+
+    }*/
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize method called when the controller is loaded
