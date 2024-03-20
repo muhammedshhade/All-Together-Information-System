@@ -6,8 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.NewTaskData">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.NewTaskDataControl">
    <children>
       <Label layoutX="93.0" layoutY="54.0" prefHeight="22.0" prefWidth="318.0" text="Please fill in all required fields." textFill="#b473ea">
          <font>
@@ -24,12 +23,18 @@
             <Font name="David Bold" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="save" layoutX="231.0" layoutY="241.0" mnemonicParsing="false" onAction="#saveData" prefWidth="70.0" style="-fx-background-color: B98EDCFF;" text="save" textFill="#f7f2f2">
+      <Button fx:id="save" layoutX="265.0" layoutY="244.0" mnemonicParsing="false" onAction="#saveData" prefWidth="70.0" style="-fx-background-color: B98EDCFF;" text="save" textFill="#f7f2f2">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
       </Button>
       <TextField fx:id="taskId" layoutX="192.0" layoutY="120.0" />
       <TextField fx:id="newData" layoutX="192.0" layoutY="168.0" />
+      <Button fx:id="back" layoutX="103.0" layoutY="244.0" mnemonicParsing="false" onAction="#homePage" prefWidth="70.0" style="-fx-background-color: B98EDCFF;" text="back" textFill="#f7f2f2">
+         <font>
+            <Font name="David Bold" size="16.0" />
+         </font>
+      </Button>
+      <TextField fx:id="title" layoutX="73.0" layoutY="84.0" prefHeight="26.0" prefWidth="350.0" />
    </children>
 </AnchorPane>

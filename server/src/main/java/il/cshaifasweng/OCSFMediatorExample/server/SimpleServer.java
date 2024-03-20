@@ -55,7 +55,6 @@ public class SimpleServer extends AbstractServer {
             }
         } catch (Exception e) {
             e.printStackTrace();
-
         }
     }
 
@@ -95,22 +94,27 @@ public class SimpleServer extends AbstractServer {
             } else if (message.equals("Get uploaded tasks by community members")) {
                 List<Task> requests = ConnectToDataBase.getTasksUploadedByCommunityMembers(UserControl.getLoggedInUser().getCommunity());
                 Object[] array = new Object[2];
+                array[0] = "uploaded"; // Assign a String object to the first index
+                array[1] = requests;
+                client.sendToClient(array);
+            } else if (message.equals("check requests")) {
+                List<Task> requests = ConnectToDataBase.getTasksWithStatus(UserControl.getLoggedInUser().getCommunity(), 3);
+                Object[] array = new Object[2];
                 array[0] = "request"; // Assign a String object to the first index
                 array[1] = requests;
                 client.sendToClient(array);
-            } else if (message.equals("Get performed tasks for community members")) {
-                List<Task> requests = ConnectToDataBase.getDoneTasksByCommunityMembers(UserControl.getLoggedInUser().getCommunity(),2);
-                Object[] array = new Object[2];
-                array[0] = "done"; // Assign a String object to the first index
-                array[1] = requests;
-                client.sendToClient(array);
-                System.out.println("Simple server community tasks");
             } else if (message.startsWith("modify")) {
                 String taskid = message.split(" ")[1];
                 modifyTask(Integer.parseInt(taskid));
                 client.sendToClient(ConnectToDataBase.getAllTasks());
-            }
-            else if (message.startsWith("#LogInAttempt")) {
+            } /*else if (message.startsWith("update status")) {
+                String[] parts = message.split("@");
+                if (parts.length >= 3 && parts[0].equals("update status")) {
+                    String taskId = parts[1];
+                    String newData = parts[2];
+                    ConnectToDataBase.updateTaskData(Integer.parseInt(taskId),newData);
+                }
+            } */else if (message.startsWith("#LogInAttempt")) {
                 try {
                     handleLoginAttempt(message, client);
                 } catch (Exception e) {

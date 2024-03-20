@@ -26,24 +26,32 @@ public class SimpleClient extends AbstractClient {
     }
 
 
-    public void handleMessageFromServer(Object msg) throws IOException {
+    protected void handleMessageFromServer(Object msg) throws IOException {
         try {
             if (msg instanceof Object[]) {
                 System.out.println("check the if");
                 Object[] messageParts = (Object[]) msg;
                 if (messageParts.length == 2 && messageParts[0] instanceof String && messageParts[1] instanceof List) {
                     if (messageParts[0].equals("request")) {
-                        System.out.println("request");
-                        CommunityTaskControl.getCommunityTask = (List<Task>) messageParts[1];
-                        App.setRoot("CommunityTasks");
-                    }
-                    if (messageParts[0].equals("alltasks")) {
+                        System.out.println("adhhhh");
+                        CheckRequestService.requests = (List<Task>) messageParts[1];
+                        try {
+                            App.setRoot("checkRequestService");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    } else if (messageParts[0].equals("alltasks")) {
                         VolunterControl.tasks = (List<Task>) messageParts[1];
                         App.setRoot("volunter_control");
-                    }
-                    if (messageParts[0].equals("done")) {
-                        VolunterControl.tasks = (List<Task>) messageParts[1];
-                        App.setRoot("CommunityTasks");
+                    } else if (messageParts[0].equals("uploaded")) {
+                        CommunityTaskControl.getCommunityTask = (List<Task>) messageParts[1];
+                        Platform.runLater(() -> {
+                            try {
+                                App.setRoot("CommunityTasks");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
                     }
                 }
             } else {
@@ -55,64 +63,62 @@ public class SimpleClient extends AbstractClient {
     }
 
     protected void handleMessageFromServer1(Object msg) throws IOException {
-        System.out.println("one parametr");
+        try {
+            System.out.println("one parametr");
 
-        if (msg instanceof String) {
-            String message = (String) msg;
-            // Handling LOGIN_FAIL message
-            if ("LOGIN_FAIL".equals(message)) {
-                System.out.println("Login failed. Please try again.");
+            if (msg instanceof String) {
+                String message = (String) msg;
+                // Handling LOGIN_FAIL message
+                if ("LOGIN_FAIL".equals(message)) {
+                    System.out.println("Login failed. Please try again.");
 
-                // Ensure this runs on the JavaFX Application Thread
-                Platform.runLater(() -> {
-                    Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
-                    alert.setTitle("Login Error"); // Set the window's title
-                    alert.setHeaderText(null); // Optional: you can have a header or set it to null
-                    alert.setContentText("Login failed. Please try again."); // Set the main message/content
-                    alert.showAndWait(); // Display the alert and wait for the user to close it
-                });
-            } else {
-                if ("LOGIN_SUCCESS".equals(message)) {
-                    App.setRoot("secondary");
+                    // Ensure this runs on the JavaFX Application Thread
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
+                        alert.setTitle("Login Error"); // Set the window's title
+                        alert.setHeaderText(null); // Optional: you can have a header or set it to null
+                        alert.setContentText("Login failed. Please try again."); // Set the main message/content
+                        alert.showAndWait(); // Display the alert and wait for the user to close it
+                    });
                 } else {
-                    App.setRoot("manager_control");
-                }
+                    if ("LOGIN_SUCCESS".equals(message)) {
+                        App.setRoot("secondary");
+                    } else {
+                        App.setRoot("manager_control");
+                    }
 
-            }
-        }
-        if (msg.getClass().equals(Warning.class)) {
-            EventBus.getDefault().post(new WarningEvent((Warning) msg));
-        }
-        if (msg instanceof List) {
-            List<?> list = (List<?>) msg; // Cast to a list of unknown type
-            if (!list.isEmpty()) {
-                Object firstElement = list.get(0);
-               /* if (firstElement instanceof Task) {
-                    System.out.println("tasks received");
-                    //VolunterControl.tasks = (List<Task>) msg;
-                   // App.setRoot("volunter_control");
-                }*/
-                if (firstElement instanceof User) {
-                    System.out.println("User members received");
-                    CommunityMembers.users = (List<User>) msg;
-                    App.setRoot("communityMembers");
-                    // Proceed with setting the root or any other necessary operations
                 }
             }
-        }
-        if (msg instanceof byte[]) {
-            byte[] receivedUserBytes = (byte[]) msg;
-
-            try (ByteArrayInputStream bis = new ByteArrayInputStream(receivedUserBytes);
-                 ObjectInputStream in = new ObjectInputStream(bis)) {
-
-                // Deserialize the User object received from the server
-                User user = (User) in.readObject();
-                UserControl.setLoggedInUser(user);
-                UserControl.setLoggedInUser(user);
-            } catch (ClassNotFoundException e) {
-                throw new RuntimeException(e);
+            if (msg.getClass().equals(Warning.class)) {
+                EventBus.getDefault().post(new WarningEvent((Warning) msg));
             }
+            if (msg instanceof List) {
+                List<?> list = (List<?>) msg; // Cast to a list of unknown type
+                if (!list.isEmpty()) {
+                    Object firstElement = list.get(0);
+                    if (firstElement instanceof User) {
+                        System.out.println("User members received");
+                        CommunityMembers.users = (List<User>) msg;
+                        App.setRoot("communityMembers");
+                    }
+                }
+            }
+            if (msg instanceof byte[]) {
+                byte[] receivedUserBytes = (byte[]) msg;
+
+                try (ByteArrayInputStream bis = new ByteArrayInputStream(receivedUserBytes);
+                     ObjectInputStream in = new ObjectInputStream(bis)) {
+
+                    // Deserialize the User object received from the server
+                    User user = (User) in.readObject();
+                    UserControl.setLoggedInUser(user);
+                    UserControl.setLoggedInUser(user);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

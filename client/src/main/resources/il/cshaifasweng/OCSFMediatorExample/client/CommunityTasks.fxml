@@ -8,13 +8,24 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CommunityTaskControl">
    <children>
-      <Label alignment="BASELINE_CENTER" layoutX="143.0" layoutY="51.0" prefHeight="36.0" prefWidth="313.0" text="Community Tasks List" textAlignment="CENTER" textFill="#1bbde3">
+      <Label alignment="BASELINE_CENTER" layoutX="143.0" layoutY="51.0" prefHeight="36.0" prefWidth="313.0" text="Community Tasks List" textAlignment="CENTER" textFill="#b98edc">
          <font>
             <Font name="David Bold" size="20.0" />
          </font>
       </Label>
-      <ListView fx:id="communityTasks" layoutX="112.0" layoutY="113.0" prefHeight="182.0" prefWidth="382.0" style="-fx-background-color: white;" />
-      <Button fx:id="back" layoutX="112.0" layoutY="323.0" mnemonicParsing="false" onAction="#previous" prefWidth="80.0" text="back" />
-      <Button fx:id="tasks" layoutX="417.0" layoutY="323.0" mnemonicParsing="false" onAction="#tasksDetails" prefWidth="80.0" text="Task details" />
+      <ListView fx:id="communityTasks" layoutX="105.0" layoutY="113.0" prefHeight="182.0" prefWidth="400.0" style="-fx-background-color: white;" />
+      <Button fx:id="back" layoutX="100.0" layoutY="320.0" mnemonicParsing="false" onAction="#previous" prefWidth="122.0" style="-fx-background-color: B98EDCFF;" text="back" textFill="#eae8e8">
+         <font>
+            <Font name="David Bold" size="14.0" />
+         </font></Button>
+      <Button fx:id="tasks" layoutX="390.0" layoutY="320.0" mnemonicParsing="false" onAction="#tasksDetails" prefWidth="122.0" style="-fx-background-color: B98EDCFF;" text="Task details" textFill="#eae8e8">
+         <font>
+            <Font name="David Bold" size="14.0" />
+         </font></Button>
+      <Button fx:id="submitter" layoutX="245.0" layoutY="320.0" mnemonicParsing="false" onAction="#submitterDetails" prefWidth="122.0" style="-fx-background-color: B98EDCFF;" text="submitter details" textFill="#eae8e8">
+         <font>
+            <Font name="David Bold" size="14.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

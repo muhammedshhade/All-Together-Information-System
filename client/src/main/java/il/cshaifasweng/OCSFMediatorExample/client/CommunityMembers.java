@@ -79,8 +79,8 @@ public class CommunityMembers {
 
     private void showAlert(String task) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Task details");
-        alert.setHeaderText("Task Details: ");
+        alert.setTitle("User details");
+        alert.setHeaderText("User Details: ");
         alert.setContentText(task);
         alert.showAndWait();
     }

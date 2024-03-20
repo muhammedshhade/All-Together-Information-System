@@ -21,6 +21,9 @@ public class CommunityTaskControl {
     @FXML
     private TextField title;
 
+    @FXML
+    private Button submitter;
+
     @FXML // fx:id="back"
     private Button back; // Value injected by FXMLLoader
 
@@ -87,6 +90,27 @@ public class CommunityTaskControl {
         alert.setContentText(task);
         alert.showAndWait();
     }
+    private void showAlert2(String task) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("User details");
+        alert.setHeaderText("User Details: ");
+        alert.setContentText(task);
+        alert.showAndWait();
+    }
+
+    @FXML
+    void submitterDetails(ActionEvent event) {
+        if (requestedTask != null) {
+            String id = requestedTask.getUser().getID();
+            String name = requestedTask.getUser().getFirstName() + " " + requestedTask.getUser().getLastName();
+            String community = requestedTask.getUser().getCommunity();
+            String address = requestedTask.getUser().getAddress();
+            String email = requestedTask.getUser().getEmail();
+            String x = String.format("User ID: %s\nUser Name: %s\nCommunity: %s\nAddress: %s\nEmail: %s", id, name, community, address, email);
+            showAlert2(x);
+        }
+    }
+
     @FXML
     void previous(ActionEvent event) throws IOException {
         App.setRoot("manager_control");

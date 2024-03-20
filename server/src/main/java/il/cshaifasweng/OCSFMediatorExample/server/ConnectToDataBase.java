@@ -1,5 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
+import il.cshaifasweng.OCSFMediatorExample.client.NewTaskDataControl;
+import il.cshaifasweng.OCSFMediatorExample.client.UpdateTaskDetails;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -74,23 +76,24 @@ public class ConnectToDataBase {
         List<Task> tasks = session.createQuery(query).getResultList();
         return tasks;
     }
-    public static List<Task> getDoneTasksByCommunityMembers(String community, int status) {
+
+    public static List<Task> getTasksWithStatus(String community, int status) {
         System.out.println("Getting community tasks for: " + community + " with status: " + status);
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Task> query = builder.createQuery(Task.class);
         Root<Task> root = query.from(Task.class);
         // Joining the Task entity with the User entity to access the uploader
         Join<Task, User> uploaderJoin = root.join("user");
-
-        // Adding conditions to filter tasks uploaded by community members and with a specific status
         query.where(
                 builder.equal(uploaderJoin.get("community"), community),
                 builder.equal(root.get("status"), status)
         );
         // Executing the query and getting the list of tasks
         List<Task> tasks = session.createQuery(query).getResultList();
+        //System.out.println("try ++ "+tasks.get(0).getTime());
         return tasks;
     }
+
     static List<Task> getAllTasks() throws Exception {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Task> query = builder.createQuery(Task.class);
@@ -98,6 +101,31 @@ public class ConnectToDataBase {
         List<Task> data = session.createQuery(query).getResultList();
         return data;
     }
+
+    public static void updateTaskData(int id, String newData) {
+        SessionFactory sessionFactory = getSessionFactory();
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            Task task = session.get(Task.class, id);
+            if (task != null) {
+                if (UpdateTaskDetails.updateVale.equals("status")) {
+                    task.setStatus(Integer.parseInt(newData));
+                    session.update(task);
+                    session.getTransaction().commit();
+                    System.out.println("Task status updated successfully.");
+                } else {
+                    task.setExecutionTime(Float.parseFloat(newData));
+                    session.update(task);
+                    session.getTransaction().commit();
+                }
+            } else {
+                System.out.println("Task not found.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     static void addTask(Task task) throws Exception {
         try {
@@ -159,10 +187,10 @@ public class ConnectToDataBase {
         session.flush();
         session.save(user7);
         session.flush();
-        Task task1 = new Task(LocalDate.of(2024, 2, 22), LocalTime.of(3, 50), 0, "Walk my dog", "", 0.0f);
+        Task task1 = new Task(LocalDate.of(2024, 2, 22), LocalTime.of(3, 50), 2, "Walk my dog", "", 0.0f);
         Task task2 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(9, 30), 0, "Buy Medicine", "", 0.0f);
-        Task task3 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(11, 15), 0, "Nanny", "", 0.0f);
-        Task task4 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(13, 4), 0, "Transportation", "I want to go to the Hospital", 0.0f);
+        Task task3 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(11, 15), 3, "Nanny", "", 0.0f);
+        Task task4 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(13, 4), 3, "Transportation", "I want to go to the Hospital", 0.0f);
         Task task5 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(15, 20), 0, "Transportation", "", 0.0f);
         Task task6 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(17, 10), 0, "Buy Medicine", "", 0.0f);
         session.save(task1);
