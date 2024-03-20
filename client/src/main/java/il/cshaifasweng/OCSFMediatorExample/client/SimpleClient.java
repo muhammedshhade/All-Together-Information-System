@@ -25,11 +25,40 @@ public class SimpleClient extends AbstractClient {
         super(host, port);
     }
 
-    @Override
-    protected void handleMessageFromServer(Object msg) throws IOException {
+
+    public void handleMessageFromServer(Object msg) throws IOException {
+        try {
+            if (msg instanceof Object[]) {
+                System.out.println("check the if");
+                Object[] messageParts = (Object[]) msg;
+                if (messageParts.length == 2 && messageParts[0] instanceof String && messageParts[1] instanceof List) {
+                    if (messageParts[0].equals("request")) {
+                        System.out.println("request");
+                        CommunityTaskControl.getCommunityTask = (List<Task>) messageParts[1];
+                        App.setRoot("CommunityTasks");
+                    }
+                    if (messageParts[0].equals("alltasks")) {
+                        VolunterControl.tasks = (List<Task>) messageParts[1];
+                        App.setRoot("volunter_control");
+                    }
+                    if (messageParts[0].equals("done")) {
+                        VolunterControl.tasks = (List<Task>) messageParts[1];
+                        App.setRoot("CommunityTasks");
+                    }
+                }
+            } else {
+                handleMessageFromServer1(msg);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected void handleMessageFromServer1(Object msg) throws IOException {
+        System.out.println("one parametr");
+
         if (msg instanceof String) {
             String message = (String) msg;
-
             // Handling LOGIN_FAIL message
             if ("LOGIN_FAIL".equals(message)) {
                 System.out.println("Login failed. Please try again.");
@@ -42,33 +71,34 @@ public class SimpleClient extends AbstractClient {
                     alert.setContentText("Login failed. Please try again."); // Set the main message/content
                     alert.showAndWait(); // Display the alert and wait for the user to close it
                 });
-            }
-
-
-
-            else{
-                if("LOGIN_SUCCESS".equals(message))
-                {
+            } else {
+                if ("LOGIN_SUCCESS".equals(message)) {
                     App.setRoot("secondary");
-                }
-                else {
+                } else {
                     App.setRoot("manager_control");
                 }
 
             }
-
-
         }
-        if(msg.getClass().equals(Warning.class))
-        {
-            EventBus.getDefault().post(new WarningEvent((Warning)msg));
+        if (msg.getClass().equals(Warning.class)) {
+            EventBus.getDefault().post(new WarningEvent((Warning) msg));
         }
-        if (msg instanceof List)
-        {
-            System.out.println("x");
-            VolunterControl.tasks = (List<Task>) msg;
-            System.out.println("x");
-            App.setRoot("volunter_control");
+        if (msg instanceof List) {
+            List<?> list = (List<?>) msg; // Cast to a list of unknown type
+            if (!list.isEmpty()) {
+                Object firstElement = list.get(0);
+               /* if (firstElement instanceof Task) {
+                    System.out.println("tasks received");
+                    //VolunterControl.tasks = (List<Task>) msg;
+                   // App.setRoot("volunter_control");
+                }*/
+                if (firstElement instanceof User) {
+                    System.out.println("User members received");
+                    CommunityMembers.users = (List<User>) msg;
+                    App.setRoot("communityMembers");
+                    // Proceed with setting the root or any other necessary operations
+                }
+            }
         }
         if (msg instanceof byte[]) {
             byte[] receivedUserBytes = (byte[]) msg;
@@ -79,12 +109,11 @@ public class SimpleClient extends AbstractClient {
                 // Deserialize the User object received from the server
                 User user = (User) in.readObject();
                 UserControl.setLoggedInUser(user);
+                UserControl.setLoggedInUser(user);
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
         }
-
-
     }
 
     public static SimpleClient getClient() {

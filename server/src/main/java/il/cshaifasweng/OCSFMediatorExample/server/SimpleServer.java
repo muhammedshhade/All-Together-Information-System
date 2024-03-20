@@ -1,4 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
+
 import com.mysql.cj.xdevapi.Client;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
@@ -34,7 +35,9 @@ public class SimpleServer extends AbstractServer {
 
     public SimpleServer(int port) {
         super(port);
+
     }
+
     //	public static SessionFactory getSessionFactory() throws HibernateException {
 //		Configuration configuration = new Configuration();
 //		configuration.addAnnotatedClass(Task.class);
@@ -57,41 +60,66 @@ public class SimpleServer extends AbstractServer {
     }
 
     @Override
-    protected void handleMessageFromClient(Object msg, ConnectionToClient client)  {
+
+    protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
         try {
-            if (msg instanceof Task) {
+        /*    if (msg instanceof Object[]) {
+                System.out.println("**??");
+                Object[] messageParts = (Object[]) msg;
+                if (messageParts.length == 2 && messageParts[0] instanceof String && messageParts[1] instanceof Task) {
+                    if (messageParts[0].equals("add task to database."))
+                        ((Task) messageParts[1]).setUser(UserControl.getLoggedInUser());
+                        ConnectToDataBase.addTask((Task) messageParts[1]);
+                }
+                return;
+            }*/
+         /* if (msg instanceof Task) {
                 try {
+                   ((Task) msg).setUser(UserControl.getLoggedInUser());
                     ConnectToDataBase.addTask((Task) msg);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-            }
+                return;
+            }*/
             String message = (String) msg;
             if (message.equals("get tasks")) {
                 List<Task> alltasks = ConnectToDataBase.getAllTasks();
-                client.sendToClient(alltasks);
-                System.out.println("suck");
-
-            }
-            else if(message.startsWith("modify")){
-                String taskid= message.split(" ")[1];
+                Object[] array = new Object[2];
+                array[0] = "alltasks"; // Assign a String object to the first index
+                array[1] = alltasks;
+                client.sendToClient(array);
+            } else if (message.equals("Get community members")) {
+                List<User> members = ConnectToDataBase.getCommunityMembers(UserControl.getLoggedInUser().getCommunity());
+                client.sendToClient(members);
+            } else if (message.equals("Get uploaded tasks by community members")) {
+                List<Task> requests = ConnectToDataBase.getTasksUploadedByCommunityMembers(UserControl.getLoggedInUser().getCommunity());
+                Object[] array = new Object[2];
+                array[0] = "request"; // Assign a String object to the first index
+                array[1] = requests;
+                client.sendToClient(array);
+            } else if (message.equals("Get performed tasks for community members")) {
+                List<Task> requests = ConnectToDataBase.getDoneTasksByCommunityMembers(UserControl.getLoggedInUser().getCommunity(),2);
+                Object[] array = new Object[2];
+                array[0] = "done"; // Assign a String object to the first index
+                array[1] = requests;
+                client.sendToClient(array);
+                System.out.println("Simple server community tasks");
+            } else if (message.startsWith("modify")) {
+                String taskid = message.split(" ")[1];
                 modifyTask(Integer.parseInt(taskid));
                 client.sendToClient(ConnectToDataBase.getAllTasks());
             }
-
-            if (message.startsWith("#LogInAttempt")) {
+            else if (message.startsWith("#LogInAttempt")) {
                 try {
                     handleLoginAttempt(message, client);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-        // Add more message handling as needed
     }
 
     private void handleLoginAttempt(String message, ConnectionToClient client) throws Exception {
@@ -101,12 +129,11 @@ public class SimpleServer extends AbstractServer {
             if (credentials.length == 2) {
                 String username = credentials[0];
                 String password = credentials[1];
-
                 // Perform password validation here by querying the database
                 List<UserControl> userControls = new ArrayList<>();
                 List<User> allUsers = ConnectToDataBase.getAllUsers();
                 for (User user : allUsers) {
-                    UserControl userControl = new UserControl(user.getID(), user.getFirstName(), user.getLastName(), user.getisConnected(), user.getCommentary(), user.getUsername(), "0", user.getAddress(), user.getEmail(), user.getRole());
+                    UserControl userControl = new UserControl(user.getID(), user.getFirstName(), user.getLastName(), user.getisConnected(), user.getCommunity(), user.getUsername(), "0", user.getAddress(), user.getEmail(), user.getRole());
                     userControl.setSalt(user.getSalt());
                     userControl.setPasswordHash(user.getPasswordHash());
                     userControls.add(userControl);
@@ -115,9 +142,9 @@ public class SimpleServer extends AbstractServer {
                 boolean isValidLogin = false;
                 for (UserControl user : userControls) {
                     isValidLogin = user.login(username, password);
+
                     if (isValidLogin) {
-
-
+                        UserControl.setLoggedInUser(user);
                         ByteArrayOutputStream bos = new ByteArrayOutputStream();
                         try (ObjectOutputStream out = new ObjectOutputStream(bos)) {
                             out.writeObject(user);  // assuming 'user' is your User object
@@ -129,18 +156,13 @@ public class SimpleServer extends AbstractServer {
 
                         byte[] userBytes = bos.toByteArray();
                         client.sendToClient(userBytes);
-
-
                         // Send a success response back to the client
                         try {
-                            if(username.startsWith("*"))
-                            {
+                            if (username.startsWith("*")) {
                                 client.sendToClient("Manager_LOGIN_SUCCESS");
-
-
+                            } else {
+                                client.sendToClient("LOGIN_SUCCESS");
                             }
-                            client.sendToClient("LOGIN_SUCCESS");
-
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
@@ -161,8 +183,6 @@ public class SimpleServer extends AbstractServer {
         }
     }
 }
-
-
 
 
 //	private boolean validateLoginFromDatabase(String username, String password) {

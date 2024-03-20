@@ -71,8 +71,6 @@ public class Task implements Serializable {
         this.serviceType = serviceType;
         this.note = note;
         this.executionTime = executionTime;
-
-
     }
 
     // Getters and Setters

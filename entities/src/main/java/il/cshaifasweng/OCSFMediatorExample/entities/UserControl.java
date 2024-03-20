@@ -4,15 +4,19 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 public class UserControl extends User {
-    private static User currentUser=null;
+    private static User loggedInUser;
 
+    // Getter for logged-in user
     public static User getLoggedInUser() {
-        return currentUser;
+        return loggedInUser;
     }
 
+    // Setter for logged-in user
     public static void setLoggedInUser(User user) {
-        currentUser = user;
+        System.out.println("adan");
+        loggedInUser = user;
     }
+
     public UserControl(String ID,String first_name,String
             Last_name,boolean isConnected, String commentary,
                        String username, String Password, String address,String email, Role role){

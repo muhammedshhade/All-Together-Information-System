@@ -25,23 +25,23 @@
             <Image url="@../../../../../../../../../../Downloads/imm.png" />
          </image>
       </ImageView>
-      <Label alignment="BOTTOM_CENTER" layoutX="247.0" layoutY="53.0" prefHeight="31.0" prefWidth="82.0" style="-fx-background-color: #7ad0ea;" text="Tasks" textAlignment="CENTER">
+      <Label alignment="BOTTOM_CENTER" layoutX="142.0" layoutY="54.0" prefHeight="31.0" prefWidth="316.0" style="-fx-background-color: white;" text="Uploaded Task List" textAlignment="CENTER" textFill="#12d0f2">
          <font>
-            <Font name="Franklin Gothic Demi" size="21.0" />
+            <Font name="David Bold" size="20.0" />
          </font>
       </Label>
-      <ListView fx:id="TasksList" layoutX="101.0" layoutY="102.0" prefHeight="200.0" prefWidth="400.0" style="-fx-background-color: white; -fx-border-color: rgba(122,208,234,0.85);" />
-      <Button fx:id="Task_Details_btn" layoutX="125.0" layoutY="323.0" mnemonicParsing="false" onAction="#TASKDETAILS" style="-fx-background-color: rgba(122,208,234,0.85);" text="Task Details">
+      <ListView fx:id="TasksList" layoutX="79.0" layoutY="102.0" prefHeight="200.0" prefWidth="422.0" style="-fx-background-color: white; -fx-border-color: rgba(122,208,234,0.85);" />
+      <Button fx:id="Task_Details_btn" layoutX="240.0" layoutY="323.0" mnemonicParsing="false" onAction="#TASKDETAILS" style="-fx-background-color: rgba(122,208,234,0.85);" text="Task Details">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="PICK_TASK_BTN" layoutX="329.0" layoutY="323.0" mnemonicParsing="false" onAction="#PICK_TASK" style="-fx-background-color: rgba(122,208,234,0.85);" text="Pick Task">
+      <Button fx:id="PICK_TASK_BTN" layoutX="405.0" layoutY="323.0" mnemonicParsing="false" onAction="#PICK_TASK" style="-fx-background-color: rgba(122,208,234,0.85);" text="Pick Task">
          <font>
             <Font size="18.0" />
          </font>
       </Button>
-      <Button fx:id="homepagebtn" layoutX="31.0" layoutY="391.0" mnemonicParsing="false" onAction="#homepage" text="Home Page">
+      <Button fx:id="homepagebtn" layoutX="81.0" layoutY="323.0" mnemonicParsing="false" onAction="#homepage" style="-fx-background-color: rgba(122,208,234,0.85);" text="Home Page">
          <font>
             <Font size="18.0" />
          </font>
