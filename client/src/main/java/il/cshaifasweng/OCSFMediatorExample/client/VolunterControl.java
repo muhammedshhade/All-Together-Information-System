@@ -29,29 +29,55 @@ public class VolunterControl {
     private Button homepagebtn;
     public static List<Task> tasks =new ArrayList<>();
     private Task selectedTask = null;
-    public void initialize(){
-        while (tasks.isEmpty()){
-            try {
-                Thread.currentThread().sleep(1);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        for(Task task : tasks){
-            this.TasksList.getItems().addAll(task.getServiceType());
-        }
-        this.TasksList.setOnMouseClicked(event -> {
-            String selectedTaskName = this.TasksList.getSelectionModel().getSelectedItem();
-            if(selectedTaskName!=null){
-                for(Task task : tasks){
-                    if(task.getServiceType().equals(selectedTaskName)){
-                        selectedTask = task;
-                        break;
-                    }
+//    public void initialize(){
+//        while (tasks.isEmpty()){
+//            try {
+//                Thread.currentThread().sleep(1);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
+//        for(Task task : tasks){
+//            this.TasksList.getItems().addAll(task.getServiceType());
+//        }
+//        this.TasksList.setOnMouseClicked(event -> {
+//            String selectedTaskName = this.TasksList.getSelectionModel().getSelectedItem();
+//            if(selectedTaskName!=null){
+//                for(Task task : tasks){
+//                    if(task.getServiceType().equals(selectedTaskName)){
+//                        selectedTask = task;
+//                        break;
+//                    }
+//                }
+//            }
+//        });
+//    }
+public void initialize() {
+    if (tasks.isEmpty()) {
+        // If tasks list is empty, do nothing
+        return;
+    }
+
+    // Add items to the ListView
+    for (Task task : tasks) {
+        this.TasksList.getItems().addAll(task.getServiceType());
+    }
+
+    // Set event handler for mouse click on ListView
+    this.TasksList.setOnMouseClicked(event -> {
+        String selectedTaskName = this.TasksList.getSelectionModel().getSelectedItem();
+        if (selectedTaskName != null) {
+            // Find the selected task in the tasks list
+            for (Task task : tasks) {
+                if (task.getServiceType().equals(selectedTaskName)) {
+                    selectedTask = task;
+                    break;
                 }
             }
-        });
-    }
+        }
+    });
+}
+
     private void showAlert(String task){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Task details");

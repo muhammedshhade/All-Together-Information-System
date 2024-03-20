@@ -30,8 +30,10 @@ public class CommunityMembers {
     public static List<User> users = new ArrayList<>();
     private User selectedUser = null;
 
-  public void initialize() {
-        System.out.println("communityMember");
+    public void initialize() {
+        if (users.isEmpty()) {
+            return;
+        }
         while (users.isEmpty()) {
             try {
                 Thread.currentThread().sleep(1);
@@ -58,7 +60,7 @@ public class CommunityMembers {
 
     @FXML
     void memberDetails(ActionEvent event) throws IOException {
-      if (selectedUser != null) {
+        if (selectedUser != null) {
             String id = selectedUser.getID();
             String name = selectedUser.getFirstName() + " " + selectedUser.getLastName();
             String community = selectedUser.getCommunity();
