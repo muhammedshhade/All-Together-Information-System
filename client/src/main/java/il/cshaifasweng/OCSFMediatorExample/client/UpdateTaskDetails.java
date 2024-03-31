@@ -22,7 +22,15 @@ public class UpdateTaskDetails {
 
     @FXML // fx:id="time"
     private Button time; // Value injected by FXMLLoader
-    public static String updateVale;
+    private static String updateVale="execution time";
+
+    public static String getUpdateVale() {
+        return updateVale;
+    }
+
+    public static void setUpdateVale(String updateVale) {
+        UpdateTaskDetails.updateVale = updateVale;
+    }
 
     @FXML
     void UpdateExecutionTime(ActionEvent event) {
