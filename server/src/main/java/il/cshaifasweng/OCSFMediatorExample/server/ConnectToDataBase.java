@@ -1,5 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
+import il.cshaifasweng.OCSFMediatorExample.client.NewTaskDataControl;
+import il.cshaifasweng.OCSFMediatorExample.client.UpdateTaskDetails;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -74,23 +76,24 @@ public class ConnectToDataBase {
         List<Task> tasks = session.createQuery(query).getResultList();
         return tasks;
     }
-    public static List<Task> getDoneTasksByCommunityMembers(String community, int status) {
+
+    public static List<Task> getTasksWithStatus(String community, int status) {
         System.out.println("Getting community tasks for: " + community + " with status: " + status);
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Task> query = builder.createQuery(Task.class);
         Root<Task> root = query.from(Task.class);
         // Joining the Task entity with the User entity to access the uploader
         Join<Task, User> uploaderJoin = root.join("user");
-
-        // Adding conditions to filter tasks uploaded by community members and with a specific status
         query.where(
                 builder.equal(uploaderJoin.get("community"), community),
                 builder.equal(root.get("status"), status)
         );
         // Executing the query and getting the list of tasks
         List<Task> tasks = session.createQuery(query).getResultList();
+        //System.out.println("try ++ "+tasks.get(0).getTime());
         return tasks;
     }
+
     static List<Task> getAllTasks() throws Exception {
         CriteriaBuilder builder = session.getCriteriaBuilder();
         CriteriaQuery<Task> query = builder.createQuery(Task.class);
@@ -98,6 +101,63 @@ public class ConnectToDataBase {
         List<Task> data = session.createQuery(query).getResultList();
         return data;
     }
+    static Task getTaskById(int id) throws Exception {
+        System.out.println("Getting task with id: " + id);
+        // Assuming 'session' is your Hibernate session object
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+        CriteriaQuery<Task> query = builder.createQuery(Task.class);
+        // Creating a query root for the Task entity
+        Root<Task> root = query.from(Task.class);
+
+        // Adding a condition to filter tasks by id
+        query.where(builder.equal(root.get("idNum"), id));
+
+        // Executing the query and getting the task
+        Task task = session.createQuery(query).uniqueResult();
+        return task;
+    }
+
+
+    public static void updateTaskData(int id, String newData, Task task) throws Exception {
+       /* List<Task> alltasks = getAllTasks();
+        Task found=null;
+        for (Task task : alltasks) {
+            if(task.getIdNum()==id)
+                 found=task;
+
+        }*/
+        SessionFactory sessionFactory = getSessionFactory();
+
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            //Task found = session.get(Task.class, id);
+            if (task != null) {
+                if (UpdateTaskDetails.getUpdateVale().equals("status")) {
+                    task.setStatus(Integer.parseInt(newData));
+                    session.save(task);
+                    // session.flush();
+                    session.getTransaction().commit();
+                    System.out.println("Task status updated successfully.");
+                } else {
+                    task.setExecutionTime(Float.parseFloat(newData));
+                    //  session.update(task);
+                    session.save(task);
+
+                    //  session.flush();
+                    session.getTransaction().commit();
+                }
+            } else {
+                System.out.println("Task not found.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (session != null && session.isOpen()) {
+                session.close();
+            }
+        }
+    }
+
 
     static void addTask(Task task) throws Exception {
         try {
@@ -127,17 +187,20 @@ public class ConnectToDataBase {
 
     public static void CreateData() throws Exception {
         System.out.print("Data Creation Start");
-        User user1 = new User("212930697", "Qamar", "Hammod", false, "Community 1", "*1", "2", "Kabul", "qammar@gmail.com", User.Role.Manager);
-        User user7 = new User("212930697", "Moataz", "Odeh", false, "Community 1", "MoatazOD", "MoatazO123", "Yaffa Nazareth", "Moataz.ody44@gmail.com", User.Role.USER);
-        User user8 = new User("212121236", "Aya", "Hammod", false, "Community 7", "2", "2", "Yaffa Nazareth", "ayaaa44@gmail.com", User.Role.USER);
-        User user2 = new User("213011398", "Adan", "Hammoud", false, "Community 2", "AdanHa", "Adan123", " Kabul ", "Adanhammod@gmail.com", User.Role.USER);
-        User user3 = new User("213298664", "Adan", "Sulaimani", false, "Community 3", "AdanSul", "AdanS123", "Nazareth", "Adaslemany@gmail.com", User.Role.USER);
-        User user4 = new User("212022263", "Mohammed", "Shhade", false, "Community 4", "MoShhade", "MoShhade123", "Kukab", "hijaze.Najm@gmail.com", User.Role.USER);
-        User user5 = new User("212270565", "Nejem", "Higazy", false, "Community 5", "NejemH", "NejemH123", "Tamra", "Muhammed.sh.181@gmail.com", User.Role.USER);
-        User user6 = new User("319050241", "Siraj", "Jabareen", false, "Community 6", "SirajJ", "SirajJ123", "UMM El Fahem", "SerajWazza@gmail.com", User.Role.USER);
-        User user9 = new User("213047896", "Shams", "Hmam", false, "Community 8", "*9", "3", "Kabul", "qammar@gmail.com", User.Role.Manager);
+        User user1 = new User("212930697", "Qamar", "Hammod", false, "Community 1", "*1", "Community 1", "2", "Kabul", "qammar@gmail.com", User.Role.Manager);
+        User user7 = new User("215630125", "Moataz", "Odeh", false, "Community 1", "MoatazOD", "?", "MoatazO123", "Yaffa Nazareth", "Moataz.ody44@gmail.com", User.Role.USER);
+        User user8 = new User("212121236", "Aya", "Hammod", false, "Community 7", "2", "?", "2", "Yaffa Nazareth", "ayaaa44@gmail.com", User.Role.USER);
+        User user2 = new User("213011398", "Adan", "Hammoud", false, "Community 1", "AdanHa", "?", "adan123", "Kabul ", "Adanhammod@gmail.com", User.Role.USER);
+        User user3 = new User("213298664", "Adan", "Sulaimani", false, "Community 3", "AdanSul", "?", "AdanS123", "Nazareth", "Adaslemany@gmail.com", User.Role.USER);
+        User user4 = new User("212022263", "Mohammed", "Shhade", false, "Community 2", "MoShhade", "?", "MoShhade123", "Kukab", "hijaze.Najm@gmail.com", User.Role.USER);
+        User user5 = new User("212270565", "Nejem", "Higazy", false, "Community 2", "NejemH", "?", "NejemH123", "Tamra", "Muhammed.sh.181@gmail.com", User.Role.USER);
+        User user6 = new User("319050241", "Siraj", "Jabareen", false, "Community 6", "SirajJ", "?", "SirajJ123", "UMM El Fahem", "SerajWazza@gmail.com", User.Role.USER);
+        User user9 = new User("213047896", "Shams", "Hmam", false, "Community 8", "*9", "Community 2", "3", "Tamra", "shams@gmail.com", User.Role.Manager);
+        User user10 = new User("212589631", "Ahmad", "Hammod", false, "Community 8", "ahmad", "?", "3", "kabul", "ahmad@gmail.com", User.Role.USER);
+        User user11 = new User("213470213", "Mahmod", "Hammod", false, "Community 3", "mahmod", "?", "3", "Kabul", "mahmod@gmail.com", User.Role.USER);
+        //User user12 = new User("312568965", "Seren", "Jamal", false, "Community 2", "soso", "?", "3", "Kabul", "seren1@gmail.com", User.Role.USER);
 
-        /*Manager manager1=new Manager(user1, "Community 1");
+       /* Manager manager1=new Manager(user1, "Community 1");
         session.save(manager1);
         session.flush();*/
 
@@ -159,10 +222,20 @@ public class ConnectToDataBase {
         session.flush();
         session.save(user7);
         session.flush();
-        Task task1 = new Task(LocalDate.of(2024, 2, 22), LocalTime.of(3, 50), 0, "Walk my dog", "", 0.0f);
+        session.save(user8);
+        session.flush();
+        session.save(user9);
+        session.flush();
+        session.save(user10);
+        session.flush();
+        session.save(user11);
+        session.flush();
+        session.save(user12);
+        session.flush();
+        Task task1 = new Task(LocalDate.of(2024, 2, 22), LocalTime.of(3, 50), 2, "Walk my dog", "", 0.0f);
         Task task2 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(9, 30), 0, "Buy Medicine", "", 0.0f);
-        Task task3 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(11, 15), 0, "Nanny", "", 0.0f);
-        Task task4 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(13, 4), 0, "Transportation", "I want to go to the Hospital", 0.0f);
+        Task task3 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(11, 15), 3, "Nanny", "", 0.0f);
+        Task task4 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(13, 4), 3, "Transportation", "I want to go to the Hospital", 0.0f);
         Task task5 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(15, 20), 0, "Transportation", "", 0.0f);
         Task task6 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(17, 10), 0, "Buy Medicine", "", 0.0f);
         session.save(task1);
