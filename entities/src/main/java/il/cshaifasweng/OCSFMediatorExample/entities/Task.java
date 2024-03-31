@@ -32,9 +32,9 @@ public class Task implements Serializable {
      String note;
 
     @Column(name = "executionTime")
-     float executionTime;
+    float executionTime;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade =CascadeType.ALL)
     @JoinColumn(name = "user_id")
      User user;
 //    @ManyToOne(fetch = FetchType.LAZY) // Assuming you want to use lazy loading

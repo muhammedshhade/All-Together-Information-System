@@ -198,7 +198,7 @@ public class ConnectToDataBase {
         User user9 = new User("213047896", "Shams", "Hmam", false, "Community 8", "*9", "Community 2", "3", "Tamra", "shams@gmail.com", User.Role.Manager);
         User user10 = new User("212589631", "Ahmad", "Hammod", false, "Community 8", "ahmad", "?", "3", "kabul", "ahmad@gmail.com", User.Role.USER);
         User user11 = new User("213470213", "Mahmod", "Hammod", false, "Community 3", "mahmod", "?", "3", "Kabul", "mahmod@gmail.com", User.Role.USER);
-        //User user12 = new User("312568965", "Seren", "Jamal", false, "Community 2", "soso", "?", "3", "Kabul", "seren1@gmail.com", User.Role.USER);
+        User user12 = new User("312568965", "Seren", "Jamal", false, "Community 2", "soso", "?", "3", "Kabul", "seren1@gmail.com", User.Role.USER);
 
        /* Manager manager1=new Manager(user1, "Community 1");
         session.save(manager1);

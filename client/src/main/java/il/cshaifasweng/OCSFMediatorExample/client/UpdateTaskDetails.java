@@ -25,6 +25,7 @@ public class UpdateTaskDetails {
     private static String updateVale="execution time";
 
     public static String getUpdateVale() {
+        ;
         return updateVale;
     }
 
