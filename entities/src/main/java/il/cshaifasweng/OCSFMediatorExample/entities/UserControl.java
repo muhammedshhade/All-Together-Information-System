@@ -13,15 +13,14 @@ public class UserControl extends User {
 
     // Setter for logged-in user
     public static void setLoggedInUser(User user) {
-        System.out.println("adan");
         loggedInUser = user;
     }
 
     public UserControl(String ID,String first_name,String
             Last_name,boolean isConnected, String commentary,
-                       String username, String Password, String address,String email, Role role){
+                       String username,String communityManager, String Password, String address,String email, Role role){
         super( ID,first_name,
-                Last_name, isConnected,  commentary,username,  Password,  address,email, role);
+                Last_name, isConnected,  commentary,username,communityManager,  Password,  address,email, role);
     }
 
     public boolean login(String username, String password) {

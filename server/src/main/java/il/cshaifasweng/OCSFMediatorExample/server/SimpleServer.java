@@ -89,16 +89,16 @@ public class SimpleServer extends AbstractServer {
                 array[1] = alltasks;
                 client.sendToClient(array);
             } else if (message.equals("Get community members")) {
-                List<User> members = ConnectToDataBase.getCommunityMembers(UserControl.getLoggedInUser().getCommunity());
+                List<User> members = ConnectToDataBase.getCommunityMembers(UserControl.getLoggedInUser().getCommunityManager());
                 client.sendToClient(members);
             } else if (message.equals("Get uploaded tasks by community members")) {
-                List<Task> requests = ConnectToDataBase.getTasksUploadedByCommunityMembers(UserControl.getLoggedInUser().getCommunity());
+                List<Task> requests = ConnectToDataBase.getTasksUploadedByCommunityMembers(UserControl.getLoggedInUser().getCommunityManager());
                 Object[] array = new Object[2];
                 array[0] = "uploaded"; // Assign a String object to the first index
                 array[1] = requests;
                 client.sendToClient(array);
             } else if (message.equals("check requests")) {
-                List<Task> requests = ConnectToDataBase.getTasksWithStatus(UserControl.getLoggedInUser().getCommunity(), 3);
+                List<Task> requests = ConnectToDataBase.getTasksWithStatus(UserControl.getLoggedInUser().getCommunityManager(), 3);
                 Object[] array = new Object[2];
                 array[0] = "request"; // Assign a String object to the first index
                 array[1] = requests;
@@ -107,14 +107,28 @@ public class SimpleServer extends AbstractServer {
                 String taskid = message.split(" ")[1];
                 modifyTask(Integer.parseInt(taskid));
                 client.sendToClient(ConnectToDataBase.getAllTasks());
-            } /*else if (message.startsWith("update status")) {
+            } else if (message.startsWith("update data")) {
                 String[] parts = message.split("@");
-                if (parts.length >= 3 && parts[0].equals("update status")) {
+                if (parts.length >= 3 && parts[0].equals("update data")) {
                     String taskId = parts[1];
+                    System.out.println(taskId+"*");
                     String newData = parts[2];
-                    ConnectToDataBase.updateTaskData(Integer.parseInt(taskId),newData);
+                    System.out.println(newData+"*");
+                    try {
+                        int taskIdInt = Integer.parseInt(taskId);
+                        Task task = ConnectToDataBase.getTaskById(taskIdInt);
+                        if (task != null) {
+                            ConnectToDataBase.updateTaskData(Integer.parseInt(taskId), newData,task);
+                        } else {
+                            System.out.println("Task with ID " + taskId + " not found.");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid task ID: " + taskId);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            } */else if (message.startsWith("#LogInAttempt")) {
+            } else if (message.startsWith("#LogInAttempt")) {
                 try {
                     handleLoginAttempt(message, client);
                 } catch (Exception e) {
@@ -137,7 +151,7 @@ public class SimpleServer extends AbstractServer {
                 List<UserControl> userControls = new ArrayList<>();
                 List<User> allUsers = ConnectToDataBase.getAllUsers();
                 for (User user : allUsers) {
-                    UserControl userControl = new UserControl(user.getID(), user.getFirstName(), user.getLastName(), user.getisConnected(), user.getCommunity(), user.getUsername(), "0", user.getAddress(), user.getEmail(), user.getRole());
+                    UserControl userControl = new UserControl(user.getID(), user.getFirstName(), user.getLastName(), user.getisConnected(), user.getCommunity(), user.getUsername(), user.getCommunityManager(),"0", user.getAddress(), user.getEmail(), user.getRole());
                     userControl.setSalt(user.getSalt());
                     userControl.setPasswordHash(user.getPasswordHash());
                     userControls.add(userControl);

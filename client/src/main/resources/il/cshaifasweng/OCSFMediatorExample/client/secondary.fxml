@@ -10,17 +10,17 @@
    <children>
       <Button fx:id="Requesthelpbutton" layoutX="174.0" layoutY="26.0" mnemonicParsing="false" onAction="#Requesthelp" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="REQUEST HELP" textFill="WHITE">
          <font>
-            <Font name="David Bold" size="18.0" />
+            <Font name="David Bold" size="16.0" />
          </font>
       </Button>
       <Button fx:id="VOLUNTERBUTTON" layoutX="172.0" layoutY="154.0" mnemonicParsing="false" onAction="#volunter" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Volunter For Tasks" textFill="WHITE">
          <font>
-            <Font name="David Bold" size="18.0" />
+            <Font name="David Bold" size="16.0" />
          </font>
       </Button>
       <Button fx:id="LOGOUTBUTTON" layoutX="172.0" layoutY="341.0" mnemonicParsing="false" onAction="#LOGOUT" prefWidth="250.0" style="-fx-background-color: rgba(122,208,234,0.85);" text="Log Out" textFill="WHITE">
          <font>
-            <Font name="David Bold" size="18.0" />
+            <Font name="David Bold" size="16.0" />
          </font>
       </Button>
       <Button fx:id="DistressButtonControl" layoutX="218.0" layoutY="416.0" mnemonicParsing="false" onAction="#distress" prefHeight="68.0" prefWidth="139.0" style="-fx-background-color: rgba(122,208,234,0.85);" text="Distress" textFill="WHITE" AnchorPane.bottomAnchor="40.80000000000001" AnchorPane.leftAnchor="218.0" AnchorPane.rightAnchor="242.8" AnchorPane.topAnchor="416.0">
@@ -28,11 +28,6 @@
             <Font name="Franklin Gothic Demi" size="21.0" />
          </font>
       </Button>
-      <ImageView fitHeight="150.0" fitWidth="177.0" layoutX="424.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../../../../../../Downloads/sign-with-the-word-help-in-a-hand-icon-vector-9381725.png" />
-         </image>
-      </ImageView>
       <ImageView fitHeight="76.0" fitWidth="155.0" layoutX="14.0" layoutY="433.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../../../../../../../Downloads/ATIS.jpg" />
@@ -40,17 +35,17 @@
       </ImageView>
       <Button fx:id="cansel_REQUESTBT" layoutX="174.0" layoutY="94.0" mnemonicParsing="false" onAction="#CANCELREQUST" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Cancel Request" textFill="WHITE">
          <font>
-            <Font name="David Bold" size="18.0" />
+            <Font name="David Bold" size="16.0" />
          </font>
       </Button>
       <Button fx:id="CANCEL_VOLUNTERINGbt" layoutX="175.0" layoutY="217.0" mnemonicParsing="false" onAction="#Cancelvoluntering" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Cancel Voluntering" textFill="WHITE">
          <font>
-            <Font name="David Bold" size="18.0" />
+            <Font name="David Bold" size="16.0" />
          </font>
       </Button>
       <Button fx:id="Canceldistressbt" layoutX="174.0" layoutY="281.0" mnemonicParsing="false" onAction="#CancelDistress" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Cancel Distress" textFill="WHITE">
          <font>
-            <Font name="David Bold" size="18.0" />
+            <Font name="David Bold" size="16.0" />
          </font>
       </Button>
    </children>
