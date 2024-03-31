@@ -10,6 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
@@ -38,11 +39,11 @@ public class NewTaskDataControl {
 
     }*/
     public void initialize() {
-        title.setText("Please enter the value of "+ UpdateTaskDetails.updateVale+".");
+        title.setText("Please enter the value of "+ UpdateTaskDetails.getUpdateVale()+".");
     }
     @FXML
     void homePage(ActionEvent event) throws IOException {
-        App.setRoot("manager_control");
+        App.setRoot("updateTaskDetails");
     }
 
     private void showAlert(String title, String message) {
@@ -61,6 +62,7 @@ public class NewTaskDataControl {
             showAlert("Error", "Please fill in all required fields.");
             return;
         }
+       // if(UpdateTaskDetails.updateVale.equals("status"))
 
         // Check if the new data contains only digits and/or semicolons
         if (!newData.getText().matches("[0-9.]+")) {
@@ -69,7 +71,7 @@ public class NewTaskDataControl {
         }
         try {
             // Construct the message to send to the server
-            String message = "update status@" + taskId.getText() + "@" + newData.getText();
+            String message = "update data@" + taskId.getText() + "@" + newData.getText();
             // Send the message to the server
             SimpleClient.getClient().sendToServer(message);
         } catch (IOException e) {
@@ -78,7 +80,7 @@ public class NewTaskDataControl {
             e.printStackTrace();
         }
         try {
-            showCompletionMessage("Updated successfully","Data is upadated successfully");
+            App.setRoot("updateTaskDetails");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

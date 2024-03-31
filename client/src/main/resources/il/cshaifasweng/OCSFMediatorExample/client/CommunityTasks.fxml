@@ -14,15 +14,15 @@
          </font>
       </Label>
       <ListView fx:id="communityTasks" layoutX="105.0" layoutY="113.0" prefHeight="182.0" prefWidth="400.0" style="-fx-background-color: white;" />
-      <Button fx:id="back" layoutX="100.0" layoutY="320.0" mnemonicParsing="false" onAction="#previous" prefWidth="122.0" style="-fx-background-color: B98EDCFF;" text="back" textFill="#eae8e8">
+      <Button fx:id="back" layoutX="100.0" layoutY="320.0" mnemonicParsing="false" onAction="#previous" prefWidth="122.0" style="-fx-background-color: B98EDCFF;" text="Back" textFill="WHITE">
          <font>
             <Font name="David Bold" size="14.0" />
          </font></Button>
-      <Button fx:id="tasks" layoutX="390.0" layoutY="320.0" mnemonicParsing="false" onAction="#tasksDetails" prefWidth="122.0" style="-fx-background-color: B98EDCFF;" text="Task details" textFill="#eae8e8">
+      <Button fx:id="tasks" layoutX="390.0" layoutY="320.0" mnemonicParsing="false" onAction="#tasksDetails" prefWidth="122.0" style="-fx-background-color: B98EDCFF;" text="Task details" textFill="WHITE">
          <font>
             <Font name="David Bold" size="14.0" />
          </font></Button>
-      <Button fx:id="submitter" layoutX="245.0" layoutY="320.0" mnemonicParsing="false" onAction="#submitterDetails" prefWidth="122.0" style="-fx-background-color: B98EDCFF;" text="submitter details" textFill="#eae8e8">
+      <Button fx:id="submitter" layoutX="245.0" layoutY="320.0" mnemonicParsing="false" onAction="#submitterDetails" prefWidth="122.0" style="-fx-background-color: B98EDCFF;" text="Submitter details" textFill="WHITE">
          <font>
             <Font name="David Bold" size="14.0" />
          </font>
