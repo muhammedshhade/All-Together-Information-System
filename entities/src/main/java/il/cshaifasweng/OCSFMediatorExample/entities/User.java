@@ -21,11 +21,12 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
      Long id;
-    @Column(name = "User_ID", nullable = false)
+    @Column(name = "User_ID", nullable = false,length = 9,unique = true)
      String Id;
     @Column(name = "First_Name", nullable = false)
      String first_name;
@@ -49,13 +50,18 @@ public class User implements Serializable {
 
     @Column(name = "address")
      String address;
-    @Column(name = "Email")
+    @Column(name = "Email",unique = true)
      String email;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
      Role role;
-     String password;
+
+    @Column(name="Manager")
+
+    private String communityManager;
+
+    String password;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
      Set<Task> tasks=new HashSet<>();
 
@@ -70,7 +76,7 @@ public class User implements Serializable {
 
     public User(String id,String first_name,String
                 Last_name,boolean isConnected, String community,
-                String username, String Password, String address,String emil, Role role) {
+                String username,String communityManager, String Password, String address,String emil, Role role) {
         this.Id=id;
         this.first_name = first_name;
         this.last_name=Last_name;
@@ -79,6 +85,7 @@ public class User implements Serializable {
         this.username = username;
         this.salt = generateSalt();
         this.password=Password;
+        this.communityManager=communityManager;
         this.passwordHash = hashPassword(Password, this.salt);
         this.address = address;
         this.email=emil;
@@ -88,6 +95,15 @@ public class User implements Serializable {
     public User(){
         tasks = new HashSet<>();
     }
+
+    public String getCommunityManager() {
+        return communityManager;
+    }
+
+    public void setCommunityManager(String communityManager) {
+        this.communityManager = communityManager;
+    }
+
     public enum Role {
         Manager, USER
         // Define other roles as needed

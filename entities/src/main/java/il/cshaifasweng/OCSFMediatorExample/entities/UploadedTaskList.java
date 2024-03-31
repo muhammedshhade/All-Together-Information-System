@@ -1,7 +1,6 @@
 //package il.cshaifasweng.OCSFMediatorExample.entities;
 //
 //import il.cshaifasweng.OCSFMediatorExample.entities.Task;
-//
 //import javax.persistence.*;
 //import java.util.List;
 //
