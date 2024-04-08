@@ -32,13 +32,8 @@ public class NewTaskDataControl {
     @FXML
     private TextField title;
 
-   /* public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Initialize method called when the controller is loaded
-        title.setEditable(false);
-
-
-    }*/
     public void initialize() {
+        title.setEditable(false);
         title.setText("Please enter the value of "+ UpdateTaskDetails.getUpdateVale()+".");
     }
     @FXML
@@ -56,33 +51,38 @@ public class NewTaskDataControl {
 
     @FXML
     void saveData(ActionEvent event) {
-
         // Check if the new data and task ID fields are empty
         if (newData.getText().isEmpty() || taskId.getText().isEmpty()) {
             showAlert("Error", "Please fill in all required fields.");
             return;
         }
        // if(UpdateTaskDetails.updateVale.equals("status"))
+        if (!taskId.getText().matches("[0-9]+")) {
+            showAlert("Error", "Task id should contain only numbers.");
+            taskId.clear();
+            newData.clear();
+            return;
+        }
 
         // Check if the new data contains only digits and/or semicolons
         if (!newData.getText().matches("[0-9.]+")) {
             showAlert("Error", "New data should contain only numbers and/or semicolons.");
+            taskId.clear();
+            newData.clear();
             return;
         }
         try {
             // Construct the message to send to the server
-            String message = "update data@" + taskId.getText() + "@" + newData.getText();
+            String message = "update data@" + taskId.getText() + "@" + newData.getText() + "@" + UpdateTaskDetails.getUpdateVale();
             // Send the message to the server
+            System.out.println("cliev t        "+UpdateTaskDetails.getUpdateVale());
+
             SimpleClient.getClient().sendToServer(message);
+
         } catch (IOException e) {
             // Show an error alert if failed to update task status
             showAlert("Error", "Failed to update task status: " + e.getMessage());
             e.printStackTrace();
-        }
-        try {
-            App.setRoot("updateTaskDetails");
-        } catch (Exception e) {
-            throw new RuntimeException(e);
         }
     }
     private void showCompletionMessage(String title, String message) {

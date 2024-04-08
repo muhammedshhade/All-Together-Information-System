@@ -9,7 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import org.hibernate.query.criteria.internal.path.MapKeyHelpers;
-
+import javafx.scene.control.TextArea;
 import java.io.IOException;
 
 public class UpdateTaskDetails {
@@ -19,14 +19,17 @@ public class UpdateTaskDetails {
 
     @FXML // fx:id="status"
     private Button status; // Value injected by FXMLLoader
-
+    @FXML
+    private TextArea text;
     @FXML // fx:id="time"
     private Button time; // Value injected by FXMLLoader
-    private static String updateVale="execution time";
+    private static String updateVale;
 
     public static String getUpdateVale() {
-        ;
         return updateVale;
+    }
+    public void initialize() {
+        text.setEditable(false);
     }
 
     public static void setUpdateVale(String updateVale) {
@@ -36,8 +39,10 @@ public class UpdateTaskDetails {
     @FXML
     void UpdateExecutionTime(ActionEvent event) {
         try {
-            updateVale = "execution time";
+            setUpdateVale("execution time");
             App.setRoot("newTaskData");
+            SimpleClient.getClient().sendToServer(updateVale);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -59,7 +64,9 @@ public class UpdateTaskDetails {
     @FXML
     void updateStatus(ActionEvent event) {
         try {
-            updateVale = "status";
+            System.out.println("Hii  ");
+            setUpdateVale("status");
+            SimpleClient.getClient().sendToServer(updateVale);
             App.setRoot("newTaskData");
         } catch (IOException e) {
             e.printStackTrace();

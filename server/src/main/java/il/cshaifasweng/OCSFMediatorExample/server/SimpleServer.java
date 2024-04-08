@@ -1,6 +1,8 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
 import com.mysql.cj.xdevapi.Client;
+import il.cshaifasweng.OCSFMediatorExample.client.SimpleClient;
+import il.cshaifasweng.OCSFMediatorExample.client.UpdateTaskDetails;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
@@ -30,22 +32,11 @@ import javax.persistence.criteria.Root;
 public class SimpleServer extends AbstractServer {
     private long key;
 
-//	private static Session session;
-//	private static SessionFactory sessionFactory = getSessionFactory();
-
     public SimpleServer(int port) {
         super(port);
 
     }
 
-    //	public static SessionFactory getSessionFactory() throws HibernateException {
-//		Configuration configuration = new Configuration();
-//		configuration.addAnnotatedClass(Task.class);
-//		configuration.addAnnotatedClass(User.class);
-//		ServiceRegistry serviceRegistry = (new StandardServiceRegistryBuilder())
-//				.applySettings(configuration.getProperties()).build();
-//		return configuration.buildSessionFactory(serviceRegistry);
-//	}
     private static void modifyTask(int TaskID) {
         try {
             List<Task> tasks = ConnectToDataBase.getAllTasks();
@@ -62,7 +53,7 @@ public class SimpleServer extends AbstractServer {
 
     protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
         try {
-        /*    if (msg instanceof Object[]) {
+             if (msg instanceof Object[]) {
                 System.out.println("**??");
                 Object[] messageParts = (Object[]) msg;
                 if (messageParts.length == 2 && messageParts[0] instanceof String && messageParts[1] instanceof Task) {
@@ -71,16 +62,7 @@ public class SimpleServer extends AbstractServer {
                         ConnectToDataBase.addTask((Task) messageParts[1]);
                 }
                 return;
-            }*/
-         /* if (msg instanceof Task) {
-                try {
-                   ((Task) msg).setUser(UserControl.getLoggedInUser());
-                    ConnectToDataBase.addTask((Task) msg);
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-                return;
-            }*/
+            }
             String message = (String) msg;
             if (message.equals("get tasks")) {
                 List<Task> alltasks = ConnectToDataBase.getAllTasks();
@@ -103,23 +85,31 @@ public class SimpleServer extends AbstractServer {
                 array[0] = "request"; // Assign a String object to the first index
                 array[1] = requests;
                 client.sendToClient(array);
-            } else if (message.startsWith("modify")) {
+            }
+            else if (message.startsWith("modify")) {
                 String taskid = message.split(" ")[1];
                 modifyTask(Integer.parseInt(taskid));
                 client.sendToClient(ConnectToDataBase.getAllTasks());
             } else if (message.startsWith("update data")) {
+                System.out.println("server "+ UpdateTaskDetails.getUpdateVale());
+
                 String[] parts = message.split("@");
-                if (parts.length >= 3 && parts[0].equals("update data")) {
+                if (parts.length >= 4 && parts[0].equals("update data")) {
                     String taskId = parts[1];
-                    System.out.println(taskId+"*");
                     String newData = parts[2];
-                    System.out.println(newData+"*");
+                    String updateVale = parts[3];
                     try {
                         int taskIdInt = Integer.parseInt(taskId);
                         Task task = ConnectToDataBase.getTaskById(taskIdInt);
-                        if (task != null) {
-                            ConnectToDataBase.updateTaskData(Integer.parseInt(taskId), newData,task);
+                        if (task != null ) {
+                            if (task.getUser().getCommunity().equals(UserControl.getLoggedInUser().getCommunityManager())){
+                                ConnectToDataBase.updateTaskData(Integer.parseInt(taskId), newData, task,updateVale);
+                            client.sendToClient("saved!");
+                        }
+                            else  client.sendToClient("notInYourCommunity");
+
                         } else {
+                            client.sendToClient("notFound");
                             System.out.println("Task with ID " + taskId + " not found.");
                         }
                     } catch (NumberFormatException e) {
@@ -128,6 +118,7 @@ public class SimpleServer extends AbstractServer {
                         e.printStackTrace();
                     }
                 }
+
             } else if (message.startsWith("#LogInAttempt")) {
                 try {
                     handleLoginAttempt(message, client);
@@ -151,7 +142,7 @@ public class SimpleServer extends AbstractServer {
                 List<UserControl> userControls = new ArrayList<>();
                 List<User> allUsers = ConnectToDataBase.getAllUsers();
                 for (User user : allUsers) {
-                    UserControl userControl = new UserControl(user.getID(), user.getFirstName(), user.getLastName(), user.getisConnected(), user.getCommunity(), user.getUsername(), user.getCommunityManager(),"0", user.getAddress(), user.getEmail(), user.getRole());
+                    UserControl userControl = new UserControl(user.getID(), user.getFirstName(), user.getLastName(), user.getisConnected(), user.getCommunity(), user.getUsername(), user.getCommunityManager(), "0", user.getAddress(), user.getEmail(), user.getRole());
                     userControl.setSalt(user.getSalt());
                     userControl.setPasswordHash(user.getPasswordHash());
                     userControls.add(userControl);

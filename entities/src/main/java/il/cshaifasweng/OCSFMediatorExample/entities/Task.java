@@ -2,9 +2,7 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.Duration;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
@@ -14,42 +12,29 @@ public class Task implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idNum")
-     int idNum=0;
+    int idNum=0;
 
     @Column(name = "date")
-     LocalDate date;
+    LocalDate date;
 
     @Column(name = "time")
-     LocalTime time;
+    LocalTime time;
 
     @Column(name = "status")
-     int status;
+    int status;
 
     @Column(name = "serviceType")
-     String serviceType;
+    String serviceType;
 
     @Column(name = "note")
-     String note;
+    String note;
 
     @Column(name = "executionTime")
     float executionTime;
 
-    @ManyToOne(cascade =CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
-     User user;
-//    @ManyToOne(fetch = FetchType.LAZY) // Assuming you want to use lazy loading
-//     UploadedTaskList uploadedTaskList;
-
-    // ... existing constructors, getters, and setters ...
-
-//    public UploadedTaskList getUploadedTaskList() {
-//        return uploadedTaskList;
-//    }
-
-//    public void setUploadedTaskList(UploadedTaskList uploadedTaskList) {
-//        this.uploadedTaskList = uploadedTaskList;
-//    }
-
+    User user;
 
     public User getUser() {
         return user;
@@ -57,11 +42,12 @@ public class Task implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+
     }
 
     // Constructors
     public Task() {
-         // Assign the next available ID to the task
+        // Assign the next available ID to the task
     }
 
     public Task(LocalDate date, LocalTime time, int status, String serviceType, String note, float executionTime) {

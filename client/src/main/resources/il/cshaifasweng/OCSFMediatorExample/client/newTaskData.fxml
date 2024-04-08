@@ -8,33 +8,36 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.NewTaskDataControl">
    <children>
-      <Label layoutX="93.0" layoutY="54.0" prefHeight="22.0" prefWidth="318.0" text="Please fill in all required fields." textFill="#b473ea">
+      <Label layoutX="60.0" layoutY="39.0" prefHeight="22.0" prefWidth="318.0" text="Please fill in all required fields." textFill="#b473ea">
          <font>
-            <Font name="David Bold" size="16.0" />
+            <Font name="David Bold" size="18.0" />
          </font>
       </Label>
-      <Label layoutX="93.0" layoutY="124.0" prefHeight="16.0" prefWidth="90.0" text="Task id:">
+      <Label layoutX="176.0" layoutY="133.0" text="Task id:">
          <font>
             <Font name="David Bold" size="14.0" />
          </font>
       </Label>
-      <Label layoutX="93.0" layoutY="172.0" prefHeight="18.0" prefWidth="90.0" text="New value:">
+      <Label layoutX="176.0" layoutY="177.0" text="New value:">
          <font>
             <Font name="David Bold" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="save" layoutX="265.0" layoutY="244.0" mnemonicParsing="false" onAction="#saveData" prefWidth="70.0" style="-fx-background-color: B98EDCFF;" text="save" textFill="#f7f2f2">
+      <Button fx:id="save" layoutX="275.0" layoutY="232.0" mnemonicParsing="false" onAction="#saveData" prefHeight="10.0" prefWidth="150.0" style="-fx-background-color: B98EDCFF;" text="save" textFill="WHITE">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
       </Button>
-      <TextField fx:id="taskId" layoutX="192.0" layoutY="120.0" />
-      <TextField fx:id="newData" layoutX="192.0" layoutY="168.0" />
-      <Button fx:id="back" layoutX="103.0" layoutY="244.0" mnemonicParsing="false" onAction="#homePage" prefWidth="70.0" style="-fx-background-color: B98EDCFF;" text="back" textFill="#f7f2f2">
+      <TextField fx:id="taskId" layoutX="275.0" layoutY="129.0" />
+      <TextField fx:id="newData" layoutX="275.0" layoutY="174.0" />
+      <Button fx:id="back" layoutX="275.0" layoutY="286.0" mnemonicParsing="false" onAction="#homePage" prefHeight="10.0" prefWidth="150.0" style="-fx-background-color: B98EDCFF;" text="back" textFill="WHITE">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
       </Button>
-      <TextField fx:id="title" layoutX="73.0" layoutY="84.0" prefHeight="26.0" prefWidth="350.0" />
+      <TextField fx:id="title" layoutX="60.0" layoutY="82.0" prefHeight="26.0" prefWidth="320.0" style="-fx-background-color: without;">
+         <font>
+            <Font name="David Bold" size="16.0" />
+         </font></TextField>
    </children>
 </AnchorPane>

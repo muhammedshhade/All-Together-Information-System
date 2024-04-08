@@ -96,10 +96,11 @@ public class RequestController {
         task.setTime(LocalTime.now());
         task.setServiceType(services.getValue());
         task.setStatus(3);
+
       User loggedInUser = UserControl.getLoggedInUser();
       if (loggedInUser != null) {
-            task.setUser(loggedInUser);
-        } else {
+          task.setUser(loggedInUser);
+      } else {
             showAlert("Error", "No user logged in. Please log in before submitting a request.");
             return;
         }

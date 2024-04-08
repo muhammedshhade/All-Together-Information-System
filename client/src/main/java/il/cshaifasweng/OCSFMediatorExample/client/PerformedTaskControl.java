@@ -63,7 +63,7 @@ public class PerformedTaskControl {
     @FXML
     void tasksDetails(ActionEvent event) {
         if(requestedTask != null){
-            int id= requestedTask.getIdNum();
+            int id= (int) requestedTask.getIdNum();
             String serviceType= requestedTask.getServiceType();
             String fitst=requestedTask.getUser().getFirstName();
             String userid=requestedTask.getUser().getID();
