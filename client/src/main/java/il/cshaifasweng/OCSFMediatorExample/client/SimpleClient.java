@@ -28,12 +28,44 @@ public class SimpleClient extends AbstractClient {
 
     protected void handleMessageFromServer(Object msg) throws IOException {
         try {
+            if(msg.equals("notFound")) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
+                    alert.setTitle("Error"); // Set the window's title
+                    alert.setHeaderText(null); // Optional: you can have a header or set it to null
+                    alert.setContentText("Task not found"); // Set the main message/content
+                    alert.showAndWait(); // Display the alert and wait for the user to close it
+                });
+                App.setRoot("newTaskData");
+                return;
+            }
+            if(msg.equals("notInYourCommunity")){
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
+                    alert.setTitle("Not in your community"); // Set the window's title
+                    alert.setHeaderText(null); // Optional: you can have a header or set it to null
+                    alert.setContentText("This task was uploaded by a user who is not part of our community."); // Set the main message/content
+                    alert.showAndWait(); // Display the alert and wait for the user to close it
+
+                });
+                App.setRoot("newTaskData");
+
+                return;
+            }if(msg.equals("saved!")){
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION); // Use INFORMATION alert type
+                    alert.setTitle("Thank you"); // Set the window's title
+                    alert.setHeaderText(null); // Optional: you can have a header or set it to null
+                    alert.setContentText("The task has been modified."); // Set the main message/content
+                    alert.showAndWait(); // Display the alert and wait for the user to close it
+                });
+                App.setRoot("updateTaskDetails");
+                return;
+            }
             if (msg instanceof Object[]) {
-                System.out.println("check the if");
                 Object[] messageParts = (Object[]) msg;
                 if (messageParts.length == 2 && messageParts[0] instanceof String && messageParts[1] instanceof List) {
                     if (messageParts[0].equals("request")) {
-                        System.out.println("adhhhh");
                         CheckRequestService.requests = (List<Task>) messageParts[1];
                         try {
                             App.setRoot("checkRequestService");
@@ -64,8 +96,6 @@ public class SimpleClient extends AbstractClient {
 
     protected void handleMessageFromServer1(Object msg) throws IOException {
         try {
-            System.out.println("one parametr");
-
             if (msg instanceof String) {
                 String message = (String) msg;
                 // Handling LOGIN_FAIL message
@@ -86,7 +116,6 @@ public class SimpleClient extends AbstractClient {
                     } else {
                         App.setRoot("manager_control");
                     }
-
                 }
             }
             if (msg.getClass().equals(Warning.class)) {

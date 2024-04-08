@@ -103,7 +103,7 @@ public void initialize() {
     @FXML
     void TASKDETAILS(ActionEvent event) throws IOException {
             if(selectedTask != null){
-                int id= selectedTask.getIdNum();
+                long id= selectedTask.getIdNum();
                 String serviceType= selectedTask.getServiceType();
                 String fitst=selectedTask.getUser().getFirstName();
                 String userid=selectedTask.getUser().getID();

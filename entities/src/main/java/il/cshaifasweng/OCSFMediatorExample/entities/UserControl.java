@@ -2,6 +2,7 @@ package il.cshaifasweng.OCSFMediatorExample.entities;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import javax.persistence.Entity;
 
 public class UserControl extends User {
     private static User loggedInUser;

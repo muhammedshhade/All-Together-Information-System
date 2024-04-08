@@ -22,6 +22,8 @@ public class CheckRequestService {
 
     @FXML // fx:id="tasks"
     private Button tasks; // Value injected by FXMLLoader
+    @FXML
+    private Button user;
 
     public static List<Task> requests =new ArrayList<>();
     private Task requestedTask = null;
@@ -51,12 +53,33 @@ public class CheckRequestService {
        });
    }
 
+     @FXML
+
     private void showAlert(String task){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Task details");
         alert.setHeaderText("Task Details: " );
         alert.setContentText(task);
         alert.showAndWait();
+    }
+    private void showAlert2(String task) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("User details");
+        alert.setHeaderText("User Details: ");
+        alert.setContentText(task);
+        alert.showAndWait();
+    }
+    @FXML
+    void userDetails(ActionEvent event) {
+        if (requestedTask != null) {
+            String id = requestedTask.getUser().getID();
+            String name = requestedTask.getUser().getFirstName() + " " + requestedTask.getUser().getLastName();
+            String community = requestedTask.getUser().getCommunity();
+            String address = requestedTask.getUser().getAddress();
+            String email = requestedTask.getUser().getEmail();
+            String x = String.format("User ID: %s\nUser Name: %s\nCommunity: %s\nAddress: %s\nEmail: %s", id, name, community, address, email);
+            showAlert2(x);
+        }
     }
     @FXML
     void previous(ActionEvent event) throws IOException {
@@ -66,7 +89,7 @@ public class CheckRequestService {
     @FXML
     void tasksDetails(ActionEvent event) {
         if(requestedTask != null){
-            int id= requestedTask.getIdNum();
+            long id= requestedTask.getIdNum();
             String serviceType= requestedTask.getServiceType();
             String fitst=requestedTask.getUser().getFirstName();
             String userid=requestedTask.getUser().getID();

@@ -4,10 +4,13 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import javafx.fxml.FXMLLoader;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javafx.fxml.Initializable;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -18,6 +21,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 
 import javafx.scene.image.ImageView;
 
@@ -52,12 +56,17 @@ public class PrimaryController implements Initializable {
 
     @FXML
     private ImageView im;
+   // InputStream stream = new FileInputStream("@../../../../../../../../../../../Pictures/im.png");
 
-   /* Image myImage=new Image(getClass().getResourceAsStream("im.png"));
+    //Image myImage=new Image(stream);
+
+    public PrimaryController() throws FileNotFoundException {
+    }
+
     public void displayIm(){
-        im.setImage(myImage);
+      //  im.setImage(myImage);
 
-    }*/
+    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Initialize method called when the controller is loaded
@@ -65,9 +74,14 @@ public class PrimaryController implements Initializable {
         request.setEditable(false);
         LabelUser.setEditable(false);
         passwordlabel.setEditable(false);
+        displayIm();
 
     }
+    @FXML
+    void distressrequest(ActionEvent event) throws IOException {
+        App.setRoot("distressCall");
 
+    }
     @FXML
     void sendWarning(ActionEvent event) {
         try {

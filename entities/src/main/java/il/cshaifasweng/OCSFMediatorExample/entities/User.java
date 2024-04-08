@@ -4,10 +4,7 @@ import java.io.Serializable;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Base64;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Id;
@@ -21,12 +18,11 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
      Long id;
-    @Column(name = "User_ID", nullable = false,length = 9,unique = true)
+    @Column(name = "userid", nullable = false,length = 9,unique = true)
      String Id;
     @Column(name = "First_Name", nullable = false)
      String first_name;
@@ -39,7 +35,7 @@ public class User implements Serializable {
     @Column(name = "community")
      String community;
 
-    @Column(name = "username", nullable = false, unique = true)
+    @Column(name = "username", nullable = false,unique = true)
      String username;
 
     @Column(name = "password_hash")
@@ -62,16 +58,17 @@ public class User implements Serializable {
     private String communityManager;
 
     String password;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
-     Set<Task> tasks=new HashSet<>();
+    @OneToMany(cascade = CascadeType.ALL,  fetch = FetchType.EAGER)
+    @JoinColumn(name = "task_id")
+    List <Task> tasks = new ArrayList<>();
 
     // Constructor, getters, and setters...
 
-    public Set<Task> getTasks() {
+    public List<Task> getTasks() {
         return tasks;
     }
-    public Set<Task> getTreatments() {
-        return tasks;
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
     public User(String id,String first_name,String
@@ -93,7 +90,7 @@ public class User implements Serializable {
 
     }
     public User(){
-        tasks = new HashSet<>();
+        tasks = new ArrayList<>();
     }
 
     public String getCommunityManager() {
