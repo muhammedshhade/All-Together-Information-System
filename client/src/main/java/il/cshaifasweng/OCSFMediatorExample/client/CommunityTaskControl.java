@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-
+import javafx.scene.control.TextArea;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +23,8 @@ public class CommunityTaskControl {
 
     @FXML
     private Button submitter;
+    @FXML
+    private TextArea note;
 
     @FXML // fx:id="back"
     private Button back; // Value injected by FXMLLoader
@@ -35,30 +37,9 @@ public class CommunityTaskControl {
 
     public static List<Task> getCommunityTask =new ArrayList<>();
     private Task requestedTask = null;
-  /* public void initialize(){
-        while (getCommunityTask.isEmpty()){
-            try {
-                Thread.currentThread().sleep(1);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }
-        for(Task task : getCommunityTask){
-            this.communityTasks.getItems().addAll(task.getServiceType());
-        }
-        this.communityTasks.setOnMouseClicked(event -> {
-            String selectedTaskName = this.communityTasks.getSelectionModel().getSelectedItem();
-            if(selectedTaskName!=null){
-                for(Task task : getCommunityTask){
-                    if(task.getServiceType().equals(selectedTaskName)){
-                        requestedTask = task;
-                        break;
-                    }
-                }
-            }
-        });
-    }*/
+
   public void initialize() {
+      note.setEditable(false);
       if (getCommunityTask.isEmpty()) {
           // If getCommunityTask list is empty, do nothing
           return;
@@ -110,7 +91,6 @@ public class CommunityTaskControl {
             showAlert2(x);
         }
     }
-
     @FXML
     void previous(ActionEvent event) throws IOException {
         App.setRoot("manager_control");
@@ -124,7 +104,7 @@ public class CommunityTaskControl {
             String fitst=requestedTask.getUser().getFirstName();
             String userid=requestedTask.getUser().getID();
             int status=requestedTask.getStatus();
-            String x = String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nState: %d", id, serviceType, fitst, userid, status);
+            String x = String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nStatus: %d", id, serviceType, fitst, userid, status);
             showAlert(x);
         }
     }

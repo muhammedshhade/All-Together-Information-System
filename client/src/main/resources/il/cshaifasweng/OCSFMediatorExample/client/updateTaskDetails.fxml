@@ -13,15 +13,15 @@
             <Font name="David Bold" size="24.0" />
          </font>
       </Label>
-      <Button fx:id="status" layoutX="225.0" layoutY="206.0" mnemonicParsing="false" onAction="#updateStatus" prefWidth="200.0" style="-fx-background-color: #b98edc bright;" text="Update Status Task" textFill="#fcfcfc">
+      <Button fx:id="status" layoutX="225.0" layoutY="206.0" mnemonicParsing="false" onAction="#updateStatus" prefWidth="200.0" style="-fx-background-color: #b473ea;" text="Update Status Task" textFill="#fcfcfc">
          <font>
             <Font name="David Bold" size="14.0" />
          </font></Button>
-      <Button fx:id="time" layoutX="225.0" layoutY="157.0" mnemonicParsing="false" onAction="#UpdateExecutionTime" prefWidth="200.0" style="-fx-background-color: #b98edc bright;" text="Update Execution Time" textFill="#fcfcfc">
+      <Button fx:id="time" layoutX="225.0" layoutY="157.0" mnemonicParsing="false" onAction="#UpdateExecutionTime" prefWidth="200.0" style="-fx-background-color: #b473ea;" text="Update Execution Time" textFill="#fcfcfc">
          <font>
             <Font name="David Bold" size="14.0" />
          </font></Button>
-      <Button fx:id="back" layoutX="283.0" layoutY="254.0" mnemonicParsing="false" onAction="#homePage" prefHeight="38.0" prefWidth="84.0" style="-fx-background-color: #b98edc bright; -fx-background-image: save.png;" text="back" textFill="#fcfcfc">
+      <Button fx:id="back" layoutX="283.0" layoutY="254.0" mnemonicParsing="false" onAction="#homePage" prefHeight="38.0" prefWidth="84.0" style="-fx-background-color: #b473ea; -fx-background-image: save.png;" text="back" textFill="#fcfcfc">
          <font>
             <Font name="David Bold" size="14.0" />
          </font></Button>

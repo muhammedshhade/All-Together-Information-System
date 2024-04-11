@@ -23,38 +23,42 @@ public class CheckRequestService {
     @FXML // fx:id="tasks"
     private Button tasks; // Value injected by FXMLLoader
     @FXML
-    private Button user;
+    private Button acceptbtn;
+    @FXML
+    private Button removebtn;
 
     public static List<Task> requests =new ArrayList<>();
     private Task requestedTask = null;
-   public void initialize() {
-       if (requests.isEmpty()) {
-           // If requests list is empty, do nothing
-           return;
-       }
-
-       // Add items to the ListView
-       for (Task task : requests) {
-           this.communityTasks.getItems().add(task.getServiceType());
-       }
-
-       // Set event handler for mouse click on ListView
-       this.communityTasks.setOnMouseClicked(event -> {
-           String selectedTaskName = this.communityTasks.getSelectionModel().getSelectedItem();
-           if (selectedTaskName != null) {
-               // Find the selected task in the requests list
-               for (Task task : requests) {
-                   if (task.getServiceType().equals(selectedTaskName)) {
-                       requestedTask = task;
-                       break;
-                   }
-               }
-           }
-       });
-   }
-
-     @FXML
-
+    public void initialize() {
+        if (requests.isEmpty()) {
+            // If requests list is empty, do nothing
+            return;
+        }
+        // Add items to the ListView
+        for (Task task : requests) {
+            this.communityTasks.getItems().add(task.getServiceType());
+        }
+        // Set event handler for mouse click on ListView
+        this.communityTasks.setOnMouseClicked(event -> {
+            String selectedTaskName = this.communityTasks.getSelectionModel().getSelectedItem();
+            if (selectedTaskName != null) {
+                // Find the selected task in the requests list
+                for (Task task : requests) {
+                    if (task.getServiceType().equals(selectedTaskName)) {
+                        requestedTask = task;
+                        break;
+                    }
+                }
+            }
+        });
+    }
+    private void showCompletionMessage(String title, String message) {
+        // Display an alert dialog to the user
+        Alert alert = new Alert(Alert.AlertType.INFORMATION); // Use INFORMATION type for completion message
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
     private void showAlert(String task){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Task details");
@@ -62,24 +66,56 @@ public class CheckRequestService {
         alert.setContentText(task);
         alert.showAndWait();
     }
-    private void showAlert2(String task) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("User details");
-        alert.setHeaderText("User Details: ");
-        alert.setContentText(task);
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
         alert.showAndWait();
     }
+
     @FXML
-    void userDetails(ActionEvent event) {
-        if (requestedTask != null) {
-            String id = requestedTask.getUser().getID();
-            String name = requestedTask.getUser().getFirstName() + " " + requestedTask.getUser().getLastName();
-            String community = requestedTask.getUser().getCommunity();
-            String address = requestedTask.getUser().getAddress();
-            String email = requestedTask.getUser().getEmail();
-            String x = String.format("User ID: %s\nUser Name: %s\nCommunity: %s\nAddress: %s\nEmail: %s", id, name, community, address, email);
-            showAlert2(x);
+    void accept(ActionEvent event) throws IOException {
+        if(requestedTask != null){
+            int id= requestedTask.getIdNum();
+            System.out.println(id);
+            String message = "Task is Accept@" + String.valueOf(id) + "@" + "0";
+            SimpleClient.getClient().sendToServer(message);
         }
+        try {
+            showCompletionMessage("Request accepted", "Thanks. \nThe request accepted successfully- Id request "+ requestedTask.getIdNum());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            SimpleClient.getClient().sendToServer("check requests");
+        } catch (IOException e) {
+            showAlert("Error", "Failed to get community help requests: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void remove(ActionEvent event) throws IOException {
+        if(requestedTask != null){
+            int id= requestedTask.getIdNum();
+            System.out.println(id);
+            String message = "Task is reject@" + String.valueOf(id) + "@" + "0";
+            SimpleClient.getClient().sendToServer(message);
+        }
+        try {
+            showCompletionMessage("Request rejected", "Thanks. \nThe request rejected - Id request "+ requestedTask.getIdNum());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+  /*      try {
+            SimpleClient.getClient().sendToServer("check requests");
+        } catch (IOException e) {
+            showAlert("Error", "Failed to get community help requests: " + e.getMessage());
+            e.printStackTrace();
+        }*/
+
     }
     @FXML
     void previous(ActionEvent event) throws IOException {
@@ -89,13 +125,14 @@ public class CheckRequestService {
     @FXML
     void tasksDetails(ActionEvent event) {
         if(requestedTask != null){
-            long id= requestedTask.getIdNum();
+            int id= requestedTask.getIdNum();
             String serviceType= requestedTask.getServiceType();
             String fitst=requestedTask.getUser().getFirstName();
             String userid=requestedTask.getUser().getID();
             int status=requestedTask.getStatus();
-            String x = String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nState: %d", id, serviceType, fitst, userid, status);
+            String x = String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nStatus: %d", id, serviceType, fitst, userid, status);
             showAlert(x);
         }
     }
 }
+

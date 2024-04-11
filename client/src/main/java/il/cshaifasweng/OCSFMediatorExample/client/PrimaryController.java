@@ -157,22 +157,6 @@ public class PrimaryController implements Initializable {
         }
     }
 
-
-    // Check username and password locally
-    // Username and password are valid, sending a message to the server for further validation
-//			try {
-//				String messageToSend = "#LogInAttempt," + username + "@" + password;
-//				// Send message to the server for additional validation
-//				SimpleClient.getClient().sendToServer(messageToSend);
-//				Thread.sleep(500);
-//				// You might want to add further logic here based on the server response
-//			} catch (IOException e) {
-//				showAlert("Error", "Failed to Get Login message!" + e.getMessage());
-//				e.printStackTrace();
-//			} catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
-
     @FXML
     void Password(ActionEvent event) {
 

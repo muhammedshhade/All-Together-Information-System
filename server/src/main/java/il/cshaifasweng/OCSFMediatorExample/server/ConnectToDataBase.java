@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
+import il.cshaifasweng.OCSFMediatorExample.client.App;
 import il.cshaifasweng.OCSFMediatorExample.client.NewTaskDataControl;
 import il.cshaifasweng.OCSFMediatorExample.client.UpdateTaskDetails;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
@@ -127,6 +128,41 @@ public class ConnectToDataBase {
         }
         return null;
     }
+    public static List<Task> getTasksWithStatusAndUser( String userId) {
+        try {
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Task> query = builder.createQuery(Task.class);
+            Root<Task> root = query.from(Task.class);
+            // Joining the Task entity with the User entity to access the uploader
+            Join<Task, User> userJoin = root.join("user");
+            query.where(
+                    builder.and(
+                            builder.or(
+                                    builder.equal(root.get("status"), 0),
+                                    builder.equal(root.get("status"), 3)
+                            ),
+                            builder.equal(userJoin.get("Id"), userId)
+                    )
+            );
+            // Executing the query and getting the list of tasks
+            List<Task> tasks = session.createQuery(query).getResultList();
+            return tasks;
+        } catch (Exception e) {
+            if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
+                session.getTransaction().rollback(); // Rollback transaction if an exception occurs
+            }
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return null;
+    }
+
 
     public static List<Task> getTasksWithStatus(String community, int status) {
         try {
@@ -145,7 +181,6 @@ public class ConnectToDataBase {
             );
             // Executing the query and getting the list of tasks
             List<Task> tasks = session.createQuery(query).getResultList();
-            //System.out.println("try ++ "+tasks.get(0).getTime());
             return tasks;
         } catch (Exception e) {
             if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
@@ -159,7 +194,6 @@ public class ConnectToDataBase {
         }
         return null;
     }
-
 
     static List<Task> getAllTasks() throws Exception {
         try {
@@ -213,8 +247,7 @@ public class ConnectToDataBase {
         return null;
     }
 
-
-    public static void updateTaskData(int id, String newData, Task task,String updateValue) throws Exception {
+    public static void updateTaskData(String newData, Task task, String updateValue) throws Exception {
         SessionFactory sessionFactory = getSessionFactory();
         try {
             session = sessionFactory.openSession();
@@ -234,7 +267,6 @@ public class ConnectToDataBase {
                     System.out.println("Task execution time updated successfully.");
                 }
             } else {
-
                 System.out.println("Task not found.");
             }
         } catch (Exception e) {
@@ -290,20 +322,20 @@ public class ConnectToDataBase {
 
 
     public static void CreateData() throws Exception {
+
         System.out.print("Data Creation Start");
         User user1 = new User("212930690", "Qamar", "Hammod", false, "Community 1", "*1", "Community 1", "2", "Kabul", "qammar@gmail.com", User.Role.Manager);
-        User user7 = new User("215630125", "Moataz", "Odeh", false, "Community 1", "MoatazOD", "?", "MoatazO123", "Yaffa Nazareth", "Moataz.ody44@gmail.com", User.Role.USER);
-        User user8 = new User("345869321", "Aya", "Hammod", false, "Community 7", "22", "?", "2", "Yaffa Nazareth", "ayaaa@gmail.com", User.Role.USER);
         User user2 = new User("213011398", "Adan", "Hammoud", false, "Community 1", "AdanHa", "?", "adan123", "Kabul ", "Adanhammod@gmail.com", User.Role.USER);
         User user3 = new User("213298664", "Adan", "Sulaimani", false, "Community 3", "AdanSul", "?", "AdanS123", "Nazareth", "Adaslemany@gmail.com", User.Role.USER);
         User user4 = new User("212022263", "Mohammed", "Shhade", false, "Community 2", "MoShhade", "?", "MoShhade123", "Kukab", "hijaze.Najm@gmail.com", User.Role.USER);
         User user5 = new User("212270565", "Nejem", "Higazy", false, "Community 2", "NejemH", "?", "NejemH123", "Tamra", "Muhammed.sh.181@gmail.com", User.Role.USER);
         User user6 = new User("319050241", "Siraj", "Jabareen", false, "Community 6", "SirajJ", "?", "SirajJ123", "UMM El Fahem", "SerajWazza@gmail.com", User.Role.USER);
+        User user7 = new User("215630125", "Moataz", "Odeh", false, "Community 1", "MoatazOD", "?", "MoatazO123", "Yaffa Nazareth", "Moataz.ody44@gmail.com", User.Role.USER);
+        User user8 = new User("345869321", "Aya", "Hammod", false, "Community 1", "22", "?", "2", "Yaffa Nazareth", "ayaaa@gmail.com", User.Role.USER);
         User user9 = new User("213047896", "Shams", "Hmam", false, "Community 8", "*9", "Community 2", "3", "Tamra", "shams@gmail.com", User.Role.Manager);
         User user10 = new User("212589631", "Ahmad", "Hammod", false, "Community 8", "ahmad", "?", "3", "kabul", "ahmad@gmail.com", User.Role.USER);
         User user11 = new User("213470213", "Mahmod", "Hammod", false, "Community 3", "mahmod", "?", "3", "Kabul", "mahmod@gmail.com", User.Role.USER);
         User user12 = new User("312568965", "Seren", "Jamal", false, "Community 2", "soso", "?", "3", "Kabul", "seren1@gmail.com", User.Role.USER);
-
         session.save(user1);
         session.flush();
         session.save(user2);
@@ -328,27 +360,24 @@ public class ConnectToDataBase {
         session.flush();
         session.save(user12);
         session.flush();
-        Task task1 = new Task(LocalDate.of(2024, 2, 22), LocalTime.of(3, 50), 2, "Walk my dog", "", 0.0f);
-        task1.setUser(user3);
-        Task task2 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(9, 30), 0, "Buy Medicine", "", 0.0f);
-        task2.setUser(user8);
+        Task task1 = new Task(LocalDate.of(2024, 2, 22), LocalTime.of(3, 50), 3, "Walk my dog", "", 0.0f);
+        task1.setUser(user2);
+        Task task2 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(9, 30), 3, "Buy Medicine", "", 0.0f);
         Task task3 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(11, 15), 3, "Nanny", "", 0.0f);
         Task task4 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(13, 4), 3, "Transportation", "I want to go to the Hospital", 0.0f);
         Task task5 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(15, 20), 0, "Transportation", "", 0.0f);
         Task task6 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(17, 10), 0, "Buy Medicine", "", 0.0f);
-        user10.getTasks().add(task1);
-        user2.getTasks().add(task2);
-        task1.setUser(user1);
+        user2.getTasks().add(task1);
+        user7.getTasks().add(task2);
         user3.getTasks().add(task3);
         user4.getTasks().add(task4);
         user5.getTasks().add(task5);
         user6.getTasks().add(task6);
-        task2.setUser(user2);
+        task2.setUser(user7);
         task3.setUser(user3);
         task4.setUser(user4);
         task5.setUser(user5);
         task6.setUser(user6);
-
 
         session.save(task1);
         session.flush();
@@ -371,11 +400,13 @@ public class ConnectToDataBase {
         session.flush();
         session.update(user3);
         session.flush();
-        session.save(user4);
+        session.update(user4);
         session.flush();
-        session.save(user5);
+        session.update(user5);
         session.flush();
-        session.save(user6);
+        session.update(user6);
+        session.flush();
+        session.update(user7);
         session.flush();
         System.out.print("Data Creation Finish");
 
@@ -395,6 +426,8 @@ public class ConnectToDataBase {
             session = sessionFactory.openSession();
             session.beginTransaction();
             System.out.println("MOTAZ");
+            session.clear();
+
             CreateData();
             session.getTransaction().commit();
         } catch (Exception exception) {

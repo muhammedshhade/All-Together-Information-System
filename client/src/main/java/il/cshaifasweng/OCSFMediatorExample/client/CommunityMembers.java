@@ -70,8 +70,6 @@ public class CommunityMembers {
             showAlert(x);
         }
     }
-
-
     @FXML
     void previous(ActionEvent event) throws IOException {
         App.setRoot("manager_control");
