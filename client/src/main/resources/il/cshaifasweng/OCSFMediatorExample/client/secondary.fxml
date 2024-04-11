@@ -8,7 +8,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.SecondaryController">
    <children>
-      <Button fx:id="Requesthelpbutton" layoutX="174.0" layoutY="26.0" mnemonicParsing="false" onAction="#Requesthelp" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="REQUEST HELP" textFill="WHITE">
+      <Button fx:id="Requesthelpbutton" layoutX="174.0" layoutY="26.0" mnemonicParsing="false" onAction="#Requesthelp" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Request Service" textFill="WHITE">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
@@ -33,7 +33,7 @@
             <Image url="@../../../../../../../../../../Downloads/ATIS.jpg" />
          </image>
       </ImageView>
-      <Button fx:id="cansel_REQUESTBT" layoutX="174.0" layoutY="94.0" mnemonicParsing="false" onAction="#CANCELREQUST" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Cancel Request" textFill="WHITE">
+      <Button fx:id="cansel_REQUESTBT" layoutX="174.0" layoutY="94.0" mnemonicParsing="false" onAction="#CANCELREQUST" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Cancel Service Request" textFill="WHITE">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>

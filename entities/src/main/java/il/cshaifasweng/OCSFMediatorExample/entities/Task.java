@@ -1,3 +1,4 @@
+
 package il.cshaifasweng.OCSFMediatorExample.entities;
 
 import javax.persistence.*;

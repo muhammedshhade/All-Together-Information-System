@@ -38,7 +38,12 @@ public class SecondaryController {
 
     @FXML
     void CANCELREQUST(ActionEvent event) {
-
+        try {
+            SimpleClient.getClient().sendToServer("Cancel request");
+        } catch (IOException e) {
+            showAlert("Error", "Failed to get your service requests: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML

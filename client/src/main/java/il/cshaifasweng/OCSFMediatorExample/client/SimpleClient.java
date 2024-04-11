@@ -28,7 +28,7 @@ public class SimpleClient extends AbstractClient {
 
     protected void handleMessageFromServer(Object msg) throws IOException {
         try {
-            if(msg.equals("notFound")) {
+            if (msg.equals("notFound")) {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
                     alert.setTitle("Error"); // Set the window's title
@@ -39,7 +39,7 @@ public class SimpleClient extends AbstractClient {
                 App.setRoot("newTaskData");
                 return;
             }
-            if(msg.equals("notInYourCommunity")){
+            if (msg.equals("notInYourCommunity")) {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
                     alert.setTitle("Not in your community"); // Set the window's title
@@ -49,9 +49,9 @@ public class SimpleClient extends AbstractClient {
 
                 });
                 App.setRoot("newTaskData");
-
                 return;
-            }if(msg.equals("saved!")){
+            }
+            if (msg.equals("saved!")) {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION); // Use INFORMATION alert type
                     alert.setTitle("Thank you"); // Set the window's title
@@ -62,7 +62,43 @@ public class SimpleClient extends AbstractClient {
                 App.setRoot("updateTaskDetails");
                 return;
             }
-            if (msg instanceof Object[]) {
+            if (msg.equals("canceld!")) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION); // Use INFORMATION alert type
+                    alert.setTitle("Thank you"); // Set the window's title
+                    alert.setHeaderText(null); // Optional: you can have a header or set it to null
+                    alert.setContentText("Your request has been canceled.."); // Set the main message/content
+                    alert.showAndWait(); // Display the alert and wait for the user to close it
+                });
+                App.setRoot("cancelServiceRequest");
+                return;
+            }
+            if (msg.equals("The task's status isn't 2.")) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
+                    alert.setTitle("Error"); // Set the window's title
+                    alert.setHeaderText(null); // Optional: you can have a header or set it to null
+                    alert.setContentText("The task has not been completed yet."); // Set the main message/content
+                    alert.showAndWait(); // Display the alert and wait for the user to close it
+                });
+                App.setRoot("newTaskData");
+            } else if (msg.equals("The task is canceled.")) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
+                    alert.setTitle("Error"); // Set the window's title
+                    alert.setHeaderText(null); // Optional: you can have a header or set it to null
+                    alert.setContentText("The task has been canceled."); // Set the main message/content
+                    alert.showAndWait(); // Display the alert and wait for the user to close it
+                });
+            } else if (msg.equals("the status is illegal")) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
+                    alert.setTitle("Error"); // Set the window's title
+                    alert.setHeaderText(null); // Optional: you can have a header or set it to null
+                    alert.setContentText("The status should be between 0 and 5."); // Set the main message/content
+                    alert.showAndWait(); // Display the alert and wait for the user to close it
+                });
+            } else if (msg instanceof Object[]) {
                 Object[] messageParts = (Object[]) msg;
                 if (messageParts.length == 2 && messageParts[0] instanceof String && messageParts[1] instanceof List) {
                     if (messageParts[0].equals("request")) {
@@ -75,6 +111,13 @@ public class SimpleClient extends AbstractClient {
                     } else if (messageParts[0].equals("alltasks")) {
                         VolunterControl.tasks = (List<Task>) messageParts[1];
                         App.setRoot("volunter_control");
+                    } else if (messageParts[0].equals("ToCancel")) {
+                        CancelServiceRequest.getRequestService = (List<Task>) messageParts[1];
+                        try {
+                            App.setRoot("cancelServiceRequest");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
                     } else if (messageParts[0].equals("uploaded")) {
                         CommunityTaskControl.getCommunityTask = (List<Task>) messageParts[1];
                         Platform.runLater(() -> {

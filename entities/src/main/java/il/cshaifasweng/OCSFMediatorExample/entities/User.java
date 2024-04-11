@@ -46,7 +46,7 @@ public class User implements Serializable {
 
     @Column(name = "address")
      String address;
-    @Column(name = "Email",unique = true)
+    @Column(name = "Email",unique=true)
      String email;
 
     @Enumerated(EnumType.STRING)
@@ -58,8 +58,8 @@ public class User implements Serializable {
     private String communityManager;
 
     String password;
-    @OneToMany(cascade = CascadeType.ALL,  fetch = FetchType.EAGER)
-    @JoinColumn(name = "task_id")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    //@JoinColumn(name = "task_id")
     List <Task> tasks = new ArrayList<>();
 
     // Constructor, getters, and setters...

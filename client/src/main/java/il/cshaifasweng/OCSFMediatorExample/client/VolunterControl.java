@@ -29,29 +29,7 @@ public class VolunterControl {
     private Button homepagebtn;
     public static List<Task> tasks =new ArrayList<>();
     private Task selectedTask = null;
-//    public void initialize(){
-//        while (tasks.isEmpty()){
-//            try {
-//                Thread.currentThread().sleep(1);
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-//        for(Task task : tasks){
-//            this.TasksList.getItems().addAll(task.getServiceType());
-//        }
-//        this.TasksList.setOnMouseClicked(event -> {
-//            String selectedTaskName = this.TasksList.getSelectionModel().getSelectedItem();
-//            if(selectedTaskName!=null){
-//                for(Task task : tasks){
-//                    if(task.getServiceType().equals(selectedTaskName)){
-//                        selectedTask = task;
-//                        break;
-//                    }
-//                }
-//            }
-//        });
-//    }
+
 public void initialize() {
     if (tasks.isEmpty()) {
         // If tasks list is empty, do nothing
@@ -116,7 +94,6 @@ public void initialize() {
     @FXML
     void homepage(ActionEvent event) throws IOException {
         App.setRoot("secondary");
-
     }
 
 }

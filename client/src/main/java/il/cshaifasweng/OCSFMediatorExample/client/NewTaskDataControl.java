@@ -3,6 +3,7 @@
  */
 
 package il.cshaifasweng.OCSFMediatorExample.client;
+import javafx.scene.control.TextArea;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,8 +33,12 @@ public class NewTaskDataControl {
     @FXML
     private TextField title;
 
+    @FXML // fx:id="note"
+    private TextArea note; // Value injected by FXMLLoader
+
     public void initialize() {
         title.setEditable(false);
+        note.setEditable(false);
         title.setText("Please enter the value of "+ UpdateTaskDetails.getUpdateVale()+".");
     }
     @FXML
@@ -75,8 +80,6 @@ public class NewTaskDataControl {
             // Construct the message to send to the server
             String message = "update data@" + taskId.getText() + "@" + newData.getText() + "@" + UpdateTaskDetails.getUpdateVale();
             // Send the message to the server
-            System.out.println("cliev t        "+UpdateTaskDetails.getUpdateVale());
-
             SimpleClient.getClient().sendToServer(message);
 
         } catch (IOException e) {

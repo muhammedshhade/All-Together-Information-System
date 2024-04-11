@@ -16,6 +16,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -53,13 +55,14 @@ public class SimpleServer extends AbstractServer {
 
     protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
         try {
-             if (msg instanceof Object[]) {
-                System.out.println("**??");
+            if (msg instanceof Object[]) {
                 Object[] messageParts = (Object[]) msg;
-                if (messageParts.length == 2 && messageParts[0] instanceof String && messageParts[1] instanceof Task) {
+                if (messageParts.length == 2 && messageParts[0] instanceof String && messageParts[0] .equals("add task to database.") && messageParts[1] instanceof Task) {
                     if (messageParts[0].equals("add task to database."))
                         ((Task) messageParts[1]).setUser(UserControl.getLoggedInUser());
-                        ConnectToDataBase.addTask((Task) messageParts[1]);
+                    ConnectToDataBase.addTask((Task) messageParts[1]);
+                }else if (messageParts.length == 2 && messageParts[0] instanceof String &&messageParts[0] .equals("delete request")&& messageParts[1] instanceof Task) {
+                       // ConnectToDataBase.removeTask((Task) messageParts[1]);
                 }
                 return;
             }
@@ -79,20 +82,24 @@ public class SimpleServer extends AbstractServer {
                 array[0] = "uploaded"; // Assign a String object to the first index
                 array[1] = requests;
                 client.sendToClient(array);
+            } else if (message.equals("Cancel request")) {
+                List<Task> requests = ConnectToDataBase.getTasksWithStatusAndUser(UserControl.getLoggedInUser().getID());
+                Object[] array = new Object[2];
+                array[0] = "ToCancel"; // Assign a String object to the first index
+                array[1] = requests;
+                client.sendToClient(array);
             } else if (message.equals("check requests")) {
                 List<Task> requests = ConnectToDataBase.getTasksWithStatus(UserControl.getLoggedInUser().getCommunityManager(), 3);
                 Object[] array = new Object[2];
                 array[0] = "request"; // Assign a String object to the first index
                 array[1] = requests;
                 client.sendToClient(array);
-            }
-            else if (message.startsWith("modify")) {
+            } else if (message.startsWith("modify")) {
                 String taskid = message.split(" ")[1];
                 modifyTask(Integer.parseInt(taskid));
                 client.sendToClient(ConnectToDataBase.getAllTasks());
             } else if (message.startsWith("update data")) {
-                System.out.println("server "+ UpdateTaskDetails.getUpdateVale());
-
+                System.out.println("server " + UpdateTaskDetails.getUpdateVale());
                 String[] parts = message.split("@");
                 if (parts.length >= 4 && parts[0].equals("update data")) {
                     String taskId = parts[1];
@@ -101,13 +108,26 @@ public class SimpleServer extends AbstractServer {
                     try {
                         int taskIdInt = Integer.parseInt(taskId);
                         Task task = ConnectToDataBase.getTaskById(taskIdInt);
-                        if (task != null ) {
-                            if (task.getUser().getCommunity().equals(UserControl.getLoggedInUser().getCommunityManager())){
-                                ConnectToDataBase.updateTaskData(Integer.parseInt(taskId), newData, task,updateVale);
-                            client.sendToClient("saved!");
-                        }
-                            else  client.sendToClient("notInYourCommunity");
-
+                        if (task != null) {
+                            if(!task.getUser().getCommunity().equals(UserControl.getLoggedInUser().getCommunityManager()))
+                            {
+                                client.sendToClient("notInYourCommunity");
+                            }
+                            else if(task.getStatus()==5 ){
+                                client.sendToClient("The task is canceled.");
+                            }
+                           else if (task.getStatus() != 2 && !updateVale.equals("status")) {
+                                client.sendToClient("The task's status isn't 2.");
+                            }
+                            else if (task.getUser().getCommunity().equals(UserControl.getLoggedInUser().getCommunityManager())) {
+                                if((Integer.parseInt(newData)<0 || Integer.parseInt(newData)>5) &&updateVale.equals("status"))
+                                {
+                                    client.sendToClient("the status is illegal");
+                                    return;
+                                }
+                                ConnectToDataBase.updateTaskData( newData, task, updateVale);
+                                client.sendToClient("saved!");
+                            }
                         } else {
                             client.sendToClient("notFound");
                             System.out.println("Task with ID " + taskId + " not found.");
@@ -119,6 +139,45 @@ public class SimpleServer extends AbstractServer {
                     }
                 }
 
+            } else if (message.startsWith("Task is Accept")) {
+                String[] parts = message.split("@");
+                if (parts.length >= 3 && parts[0].equals("Task is Accept")) {
+                    String taskId = parts[1];
+                    String newData = parts[2];
+                    try {
+                        int taskIdInt = Integer.parseInt(taskId);
+                        Task task = ConnectToDataBase.getTaskById(taskIdInt);
+                        if (task != null) {
+                            ConnectToDataBase.updateTaskData(newData, task, "status");
+                        } else {
+                            System.out.println("Task with ID " + taskId + " not found.");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid task ID: " + taskId);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else if (message.startsWith("Cancel request")) {
+                String[] parts = message.split("@");
+                if (parts.length >= 3 && parts[0].equals("Cancel request")) {
+                    String taskId = parts[1];
+                    try {
+                        int taskIdInt = Integer.parseInt(taskId);
+                        Task task = ConnectToDataBase.getTaskById(taskIdInt);
+                        if (task != null) {
+                            ConnectToDataBase.updateTaskData( "5", task, "status");
+                            client.sendToClient("canceld!");
+
+                        } else {
+                            System.out.println("Task with ID " + taskId + " not found.");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid task ID: " + taskId);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
             } else if (message.startsWith("#LogInAttempt")) {
                 try {
                     handleLoginAttempt(message, client);
@@ -188,55 +247,6 @@ public class SimpleServer extends AbstractServer {
                     e.printStackTrace();
                 }
             }
-
         }
     }
 }
-
-
-//	private boolean validateLoginFromDatabase(String username, String password) {
-//		List<User> users = null;
-//		try {
-//			users = ConnectToDataBase.getAllUsers();
-//			// Proceed with handling users
-//		} catch (Exception e) {
-//			e.printStackTrace(); // or handle the exception appropriately
-//		}
-//
-//		// Check if the username exists in the list of users
-//		Optional<User> userOptional = users.stream()
-//				.filter(user -> user.getUsername().equals(username))
-//				.findFirst();
-//
-//		if (userOptional.isPresent()) {
-//			// User with the provided username found
-//			User user = userOptional.get();
-//
-//			// Hash the provided password with the user's salt
-//			String hashedPassword = hashPassword(password, user.getSalt());
-//
-//			// Compare the hashed passwords
-//			return hashedPassword.equals(user.getPasswordHash());
-//		}
-//
-//		return false; // Username not found
-//	}
-//	String hashPassword(String password, String salt) {
-//		try {
-//			String passwordWithSalt = password + salt;
-//			MessageDigest md = MessageDigest.getInstance("SHA-512");
-//			byte[] hashedPassword = md.digest(passwordWithSalt.getBytes());
-//			return bytesToHex(hashedPassword);
-//		} catch (NoSuchAlgorithmException e) {
-//			// Handle the exception
-//			return null;
-//		}
-//	}
-//
-//	private String bytesToHex(byte[] bytes) {
-//		StringBuilder result = new StringBuilder();
-//		for (byte b : bytes) {
-//			result.append(String.format("%02x", b));
-//		}
-//		return result.toString();
-//	}

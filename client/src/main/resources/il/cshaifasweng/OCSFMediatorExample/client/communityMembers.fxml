@@ -8,17 +8,17 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.CommunityMembers">
    <children>
-      <Label layoutX="193.0" layoutY="28.0" prefHeight="53.0" prefWidth="232.0" text="Community Members List" textFill="#b98edc">
+      <Label layoutX="193.0" layoutY="28.0" prefHeight="53.0" prefWidth="232.0" text="Community Members List" textFill="#b473ea">
          <font>
             <Font name="David Bold" size="18.0" />
          </font>
       </Label>
       <ListView fx:id="memberList" layoutX="140.0" layoutY="94.0" prefHeight="200.0" prefWidth="338.0" style="-fx-background-color: white;" />
-      <Button fx:id="member" layoutX="365.0" layoutY="320.0" mnemonicParsing="false" onAction="#memberDetails" prefWidth="115.0" style="-fx-background-color: #b98edc;" text="User details" textFill="#f7f2f2">
+      <Button fx:id="member" layoutX="365.0" layoutY="320.0" mnemonicParsing="false" onAction="#memberDetails" prefWidth="115.0" style="-fx-background-color: #b473ea;" text="User details" textFill="#fcfafa">
          <font>
             <Font name="David Bold" size="14.0" />
          </font></Button>
-      <Button fx:id="back" layoutX="140.0" layoutY="320.0" mnemonicParsing="false" onAction="#previous" prefWidth="115.0" style="-fx-background-color: #b98edc;" text="back" textFill="#f7f2f2">
+      <Button fx:id="back" layoutX="140.0" layoutY="320.0" mnemonicParsing="false" onAction="#previous" prefWidth="115.0" style="-fx-background-color: #b473ea;" text="back" textFill="#fcfafa">
          <font>
             <Font name="David Bold" size="14.0" />
          </font></Button>

@@ -86,7 +86,7 @@ public class RequestController {
             }
         }
         try {
-            showCompletionMessage("Request Submmited", "Thanks for contacting us. \nThe request details are completed successfully.");
+            showCompletionMessage("Request Submmited", "Thanks for contacting us. \nThe request details have been completed successfully");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
