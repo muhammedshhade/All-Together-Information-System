@@ -1,6 +1,3 @@
-/**
- * Sample Skeleton for 'request_control.fxml' Controller Class
- */
 
 package il.cshaifasweng.OCSFMediatorExample.client;
 
@@ -10,8 +7,13 @@ import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -32,12 +34,45 @@ public class RequestController {
     private Button submit; // Value injected by FXMLLoader
 
     @FXML
+    private ImageView image;
+    private InputStream stream;
+    private InputStream stream1;
+
+    {
+        try {
+            stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\submit.png");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    Image myImage1=new Image(stream); {
+        try {
+            stream1 = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\help.png");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    Image myImage2=new Image(stream1);
+    @FXML
     void initialize() {
+        ImageView imageView = new ImageView(myImage1);
+        double desiredWidth = 90; // Adjust as needed
+        double desiredHeight = 50; // Adjust as needed
+        imageView.setFitWidth(desiredWidth);
+        imageView.setFitHeight(desiredHeight);
+        submit.setGraphic(imageView);
+        image.setImage(myImage2);
+
         // Initialize the ChoiceBox with choices
         services.getItems().add("Dog walker");
         services.getItems().add("Buy Medicine");
         services.getItems().add("Transportation");
         services.getItems().add("Transport of furniture");
+        services.getItems().add("Home cleaning");
+        services.getItems().add("House keeping");
+        services.getItems().add("Personal Chef");
         services.getItems().add("Other");
     }
 
@@ -60,17 +95,6 @@ public class RequestController {
     @FXML
     void getPrevious(ActionEvent event) throws IOException {
         App.setRoot("secondary");
-    }
-
-    private void displayTaskDetails(Task task) {
-        // Display the task details to the user
-        // You can show the details in a dialog, a new scene, or update a section of your current UI
-        // For example, you can use an alert dialog to show the details
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Task Details");
-        alert.setHeaderText("Task Created Successfully");
-       // alert.setContentText("Service: " + task.getId() + "\nExplanation: " + task.getExplanation());
-        alert.showAndWait();
     }
 
     @FXML

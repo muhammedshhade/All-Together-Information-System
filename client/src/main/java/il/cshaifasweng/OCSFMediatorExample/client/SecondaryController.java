@@ -1,17 +1,21 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.prefs.Preferences;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-import static java.lang.Thread.sleep;
-
-public class SecondaryController {
+public class SecondaryController implements Initializable {
 
 
     @FXML
@@ -35,6 +39,63 @@ public class SecondaryController {
     @FXML
     private Button cansel_REQUESTBT;
 
+    @FXML
+    private Button message;
+    @FXML
+    private ImageView im;
+
+    InputStream stream1;
+
+    {
+        try {
+            stream1 = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\siren.png");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    InputStream stream;
+
+    {
+        try {
+            stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\introduction.png");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    Image myImage = new Image(stream);
+
+    Image myImage1 = new Image(stream1);
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        ImageView imageView = new ImageView(myImage1);
+        double desiredWidth = 50;
+        double desiredHeight = 50;
+        imageView.setFitWidth(desiredWidth);
+        imageView.setFitHeight(desiredHeight);
+        DistressButtonControl.setGraphic(imageView);
+        im.setImage(myImage);
+
+    }
+
+    @FXML
+    void message(ActionEvent event) throws IOException {
+        try {
+            SimpleClient.getClient().sendToServer("Get uploaded messages");
+
+        } catch (IOException e) {
+            showAlert("Error", "Failed to get uploaded community tasks: " + e.getMessage());
+            e.printStackTrace();
+        }
+        try {
+            SimpleClient.getClient().sendToServer("Get all users");
+        } catch (IOException e) {
+            showAlert("Error", "Failed to get uploaded community tasks: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
 
     @FXML
     void CANCELREQUST(ActionEvent event) {
@@ -58,6 +119,7 @@ public class SecondaryController {
 
     @FXML
     void LOGOUT(ActionEvent event) throws IOException {
+        SimpleClient.getClient().sendToServer("log out");
         App.setRoot("primary");
     }
 
@@ -69,7 +131,6 @@ public class SecondaryController {
 
     @FXML
     void distress(ActionEvent event) {
-
     }
 
     @FXML

@@ -1,4 +1,3 @@
-
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
@@ -33,14 +32,18 @@ public class PrimaryController implements Initializable {
     @FXML // fx:id="LabelUser"
     private TextField LabelUser; // Value injected by FXMLLoader
 
+
     @FXML // fx:id="Log_In_button"
     private Button Log_In_button; // Value injected by FXMLLoader
 
     @FXML // fx:id="Password_button"
     private PasswordField Password_button; // Value injected by FXMLLoader
 
-    @FXML // fx:id="distressbut"
-    private ImageView distressbut; // Value injected by FXMLLoader
+    @FXML // fx:id="distressRequest"
+    private Button distressRequest; // Value injected by FXMLLoader
+
+    @FXML // fx:id="im"
+    private ImageView im; // Value injected by FXMLLoader
 
     @FXML // fx:id="passwordlabel"
     private TextField passwordlabel; // Value injected by FXMLLoader
@@ -53,35 +56,37 @@ public class PrimaryController implements Initializable {
 
     @FXML // fx:id="txt_usrn"
     private TextField txt_usrn; // Value injected by FXMLLoader
+    InputStream stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\im.png");
 
-    @FXML
-    private ImageView im;
-   // InputStream stream = new FileInputStream("@../../../../../../../../../../../Pictures/im.png");
+    Image myImage = new Image(stream);
+    InputStream stream1 = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\siren.png");
 
-    //Image myImage=new Image(stream);
+    Image myImage1 = new Image(stream1);
 
     public PrimaryController() throws FileNotFoundException {
     }
 
-    public void displayIm(){
-      //  im.setImage(myImage);
-
-    }
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // Initialize method called when the controller is loaded
+        ImageView imageView = new ImageView(myImage1);
+        double desiredWidth = 50; // Adjust as needed
+        double desiredHeight = 50; // Adjust as needed
+        imageView.setFitWidth(desiredWidth);
+        imageView.setFitHeight(desiredHeight);
+        distressRequest.setGraphic(imageView);
+        im.setImage(myImage);
         title.setEditable(false);
         request.setEditable(false);
         LabelUser.setEditable(false);
         passwordlabel.setEditable(false);
-        displayIm();
-
     }
+
     @FXML
     void distressrequest(ActionEvent event) throws IOException {
         App.setRoot("distressCall");
 
     }
+
     @FXML
     void sendWarning(ActionEvent event) {
         try {
@@ -102,7 +107,6 @@ public class PrimaryController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
 
     @FXML
     void ClientProfileLoad(ActionEvent event) {
@@ -143,25 +147,10 @@ public class PrimaryController implements Initializable {
         }
     }
 
-    void receiveFromServer(String message) {
-        // Method to handle the message/. received from the server
-        if (message.equals("LOGIN_SUCCESS")) {
-            // Handle login success
-            System.out.println("Login successful");
-        } else if (message.equals("LOGIN_FAIL")) {
-            // Handle login failure
-            System.out.println("Login failed");
-        } else {
-            // Handle other types of messages
-            System.out.println("Received message: " + message);
-        }
-    }
-
     @FXML
     void Password(ActionEvent event) {
 
     }
-
 
     @FXML
     void distress(ActionEvent event) {

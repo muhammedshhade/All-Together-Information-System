@@ -1,4 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.security.MessageDigest;
@@ -21,75 +22,74 @@ import java.util.Set;
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-     Long id;
-    @Column(name = "userid", nullable = false,length = 9,unique = true)
-     String Id;
+    Long id;
+    @Column(name = "userid", nullable = false, length = 9, unique = true)
+    String Id;
     @Column(name = "First_Name", nullable = false)
-     String first_name;
+    String first_name;
     @Column(name = "Last_Name", nullable = false)
-     String last_name;
+    String last_name;
 
     @Column(name = "is_connected")
-     boolean isConnected;
+    boolean isConnected;
 
     @Column(name = "community")
-     String community;
+    String community;
 
-    @Column(name = "username", nullable = false,unique = true)
-     String username;
+    @Column(name = "username", nullable = false, unique = true)
+    String username;
 
     @Column(name = "password_hash")
-     String passwordHash;
+    String passwordHash;
 
     @Column(name = "salt")
-     String salt;
+    String salt;
 
     @Column(name = "address")
-     String address;
-    @Column(name = "Email",unique=true)
-     String email;
+    String address;
+    @Column(name = "Email", unique = true)
+    String email;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "role")
-     Role role;
+    Role role;
 
-    @Column(name="Manager")
+    @Column(name = "Manager")
 
     private String communityManager;
 
     String password;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    //@JoinColumn(name = "task_id")
-    List <Task> tasks = new ArrayList<>();
-
-    // Constructor, getters, and setters...
-
+    List<Task> tasks = new ArrayList<>();
+    
     public List<Task> getTasks() {
         return tasks;
     }
+
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
     }
 
-    public User(String id,String first_name,String
-                Last_name,boolean isConnected, String community,
-                String username,String communityManager, String Password, String address,String emil, Role role) {
-        this.Id=id;
+    public User(String id, String first_name, String
+            Last_name, boolean isConnected, String community,
+                String username, String communityManager, String Password, String address, String emil, Role role) {
+        this.Id = id;
         this.first_name = first_name;
-        this.last_name=Last_name;
+        this.last_name = Last_name;
         this.isConnected = isConnected;
         this.community = community;
         this.username = username;
         this.salt = generateSalt();
-        this.password=Password;
-        this.communityManager=communityManager;
+        this.password = Password;
+        this.communityManager = communityManager;
         this.passwordHash = hashPassword(Password, this.salt);
         this.address = address;
-        this.email=emil;
+        this.email = emil;
         this.role = role;
 
     }
-    public User(){
+
+    public User() {
         tasks = new ArrayList<>();
     }
 
@@ -114,7 +114,7 @@ public class User implements Serializable {
         return bytesToHex(saltBytes);
     }
 
-     String hashPassword(String password, String salt) {
+    String hashPassword(String password, String salt) {
         try {
             String passwordWithSalt = password + salt;
             MessageDigest md = MessageDigest.getInstance("SHA-512");
@@ -133,20 +133,25 @@ public class User implements Serializable {
         }
         return result.toString();
     }
+
     public Long getkeyId() {
         return id;
     }
+
     public String getID() {
         return Id;
     }
-    public void setPas(String Pas){
-        this.password=Pas;
+
+    public void setPas(String Pas) {
+        this.password = Pas;
     }
+
     public String getPassword() {
         return this.password;
     }
-    public void setId(String ID){
-        this.Id=ID;
+
+    public void setId(String ID) {
+        this.Id = ID;
     }
 
     public String getFirstName() {
@@ -156,12 +161,15 @@ public class User implements Serializable {
     public void setfirstName(String name) {
         this.first_name = name;
     }
+
     public String getLastName() {
         return last_name;
     }
+
     public void setemail(String email) {
-        this.email =email;
+        this.email = email;
     }
+
     public String getEmail() {
         return email;
     }

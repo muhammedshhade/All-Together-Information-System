@@ -1,9 +1,5 @@
-/**
- * Sample Skeleton for 'displayTaskDetails.fxml' Controller Class
- */
 
 package il.cshaifasweng.OCSFMediatorExample.client;
-import com.google.protobuf.StringValue;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
@@ -48,7 +44,6 @@ public class displayTaskController {
     public void initData(Task task) {
         // Update UI elements with task details
 
-        idTask.setText(String.valueOf(task.getIdNum()));
         date.setText(String.valueOf(task.getDate()));
         time.setText(String.valueOf(task.getTime()));
         service.setText(task.getServiceType());

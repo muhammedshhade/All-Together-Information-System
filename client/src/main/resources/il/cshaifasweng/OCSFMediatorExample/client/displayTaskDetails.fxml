@@ -10,23 +10,42 @@
    <children>
       <Label layoutX="53.0" layoutY="25.0" prefHeight="38.0" prefWidth="400.0" text="Request details successfully registered." textFill="#74caea">
          <font>
-            <Font name="System Bold" size="14.0" />
+            <Font name="System Bold" size="16.0" />
          </font>
       </Label>
-      <TextField layoutX="53.0" layoutY="73.0" style="-fx-background-color: white;" text="Task is:" />
-      <TextField layoutX="53.0" layoutY="119.0" style="-fx-background-color: white;" text="Request submission Date:" />
-      <TextField layoutX="53.0" layoutY="158.0" style="-fx-background-color: white;" text="Request submission Time:" />
-      <TextField fx:id="date" layoutX="234.0" layoutY="119.0" style="-fx-background-color: without;" />
-      <TextField layoutX="53.0" layoutY="194.0" style="-fx-background-color: white;" text="Service Type:" />
-      <TextField fx:id="idTask" layoutX="234.0" layoutY="73.0" style="-fx-background-color: without; -fx-border-color: gry;" />
-      <TextField layoutX="53.0" layoutY="235.0" style="-fx-background-color: white;" text="Note:" />
-      <TextField layoutX="53.0" layoutY="270.0" style="-fx-background-color: white;" text="Sent by:" />
-      <TextField layoutX="53.0" layoutY="305.0" style="-fx-background-color: white;" text="Email:" />
-      <TextField fx:id="time" layoutX="234.0" layoutY="158.0" style="-fx-background-color: without;" />
-      <TextField fx:id="service" layoutX="234.0" layoutY="194.0" style="-fx-background-color: without;" />
-      <TextField fx:id="note" layoutX="235.0" layoutY="235.0" style="-fx-background-color: without;" />
-      <TextField fx:id="submmiter" layoutX="234.0" layoutY="270.0" style="-fx-background-color: without;" />
-      <TextField fx:id="email" layoutX="234.0" layoutY="305.0" prefHeight="26.0" prefWidth="230.0" style="-fx-background-color: without;" />
-      <Button fx:id="close" layoutX="474.0" layoutY="331.0" mnemonicParsing="false" onAction="#closePage" style="-fx-background-color: rgba(122,208,234,0.85);" text="close" />
+      <TextField layoutX="47.0" layoutY="85.0" style="-fx-background-color: white;" text="Request submission Date:">
+         <font>
+            <Font name="David Bold" size="14.0" />
+         </font></TextField>
+      <TextField layoutX="47.0" layoutY="124.0" style="-fx-background-color: white;" text="Request submission Time:">
+         <font>
+            <Font name="David Bold" size="14.0" />
+         </font></TextField>
+      <TextField fx:id="date" layoutX="228.0" layoutY="85.0" style="-fx-background-color: without;" />
+      <TextField layoutX="47.0" layoutY="160.0" style="-fx-background-color: white;" text="Service Type:">
+         <font>
+            <Font name="David Bold" size="14.0" />
+         </font></TextField>
+      <TextField layoutX="47.0" layoutY="201.0" style="-fx-background-color: white;" text="Note:">
+         <font>
+            <Font name="David Bold" size="14.0" />
+         </font></TextField>
+      <TextField layoutX="47.0" layoutY="236.0" style="-fx-background-color: white;" text="Sent by:">
+         <font>
+            <Font name="David Bold" size="14.0" />
+         </font></TextField>
+      <TextField layoutX="47.0" layoutY="271.0" style="-fx-background-color: white;" text="Email:">
+         <font>
+            <Font name="David Bold" size="14.0" />
+         </font></TextField>
+      <TextField fx:id="time" layoutX="228.0" layoutY="124.0" style="-fx-background-color: without;" />
+      <TextField fx:id="service" layoutX="228.0" layoutY="160.0" style="-fx-background-color: without;" />
+      <TextField fx:id="note" layoutX="229.0" layoutY="201.0" style="-fx-background-color: without;" />
+      <TextField fx:id="submmiter" layoutX="228.0" layoutY="236.0" style="-fx-background-color: without;" />
+      <TextField fx:id="email" layoutX="228.0" layoutY="271.0" prefHeight="26.0" prefWidth="230.0" style="-fx-background-color: without;" />
+      <Button fx:id="close" layoutX="474.0" layoutY="331.0" mnemonicParsing="false" onAction="#closePage" style="-fx-background-color: rgba(122,208,234,0.85);" text="close" textFill="WHITE">
+         <font>
+            <Font name="David Bold" size="14.0" />
+         </font></Button>
    </children>
 </AnchorPane>

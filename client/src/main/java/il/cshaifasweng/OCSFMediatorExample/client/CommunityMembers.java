@@ -1,10 +1,11 @@
-/**
- * Sample Skeleton for 'communityMembers.fxml' Controller Class
- */
-
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
+import java.io.InputStream;
+import java.io.FileInputStream;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,6 +13,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,8 @@ public class CommunityMembers {
 
     @FXML // fx:id="back"
     private Button back; // Value injected by FXMLLoader
+    @FXML
+    private ImageView image;
 
     @FXML // fx:id="member"
     private Button member; // Value injected by FXMLLoader
@@ -29,8 +33,20 @@ public class CommunityMembers {
 
     public static List<User> users = new ArrayList<>();
     private User selectedUser = null;
+    private InputStream stream;
+
+    {
+        try {
+            stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\diversity.png");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    Image myImage1 = new Image(stream);
 
     public void initialize() {
+        image.setImage(myImage1);
+
         if (users.isEmpty()) {
             return;
         }
@@ -70,6 +86,7 @@ public class CommunityMembers {
             showAlert(x);
         }
     }
+
     @FXML
     void previous(ActionEvent event) throws IOException {
         App.setRoot("manager_control");
