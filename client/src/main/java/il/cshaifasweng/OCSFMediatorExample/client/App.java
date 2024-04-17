@@ -1,4 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
+
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 
 import javafx.application.Application;
@@ -9,6 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+import javafx.event.EventHandler;
 
 import java.io.IOException;
 
@@ -26,13 +29,36 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+
+        if (stage != null && stage.isShowing()) {
+            // Close the existing window
+            stage.close();
+        }
         primaryStage = stage;
         EventBus.getDefault().register(this);
         client = SimpleClient.getClient();
         client.openConnection();
         scene = new Scene(loadFXML("primary"), 600, 500);
         stage.setScene(scene);
+      /* Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                SimpleClient.getClient().sendToServer("log out");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }));*/
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                try {
+                    SimpleClient.getClient().sendToServer("log out");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
         stage.show();
+
     }
 
     public static void displayTaskDetails(Task task) {

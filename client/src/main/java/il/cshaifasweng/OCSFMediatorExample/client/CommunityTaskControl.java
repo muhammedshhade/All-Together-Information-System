@@ -63,7 +63,6 @@ public class CommunityTaskControl {
       });
   }
 
-
     private void showAlert(String task){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Task details");

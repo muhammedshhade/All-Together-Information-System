@@ -1,8 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
-import il.cshaifasweng.OCSFMediatorExample.client.App;
-import il.cshaifasweng.OCSFMediatorExample.client.NewTaskDataControl;
-import il.cshaifasweng.OCSFMediatorExample.client.UpdateTaskDetails;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -24,7 +21,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class ConnectToDataBase {
     private static Session session;
@@ -36,7 +32,7 @@ public class ConnectToDataBase {
         configuration.addAnnotatedClass(User.class);
         configuration.addAnnotatedClass(Task.class);
         configuration.addAnnotatedClass(UserControl.class);
-//        configuration.addAnnotatedClass(UploadedTaskList.class);
+        configuration.addAnnotatedClass(MessageToUser.class);
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
         return configuration.buildSessionFactory(serviceRegistry);
     }
@@ -128,7 +124,8 @@ public class ConnectToDataBase {
         }
         return null;
     }
-    public static List<Task> getTasksWithStatusAndUser( String userId) {
+
+    public static List<Task> getTasksWithStatusAndUser(String userId) {
         try {
             SessionFactory sessionFactory = getSessionFactory();
             session = sessionFactory.openSession();
@@ -280,6 +277,75 @@ public class ConnectToDataBase {
         }
     }
 
+    public static List<MessageToUser> getMessagesBySender(Long senderId) {
+        try {
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            System.out.println("Getting data related to sender: " + senderId);
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<MessageToUser> query = builder.createQuery(MessageToUser.class);
+            Root<MessageToUser> root = query.from(MessageToUser.class);
+
+            // Adding a condition to filter data based on sender ID
+            query.where(builder.equal(root.get("recipient"), senderId));
+
+            // Execute the query and get the list of related data
+            List<MessageToUser> dataList = session.createQuery(query).getResultList();
+            return dataList;
+        } catch (Exception e) {
+            if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
+                session.getTransaction().rollback(); // Rollback transaction if an exception occurs
+            }
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return null;
+    }
+
+    public static void updateIsConnect(boolean newVal) throws Exception {
+        SessionFactory sessionFactory = getSessionFactory();
+        User temp = null;
+        if (UserControl.getLoggedInUser() == null)
+            return;
+        try {
+            users = getAllUsers();
+            for (User user : users) {
+                if (user.getID().equals(UserControl.getLoggedInUser().getID())) {
+                    temp = user;
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            if (temp != null) {
+                temp.setConnected(newVal);
+                session.update(temp);
+                session.flush();
+                session.getTransaction().commit();
+                System.out.println("User connect status updated successfully.");
+
+            } else {
+                System.out.println("user not found.");
+            }
+        } catch (Exception e) {
+            if (session != null) {
+                session.getTransaction().rollback();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
     static void addTask(Task task) throws Exception {
         User temp = null;
         try {
@@ -316,6 +382,30 @@ public class ConnectToDataBase {
         } finally {
             if (session != null) {
                 session.close();
+            }
+        }
+    }
+
+    static void Add_message(MessageToUser message) throws Exception {
+        try {
+            System.out.println("Trying to add a message to the database...");
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            session.save(message); // Save the message
+            session.flush(); // Flush changes to the session
+            session.getTransaction().commit(); // Commit the transaction
+
+            System.out.println("Message added successfully to the database.");
+        } catch (HibernateException e) {
+            if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
+                session.getTransaction().rollback(); // Rollback the transaction if an exception occurs during the transaction
+            }
+            // Log the exception or handle it accordingly
+            System.err.println("Error adding message to the database: " + e.getMessage());
+        } finally {
+            if (session != null) {
+                session.close(); // Close the session
             }
         }
     }

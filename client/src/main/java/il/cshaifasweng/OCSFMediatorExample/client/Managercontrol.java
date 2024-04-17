@@ -94,6 +94,7 @@ public class Managercontrol {
     }
     @FXML
     void logOut(ActionEvent event) throws IOException {
+        SimpleClient.getClient().sendToServer("log out");
         App.setRoot("primary");
 
     }

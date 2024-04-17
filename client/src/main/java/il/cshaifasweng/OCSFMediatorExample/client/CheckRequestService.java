@@ -1,4 +1,3 @@
-
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
@@ -28,7 +27,7 @@ public class CheckRequestService {
     private Button removebtn;
 
     public static List<Task> requests =new ArrayList<>();
-    private Task requestedTask = null;
+    private static Task requestedTask = null;
     public void initialize() {
         if (requests.isEmpty()) {
             // If requests list is empty, do nothing
@@ -96,26 +95,20 @@ public class CheckRequestService {
         }
     }
 
+
     @FXML
     void remove(ActionEvent event) throws IOException {
-        if(requestedTask != null){
-            int id= requestedTask.getIdNum();
-            System.out.println(id);
-            String message = "Task is reject@" + String.valueOf(id) + "@" + "0";
-            SimpleClient.getClient().sendToServer(message);
+        if(requestedTask != null) {
+            App.setRoot("Reject_control");
         }
-        try {
-            showCompletionMessage("Request rejected", "Thanks. \nThe request rejected - Id request "+ requestedTask.getIdNum());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-  /*      try {
-            SimpleClient.getClient().sendToServer("check requests");
-        } catch (IOException e) {
-            showAlert("Error", "Failed to get community help requests: " + e.getMessage());
-            e.printStackTrace();
-        }*/
 
+    }
+    public static  Task getRequestedTask() {
+        return requestedTask;
+    }
+
+    public void setRequestedTask(Task requestedTask) {
+        this.requestedTask = requestedTask;
     }
     @FXML
     void previous(ActionEvent event) throws IOException {
@@ -130,9 +123,8 @@ public class CheckRequestService {
             String fitst=requestedTask.getUser().getFirstName();
             String userid=requestedTask.getUser().getID();
             int status=requestedTask.getStatus();
-            String x = String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nStatus: %d", id, serviceType, fitst, userid, status);
+            String x = String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nState: %d", id, serviceType, fitst, userid, status);
             showAlert(x);
         }
     }
 }
-

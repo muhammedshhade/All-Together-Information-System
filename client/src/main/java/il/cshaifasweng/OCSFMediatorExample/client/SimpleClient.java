@@ -1,13 +1,10 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.Task;
-import il.cshaifasweng.OCSFMediatorExample.entities.User;
-import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
+import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import javafx.scene.control.Alert;
 import org.greenrobot.eventbus.EventBus;
 
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
-import il.cshaifasweng.OCSFMediatorExample.entities.Warning;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -51,6 +48,8 @@ public class SimpleClient extends AbstractClient {
                 App.setRoot("newTaskData");
                 return;
             }
+
+
             if (msg.equals("saved!")) {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION); // Use INFORMATION alert type
@@ -128,6 +127,21 @@ public class SimpleClient extends AbstractClient {
                             }
                         });
                     }
+                    else if (messageParts[0].equals("Messages")) {
+                        System.out.println("hh");
+                        MessagesToUser.message= (List<MessageToUser>) messageParts[1];
+                        // MessagesToUser.users=(List<User>)messageParts[2];
+                        Platform.runLater(() -> {
+                            try {
+                                App.setRoot("MessagesToUser");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                    }
+                    else if (messageParts[0].equals("all users send")) {
+                        MessagesToUser.users=(List<User>)messageParts[1];
+                    }
                 }
             } else {
                 handleMessageFromServer1(msg);
@@ -153,6 +167,17 @@ public class SimpleClient extends AbstractClient {
                         alert.setContentText("Login failed. Please try again."); // Set the main message/content
                         alert.showAndWait(); // Display the alert and wait for the user to close it
                     });
+                } else if ("LOGIN_FAIL2".equals(message)) {
+                    System.out.println("Login failed. Please try again.");
+                    // Ensure this runs on the JavaFX Application Thread
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
+                        alert.setTitle("Login Error"); // Set the window's title
+                        alert.setHeaderText(null); // Optional: you can have a header or set it to null
+                        alert.setContentText("Error: You are currently logged in from another device. Please log out from that device before attempting to log in here."); // Set the main message/content
+                        alert.showAndWait(); // Display the alert and wait for the user to close it
+                    });
+                    return;
                 } else {
                     if ("LOGIN_SUCCESS".equals(message)) {
                         App.setRoot("secondary");

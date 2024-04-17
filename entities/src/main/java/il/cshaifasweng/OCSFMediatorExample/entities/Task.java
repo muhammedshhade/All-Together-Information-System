@@ -13,7 +13,7 @@ public class Task implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idNum")
-    int idNum=0;
+    int idNum = 0;
 
     @Column(name = "date")
     LocalDate date;
@@ -46,7 +46,6 @@ public class Task implements Serializable {
 
     }
 
-    // Constructors
     public Task() {
         // Assign the next available ID to the task
     }
@@ -64,6 +63,7 @@ public class Task implements Serializable {
     public int getIdNum() {
         return idNum;
     }
+
     public void setIdNum(int idNum) {
         this.idNum = idNum;
     }
@@ -116,8 +116,9 @@ public class Task implements Serializable {
     public void setExecutionTime(float executionTime) {
         this.executionTime = executionTime;
     }
+
     @Override
-    public String toString(){
-        return String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %d\nState: ", this.idNum, this.serviceType,user.getFirstName(),user.getID(), this.status);
+    public String toString() {
+        return String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %d\nState: ", this.idNum, this.serviceType, user.getFirstName(), user.getID(), this.status);
     }
 }
