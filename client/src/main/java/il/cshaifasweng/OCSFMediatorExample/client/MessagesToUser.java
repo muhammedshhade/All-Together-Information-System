@@ -30,7 +30,6 @@ public class MessagesToUser {
     @FXML
     void back(ActionEvent event) throws IOException {
         App.setRoot("secondary");
-
     }
 
     public void initialize() {

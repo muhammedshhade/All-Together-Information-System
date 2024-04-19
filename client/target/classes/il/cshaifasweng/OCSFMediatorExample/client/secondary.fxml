@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -8,22 +10,22 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.SecondaryController">
    <children>
-      <Button fx:id="Requesthelpbutton" layoutX="174.0" layoutY="26.0" mnemonicParsing="false" onAction="#Requesthelp" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Submit Service Request" textFill="WHITE">
+      <Button fx:id="Requesthelpbutton" layoutX="174.0" layoutY="66.0" mnemonicParsing="false" onAction="#Requesthelp" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Submit Service Request" textFill="WHITE">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="VOLUNTERBUTTON" layoutX="174.0" layoutY="134.0" mnemonicParsing="false" onAction="#volunter" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Volunter For Tasks" textFill="WHITE">
+      <Button fx:id="VOLUNTERBUTTON" layoutX="174.0" layoutY="174.0" mnemonicParsing="false" onAction="#volunter" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Volunter For Tasks" textFill="WHITE">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="LOGOUTBUTTON" layoutX="175.0" layoutY="359.0" mnemonicParsing="false" onAction="#LOGOUT" prefWidth="250.0" style="-fx-background-color: rgba(122,208,234,0.85);" text="Log Out" textFill="WHITE">
+      <Button fx:id="LOGOUTBUTTON" layoutX="175.0" layoutY="399.0" mnemonicParsing="false" onAction="#LOGOUT" prefWidth="250.0" style="-fx-background-color: rgba(122,208,234,0.85);" text="Log Out" textFill="WHITE">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="DistressButtonControl" layoutX="243.0" layoutY="433.0" mnemonicParsing="false" onAction="#distress" prefHeight="51.0" prefWidth="87.0" style="-fx-background-color: white;" textFill="WHITE" AnchorPane.bottomAnchor="40.60000000000002" AnchorPane.leftAnchor="243.0" AnchorPane.rightAnchor="270.59999999999997" AnchorPane.topAnchor="433.0">
+      <Button fx:id="DistressButtonControl" layoutX="243.0" layoutY="473.0" mnemonicParsing="false" onAction="#distress" prefHeight="51.0" prefWidth="87.0" style="-fx-background-color: white;" textFill="WHITE" AnchorPane.bottomAnchor="0.6000000000000227" AnchorPane.leftAnchor="243.0" AnchorPane.rightAnchor="270.59999999999997" AnchorPane.topAnchor="473.0">
          <font>
             <Font name="Franklin Gothic Demi" size="21.0" />
          </font>
@@ -33,26 +35,30 @@
             <Image url="@../../../../../../../../../../Downloads/ATIS.jpg" />
          </image>
       </ImageView>
-      <Button fx:id="cansel_REQUESTBT" layoutX="175.0" layoutY="80.0" mnemonicParsing="false" onAction="#CANCELREQUST" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Cancel Service Request" textFill="WHITE">
+      <Button fx:id="cansel_REQUESTBT" layoutX="175.0" layoutY="120.0" mnemonicParsing="false" onAction="#CANCELREQUST" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Cancel Service Request" textFill="WHITE">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="CANCEL_VOLUNTERINGbt" layoutX="175.0" layoutY="193.0" mnemonicParsing="false" onAction="#Cancelvoluntering" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Cancel Voluntering" textFill="WHITE">
+      <Button fx:id="CANCEL_VOLUNTERINGbt" layoutX="175.0" layoutY="233.0" mnemonicParsing="false" onAction="#Cancelvoluntering" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Cancel Voluntering" textFill="WHITE">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="Canceldistressbt" layoutX="175.0" layoutY="247.0" mnemonicParsing="false" onAction="#CancelDistress" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Cancel Distress" textFill="WHITE">
+      <Button fx:id="Canceldistressbt" layoutX="175.0" layoutY="287.0" mnemonicParsing="false" onAction="#CancelDistress" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Cancel Distress" textFill="WHITE">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="message" layoutX="175.0" layoutY="305.0" mnemonicParsing="false" onAction="#message" prefHeight="30.0" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Messages" textFill="WHITE">
+      <Button fx:id="message" layoutX="175.0" layoutY="345.0" mnemonicParsing="false" onAction="#message" prefHeight="30.0" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Messages" textFill="WHITE">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
       </Button>
-      <ImageView fx:id="im" fitHeight="100.0" fitWidth="127.0" layoutX="42.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="im" fitHeight="100.0" fitWidth="127.0" layoutX="40.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true" />
+      <TextField fx:id="userName" layoutX="134.0" layoutY="21.0" prefHeight="30.0" prefWidth="155.0" />
+      <Label layoutX="61.0" layoutY="27.0" prefHeight="18.0" prefWidth="61.0" text="Welcome" />
+      <Label layoutX="378.0" layoutY="27.0" text="Id:" />
+      <TextField fx:id="userId" layoutX="402.0" layoutY="23.0" />
    </children>
 </AnchorPane>

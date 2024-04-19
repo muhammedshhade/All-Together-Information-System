@@ -1,5 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
+import il.cshaifasweng.OCSFMediatorExample.client.SecondaryController;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -102,7 +103,6 @@ public class ConnectToDataBase {
             CriteriaBuilder builder = session.getCriteriaBuilder();
             CriteriaQuery<Task> query = builder.createQuery(Task.class);
             Root<Task> root = query.from(Task.class);
-
             // Joining the Task entity with the User entity to access the uploader
             Join<Task, User> uploaderJoin = root.join("user");
 
@@ -306,15 +306,15 @@ public class ConnectToDataBase {
         return null;
     }
 
-    public static void updateIsConnect(boolean newVal) throws Exception {
+    public static void updateIsConnect(boolean newVal, User userLog) throws Exception {
         SessionFactory sessionFactory = getSessionFactory();
         User temp = null;
-        if (UserControl.getLoggedInUser() == null)
+        if (UserControl.getLoggedInList() == null)
             return;
         try {
             users = getAllUsers();
             for (User user : users) {
-                if (user.getID().equals(UserControl.getLoggedInUser().getID())) {
+                if (user.getID().equals(userLog.getID())) {
                     temp = user;
                     break;
                 }
@@ -351,7 +351,7 @@ public class ConnectToDataBase {
         try {
             users = getAllUsers();
             for (User user : users) {
-                if (user.getID().equals(UserControl.getLoggedInUser().getID())) {
+                if (user.getID().equals(task.getUser().getID())) {
                     temp = user;
                     break;
                 }
@@ -417,8 +417,8 @@ public class ConnectToDataBase {
         User user1 = new User("212930690", "Qamar", "Hammod", false, "Community 1", "*1", "Community 1", "2", "Kabul", "qammar@gmail.com", User.Role.Manager);
         User user2 = new User("213011398", "Adan", "Hammoud", false, "Community 1", "AdanHa", "?", "adan123", "Kabul ", "Adanhammod@gmail.com", User.Role.USER);
         User user3 = new User("213298664", "Adan", "Sulaimani", false, "Community 3", "AdanSul", "?", "AdanS123", "Nazareth", "Adaslemany@gmail.com", User.Role.USER);
-        User user4 = new User("212022263", "Mohammed", "Shhade", false, "Community 2", "MoShhade", "?", "MoShhade123", "Kukab", "hijaze.Najm@gmail.com", User.Role.USER);
-        User user5 = new User("212270565", "Nejem", "Higazy", false, "Community 2", "NejemH", "?", "NejemH123", "Tamra", "Muhammed.sh.181@gmail.com", User.Role.USER);
+        User user4 = new User("212022263", "Mohammed", "Shhade", false, "Community 2", "MoShhade", "?", "MoShhade123", "Kukab", "Muhammed.sh.181@gmail.com", User.Role.USER);
+        User user5 = new User("212270565", "Nejem", "Higazy", false, "Community 2", "NejemH", "?", "NejemH123", "Tamra", "hijaze.Najm@gmail.com", User.Role.USER);
         User user6 = new User("319050241", "Siraj", "Jabareen", false, "Community 6", "SirajJ", "?", "SirajJ123", "UMM El Fahem", "SerajWazza@gmail.com", User.Role.USER);
         User user7 = new User("215630125", "Moataz", "Odeh", false, "Community 1", "MoatazOD", "?", "MoatazO123", "Yaffa Nazareth", "Moataz.ody44@gmail.com", User.Role.USER);
         User user8 = new User("345869321", "Aya", "Hammod", false, "Community 1", "22", "?", "2", "Yaffa Nazareth", "ayaaa@gmail.com", User.Role.USER);

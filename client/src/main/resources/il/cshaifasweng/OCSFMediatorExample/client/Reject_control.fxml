@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -13,19 +14,20 @@
                 <Font name="David Bold" size="14.0" />
             </font>
         </Label>
-        <ChoiceBox fx:id="services" layoutX="274.0" layoutY="150.0" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: B98EDCFF;" />
+        <ChoiceBox fx:id="services" layoutX="219.0" layoutY="148.0" prefHeight="27.0" prefWidth="260.0" style="-fx-background-color: white; -fx-border-color: B98EDCFF;" />
         <Button fx:id="back" layoutX="294.0" layoutY="286.0" mnemonicParsing="false" onAction="#back" prefWidth="110.0" style="-fx-background-color: B98EDCFF;" text="back" textFill="WHITE">
          <font>
-            <Font name="David" size="14.0" />
+            <Font name="David Bold" size="14.0" />
          </font></Button>
         <Button fx:id="Submit" layoutX="294.0" layoutY="233.0" mnemonicParsing="false" onAction="#submit" prefWidth="110.0" style="-fx-background-color: B98EDCFF;" text="Submit" textFill="WHITE">
          <font>
-            <Font name="David" size="14.0" />
+            <Font name="David Bold" size="14.0" />
          </font></Button>
         <Label layoutX="21.0" layoutY="32.0" prefHeight="64.0" prefWidth="430.0" style="-fx-background-color: without;" text="Please select a reason for disapproving the help request.">
             <font>
                 <Font name="David Bold" size="16.0" />
             </font>
         </Label>
+      <ImageView fx:id="im" fitHeight="131.0" fitWidth="173.0" layoutX="74.0" layoutY="233.0" pickOnBounds="true" preserveRatio="true" />
     </children>
 </AnchorPane>

@@ -1,7 +1,10 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 
+
+import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -38,27 +41,28 @@ public class App extends Application {
         EventBus.getDefault().register(this);
         client = SimpleClient.getClient();
         client.openConnection();
-        scene = new Scene(loadFXML("primary"), 600, 500);
+        scene = new Scene(loadFXML("primary"), 600, 600);
         stage.setScene(scene);
-      /* Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-            try {
-                SimpleClient.getClient().sendToServer("log out");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        }));*/
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
                 try {
-                    SimpleClient.getClient().sendToServer("log out");
+                    User user;
+                    if (SecondaryController.getUserLogIn() == null)
+                        user = Managercontrol.getManagerLogIn();
+                    else user = SecondaryController.getUserLogIn();
+
+                    if (user != null)
+                        SimpleClient.getClient().sendToServer("log out " + user.getID());
+                    stage.close();
                 } catch (IOException e) {
+                    primaryStage.close();
                     throw new RuntimeException(e);
                 }
             }
+
         });
         stage.show();
-
     }
 
     public static void displayTaskDetails(Task task) {

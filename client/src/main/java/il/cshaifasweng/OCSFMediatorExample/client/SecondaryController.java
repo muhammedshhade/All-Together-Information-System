@@ -1,5 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.User;
+import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -7,12 +9,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.control.TextField;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class SecondaryController implements Initializable {
@@ -43,7 +47,13 @@ public class SecondaryController implements Initializable {
     private Button message;
     @FXML
     private ImageView im;
+    @FXML
+    private TextField userId;
 
+    @FXML
+    private TextField userName;
+
+    private static User userLogIn;
     InputStream stream1;
 
     {
@@ -53,6 +63,7 @@ public class SecondaryController implements Initializable {
             throw new RuntimeException(e);
         }
     }
+
     InputStream stream;
 
     {
@@ -76,13 +87,28 @@ public class SecondaryController implements Initializable {
         imageView.setFitHeight(desiredHeight);
         DistressButtonControl.setGraphic(imageView);
         im.setImage(myImage);
+        ArrayList<User> loggedInList = UserControl.getLoggedInList();
+        if (!loggedInList.isEmpty()) {
+            User lastUser = loggedInList.get(loggedInList.size() - 1);
+            userName.setText(lastUser.getFirstName() + " " + lastUser.getLastName());
+            userId.setText(lastUser.getID());
+            userLogIn = lastUser;
+        }
+        userId.setEditable(false);
+        userName.setEditable(false);
+    }
 
+    public static User getUserLogIn() {
+        return userLogIn;
     }
 
     @FXML
     void message(ActionEvent event) throws IOException {
         try {
-            SimpleClient.getClient().sendToServer("Get uploaded messages");
+            Object[] array = new Object[2];
+            array[0] = "Get uploaded messages"; // Assign a String object to the first index
+            array[1] = SecondaryController.getUserLogIn();
+            SimpleClient.getClient().sendToServer(array);
 
         } catch (IOException e) {
             showAlert("Error", "Failed to get uploaded community tasks: " + e.getMessage());
@@ -100,7 +126,10 @@ public class SecondaryController implements Initializable {
     @FXML
     void CANCELREQUST(ActionEvent event) {
         try {
-            SimpleClient.getClient().sendToServer("Cancel request");
+            Object[] array = new Object[2];
+            array[0] = "Cancel request"; // Assign a String object to the first index
+            array[1] = SecondaryController.getUserLogIn();
+            SimpleClient.getClient().sendToServer(array);
         } catch (IOException e) {
             showAlert("Error", "Failed to get your service requests: " + e.getMessage());
             e.printStackTrace();
@@ -119,7 +148,7 @@ public class SecondaryController implements Initializable {
 
     @FXML
     void LOGOUT(ActionEvent event) throws IOException {
-        SimpleClient.getClient().sendToServer("log out");
+        SimpleClient.getClient().sendToServer("log out " + getUserLogIn().getID());
         App.setRoot("primary");
     }
 

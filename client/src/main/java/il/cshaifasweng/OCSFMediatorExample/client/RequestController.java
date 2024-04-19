@@ -120,14 +120,7 @@ public class RequestController {
         task.setTime(LocalTime.now());
         task.setServiceType(services.getValue());
         task.setStatus(3);
-
-      User loggedInUser = UserControl.getLoggedInUser();
-      if (loggedInUser != null) {
-          task.setUser(loggedInUser);
-      } else {
-            showAlert("Error", "No user logged in. Please log in before submitting a request.");
-            return;
-        }
+        task.setUser(SecondaryController.getUserLogIn());
         App.displayTaskDetails(task);
         try {
             Object[] array = new Object[2];
@@ -135,7 +128,6 @@ public class RequestController {
             array[1] = task;
             SimpleClient.getClient().sendToServer(array);
         } catch (IOException e) {
-
             e.printStackTrace();
         }
         App.setRoot("secondary");

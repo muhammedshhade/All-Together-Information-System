@@ -4,40 +4,77 @@
 
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.User;
+import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 public class Managercontrol {
 
-    @FXML // fx:id="distress"
-    private Button distress; // Value injected by FXMLLoader
+    @FXML
+    private Button distress;
 
-    @FXML // fx:id="doneTasks"
-    private Button doneTasks; // Value injected by FXMLLoader
+    @FXML
+    private Button doneTasks;
 
-    @FXML // fx:id="members"
-    private Button members; // Value injected by FXMLLoader
+    @FXML
+    private TextField id;
 
-    @FXML // fx:id="requests"
-    private Button requests; // Value injected by FXMLLoader
+    @FXML
+    private Button members;
 
-    @FXML // fx:id="serviceRequest"
-    private Button serviceRequest; // Value injected by FXMLLoader
+    @FXML
+    private TextField name;
 
-    @FXML // fx:id="updateTask"
-    private Button updateTask; // Value injected by FXMLLoader
+    @FXML
+    private Button requests;
 
-    @FXML // fx:id="volunteer"
-    private Button volunteer; // Value injected by FXMLLoader
+    @FXML
+    private Button serviceRequest;
+
+    @FXML
+    private Button updateTask;
+
+    @FXML
+    private Button volunteer;
+    private static User managerLogIn;
+
+    public void initialize() {
+
+        ArrayList<User> loggedInList = UserControl.getLoggedInList();
+        if (!loggedInList.isEmpty()) {
+            User lastUser = loggedInList.get(loggedInList.size() - 1);
+            name.setText(lastUser.getFirstName() + " " + lastUser.getLastName());
+            id.setText(lastUser.getID());
+            managerLogIn = lastUser;
+        }
+        id.setEditable(false);
+        name.setEditable(false);
+    }
+
+    // Getter for userLogIn
+    public static User getManagerLogIn() {
+        return managerLogIn;
+    }
+
+    // Setter for userLogIn
+    public static void setUserLogIn(User user) {
+        managerLogIn = user;
+    }
 
     @FXML
     void communityRequests(ActionEvent event) {
         try {
-            SimpleClient.getClient().sendToServer("Get uploaded tasks by community members");
+            SimpleClient.getClient().sendToServer("Get uploaded tasks by community members@"+managerLogIn.getCommunityManager());
         } catch (IOException e) {
             showAlert("Error", "Failed to get uploaded community tasks: " + e.getMessage());
             e.printStackTrace();
@@ -56,7 +93,8 @@ public class Managercontrol {
     @FXML
     void getCommunityMembers(ActionEvent event) throws IOException {
         try {
-            SimpleClient.getClient().sendToServer("Get community members");
+            System.out.println(managerLogIn.getCommunityManager());
+            SimpleClient.getClient().sendToServer("Get community members@"+managerLogIn.getCommunityManager());
         } catch (IOException e) {
             showAlert("Error", "Failed to get community members: " + e.getMessage());
             e.printStackTrace();
@@ -76,7 +114,7 @@ public class Managercontrol {
     void showServiceRequests(ActionEvent event) {
         //to check the requests.
         try {
-            SimpleClient.getClient().sendToServer("check requests");
+            SimpleClient.getClient().sendToServer("check requests@"+managerLogIn.getCommunityManager());
         } catch (IOException e) {
             showAlert("Error", "Failed to get community help requests: " + e.getMessage());
             e.printStackTrace();
@@ -92,9 +130,10 @@ public class Managercontrol {
     void updateTaskDetails(ActionEvent event) throws IOException {
         App.setRoot("updateTaskDetails");
     }
+
     @FXML
     void logOut(ActionEvent event) throws IOException {
-        SimpleClient.getClient().sendToServer("log out");
+        SimpleClient.getClient().sendToServer("log out " + getManagerLogIn().getID());
         App.setRoot("primary");
 
     }
