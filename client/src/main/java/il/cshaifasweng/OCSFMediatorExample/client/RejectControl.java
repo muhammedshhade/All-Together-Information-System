@@ -8,8 +8,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class RejectControl {
 
@@ -23,7 +28,22 @@ public class RejectControl {
     private ChoiceBox<String> services;
 
     @FXML
+    private ImageView im;
+
+
+    private InputStream stream;
+
+    {
+        try {
+            stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\say-no.png");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    Image myImage1 = new Image(stream);
+    @FXML
     void initialize() {
+        im.setImage(myImage1);
         // Initialize the ChoiceBox with choices
         services.getItems().add("Beyond Scope of Service or Expertise");
         services.getItems().add("Resource Constraints");
@@ -56,16 +76,16 @@ public class RejectControl {
         Task t = service.getRequestedTask();
         int id = t.getIdNum();
         System.out.println(id);
-        String message = "Task is rejected@" + String.valueOf(id) + "@" + "4";
+        String message = "Task is rejected@" + id + "@" + "4";
         SimpleClient.getClient().sendToServer(message);
-        User loggedInUser = UserControl.getLoggedInUser();
+        User loggedInUser = Managercontrol.getManagerLogIn();
         Long manger_id = loggedInUser.getkeyId();
         System.out.println(manger_id);
         Long user_id = t.getUser().getkeyId();
         SimpleClient.getClient().sendToServer("The reason of rejected is@" + "Your Request: " + service.getRequestedTask().getServiceType() + "is Rejected by your manager,the reason is: " + services.getValue() + "@" + t.getUser().getCommunity() + "@" + String.valueOf(user_id));
         System.out.println(services.getValue());
         try {
-            SimpleClient.getClient().sendToServer("check requests");
+            SimpleClient.getClient().sendToServer("check requests@"+Managercontrol.getManagerLogIn().getCommunityManager());
         } catch (IOException e) {
             showAlert("Error", "Failed to get community help requests: " + e.getMessage());
             e.printStackTrace();

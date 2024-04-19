@@ -1,7 +1,3 @@
-/**
- * Sample Skeleton for 'CommunityTasks.fxml' Controller Class
- */
-
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
@@ -10,10 +6,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextArea;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
 import javafx.scene.control.ListView;
 
 //class for the community submitted requests.
@@ -23,8 +25,6 @@ public class CommunityTaskControl {
 
     @FXML
     private Button submitter;
-    @FXML
-    private TextArea note;
 
     @FXML // fx:id="back"
     private Button back; // Value injected by FXMLLoader
@@ -34,42 +34,61 @@ public class CommunityTaskControl {
 
     @FXML // fx:id="tasks"
     private Button tasks; // Value injected by FXMLLoader
-
-    public static List<Task> getCommunityTask =new ArrayList<>();
+    @FXML
+    private ImageView im;
+    public static List<Task> getCommunityTask = new ArrayList<>();
     private Task requestedTask = null;
+    private InputStream stream;
 
-  public void initialize() {
-      note.setEditable(false);
-      if (getCommunityTask.isEmpty()) {
-          // If getCommunityTask list is empty, do nothing
-          return;
-      }
-      // Add items to the ListView
-      for (Task task : getCommunityTask) {
-          this.communityTasks.getItems().add(task.getServiceType());
-      }
-      // Set event handler for mouse click on ListView
-      this.communityTasks.setOnMouseClicked(event -> {
-          String selectedTaskName = this.communityTasks.getSelectionModel().getSelectedItem();
-          if (selectedTaskName != null) {
-              // Find the selected task in the getCommunityTask list
-              for (Task task : getCommunityTask) {
-                  if (task.getServiceType().equals(selectedTaskName)) {
-                      requestedTask = task;
-                      break;
-                  }
-              }
-          }
-      });
-  }
+    {
+        try {
+            stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\statistics.png");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
-    private void showAlert(String task){
+    Image myImage1 = new Image(stream);
+
+    public void initialize() {
+        im.setImage(myImage1);
+        if (getCommunityTask.isEmpty()) {
+            // If getCommunityTask list is empty, do nothing
+            return;
+        }
+        // Add items to the ListView
+        for (Task task : getCommunityTask) {
+            this.communityTasks.getItems().add("Task id:" + task.getIdNum() + " - " + task.getServiceType());
+        }
+        // Set event handler for mouse click on ListView
+        this.communityTasks.setOnMouseClicked(event -> {
+
+            String selectedTaskName = this.communityTasks.getSelectionModel().getSelectedItem();
+            if (selectedTaskName != null) {
+                // Find the selected task in the getCommunityTask list
+                for (Task task : getCommunityTask) {
+                    String[] parts1 = selectedTaskName.split("-");
+                    String[] parts2 = parts1[0].split(":");
+                    // Trim the string before parsing it as an integer
+                    int number = Integer.parseInt(parts2[1].trim());
+                    if (task.getIdNum() == number) {
+                        requestedTask = task;
+                        break;
+                    }
+                }
+            }
+        });
+    }
+
+
+    private void showAlert(String task) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Task details");
-        alert.setHeaderText("Task Details: " );
+        alert.setHeaderText("Task Details: ");
         alert.setContentText(task);
         alert.showAndWait();
     }
+
     private void showAlert2(String task) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("User details");
@@ -90,6 +109,7 @@ public class CommunityTaskControl {
             showAlert2(x);
         }
     }
+
     @FXML
     void previous(ActionEvent event) throws IOException {
         App.setRoot("manager_control");
@@ -97,13 +117,13 @@ public class CommunityTaskControl {
 
     @FXML
     void tasksDetails(ActionEvent event) {
-        if(requestedTask != null){
-            int id= requestedTask.getIdNum();
-            String serviceType= requestedTask.getServiceType();
-            String fitst=requestedTask.getUser().getFirstName();
-            String userid=requestedTask.getUser().getID();
-            int status=requestedTask.getStatus();
-            String x = String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nStatus: %d", id, serviceType, fitst, userid, status);
+        if (requestedTask != null) {
+            int id = requestedTask.getIdNum();
+            String serviceType = requestedTask.getServiceType();
+            String fitst = requestedTask.getUser().getFirstName();
+            String userid = requestedTask.getUser().getID();
+            int status = requestedTask.getStatus();
+            String x = String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nState: %d", id, serviceType, fitst, userid, status);
             showAlert(x);
         }
     }

@@ -48,7 +48,7 @@ public class displayTaskController {
         time.setText(String.valueOf(task.getTime()));
         service.setText(task.getServiceType());
         email.setText(task.getUser().getEmail());
-        User user = UserControl.getLoggedInUser();
+        User user = SecondaryController.getUserLogIn();
         submmiter.setText(user.getFirstName()+ " "+user.getLastName());
         note.setText(task.getNote());
     }

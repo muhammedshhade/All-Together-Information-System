@@ -34,10 +34,10 @@ public class CancelServiceRequest {
 
     @FXML // fx:id="requestsList"
     private ListView<String> requestsList; // Value injected by FXMLLoader
-    public static List<Task> getRequestService =new ArrayList<>();
+    public static List<Task> getRequestService = new ArrayList<>();
     private Task requestedTask = null;
 
-    public void initialize() {
+  /*  public void initialize() {
         note.setEditable(false);
         if (getRequestService.isEmpty()) {
             // If getCommunityTask list is empty, do nothing
@@ -60,23 +60,57 @@ public class CancelServiceRequest {
                 }
             }
         });
+    }*/
+
+    public void initialize() {
+        // im.setImage(myImage1);
+        if (getRequestService.isEmpty()) {
+            // If requests list is empty, do nothing
+            return;
+        }
+        // Add items to the ListView
+        for (Task task : getRequestService) {
+            this.requestsList.getItems().add("Task id:" + task.getIdNum() + " - " + task.getServiceType());
+        }
+        // Set event handler for mouse click on ListView
+        this.requestsList.setOnMouseClicked(event -> {
+
+            String selectedTaskName = this.requestsList.getSelectionModel().getSelectedItem();
+            if (selectedTaskName != null) {
+                // Find the selected task in the getCommunityTask list
+                for (Task task : getRequestService) {
+                    String[] parts1 = selectedTaskName.split("-");
+                    String[] parts2 = parts1[0].split(":");
+                    // Trim the string before parsing it as an integer
+                    int number = Integer.parseInt(parts2[1].trim());
+                    if (task.getIdNum() == number) {
+                        requestedTask = task;
+                        break;
+                    }
+                }
+            }
+        });
     }
 
     @FXML
     void CancelRequest(ActionEvent event) throws IOException {
-        if(requestedTask != null){
-            int id= requestedTask.getIdNum();
+        if (requestedTask != null) {
+            int id = requestedTask.getIdNum();
             System.out.println(id);
-            String message = "Cancel request@" + String.valueOf(id) + "@" + "0";
+            String message = "cancel request@" + id + "@" + "0";
             SimpleClient.getClient().sendToServer(message);
         }
         try {
-            SimpleClient.getClient().sendToServer("Cancel request");
+            Object[] array = new Object[2];
+            array[0] = "Cancel request"; // Assign a String object to the first index
+            array[1] = SecondaryController.getUserLogIn();
+            SimpleClient.getClient().sendToServer(array);
         } catch (IOException e) {
             showAlert("Error", "Failed to get your service requests: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -89,20 +123,22 @@ public class CancelServiceRequest {
     void back(ActionEvent event) throws IOException {
         App.setRoot("secondary");
     }
-    private void showAlert(String task){
+
+    private void showAlert(String task) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Task details");
-        alert.setHeaderText("Task Details: " );
+        alert.setHeaderText("Task Details: ");
         alert.setContentText(task);
         alert.showAndWait();
     }
+
     @FXML
     void taskDetails(ActionEvent event) {
-        if(requestedTask != null){
-            LocalTime time=requestedTask.getTime();
-            LocalDate date=requestedTask.getDate();
-            String serviceType= requestedTask.getServiceType();
-            String note =requestedTask.getNote();
+        if (requestedTask != null) {
+            LocalTime time = requestedTask.getTime();
+            LocalDate date = requestedTask.getDate();
+            String serviceType = requestedTask.getServiceType();
+            String note = requestedTask.getNote();
             String formattedDetails = String.format("Date: %s\nTime: %s\nTask Description: %s\nNote: %s",
                     date, time, serviceType, note);
             showAlert(formattedDetails);

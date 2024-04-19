@@ -4,13 +4,19 @@
 
 package il.cshaifasweng.OCSFMediatorExample.client;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 
 
 public class NewTaskDataControl {
@@ -31,8 +37,35 @@ public class NewTaskDataControl {
 
     @FXML // fx:id="note"
     private TextArea note; // Value injected by FXMLLoader
+    @FXML
+    private ImageView im1;
+
+    @FXML
+    private ImageView im2;
+    private InputStream stream;
+
+    {
+        try {
+            stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\done.png");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    Image myImage1 = new Image(stream);
+    private InputStream stream1;
+
+    {
+        try {
+            stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\audit.png");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    Image myImage2 = new Image(stream);
 
     public void initialize() {
+        im1.setImage(myImage2);
+        im2.setImage(myImage1);
         title.setEditable(false);
         note.setEditable(false);
         title.setText("Please enter the value of "+ UpdateTaskDetails.getUpdateVale()+".");
@@ -74,7 +107,8 @@ public class NewTaskDataControl {
         }
         try {
             // Construct the message to send to the server
-            String message = "update data@" + taskId.getText() + "@" + newData.getText() + "@" + UpdateTaskDetails.getUpdateVale();
+            String message = "update data@" + taskId.getText() + "@" + newData.getText() + "@" + UpdateTaskDetails.getUpdateVale()+"@"+
+                    Managercontrol.getManagerLogIn().getCommunityManager();
             // Send the message to the server
             SimpleClient.getClient().sendToServer(message);
 

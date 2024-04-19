@@ -1,23 +1,40 @@
 package il.cshaifasweng.OCSFMediatorExample.entities;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Base64;
 import javax.persistence.Entity;
 
 public class UserControl extends User {
-    private static User loggedInUser;
+  //  private static User loggedInUser;
+    public static ArrayList<User> LoggedInList = new ArrayList<>();
 
     // Getter for logged-in user
-    public static User getLoggedInUser() {
+    /*public static User getLoggedInUser() {
         return loggedInUser;
-    }
+    }*/
 
     // Setter for logged-in user
-    public static void setLoggedInUser(User user) {
+  /*  public static void setLoggedInUser(User user) {
         loggedInUser = user;
+    }*/
+
+    // Method to set the entire LoggedInList
+    public static void setLoggedInList(ArrayList<User> list) {
+        LoggedInList = list;
     }
 
-    public UserControl(String ID,String first_name,String
+    // Method to get the entire LoggedInList
+    public static ArrayList<User> getLoggedInList() {
+        return LoggedInList;
+    }
+
+    // Method to add a user to the LoggedInList
+    public static void addUser(User user) {
+        LoggedInList.add(user);
+    }
+
+   public UserControl(String ID,String first_name,String
             Last_name,boolean isConnected, String commentary,
                        String username,String communityManager, String Password, String address,String email, Role role){
         super( ID,first_name,

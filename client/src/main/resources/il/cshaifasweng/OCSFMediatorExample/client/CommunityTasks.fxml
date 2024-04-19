@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -29,5 +30,6 @@
          </font>
       </Button>
       <TextArea fx:id="note" layoutX="85.0" layoutY="267.0" prefHeight="117.0" prefWidth="342.0" style="-fx-background-color: without; -fx-border-color: without; -fx-region-background: without;" text="Status 0: Request approved.&#10;Status 1: Task that has at least one volunteer.&#10;Status 2: Task is completed.&#10;Status 3: Request not yet approved.&#10;Status 4: Request has been disapproved.&#10;Status 5: Service request has been cancelled." />
+      <ImageView fx:id="im" fitHeight="99.0" fitWidth="137.0" layoutX="447.0" layoutY="276.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>

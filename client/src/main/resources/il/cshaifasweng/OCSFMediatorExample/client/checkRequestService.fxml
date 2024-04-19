@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -30,5 +31,6 @@
          <font>
             <Font name="David Bold" size="14.0" />
          </font></Button>
+      <ImageView fx:id="im" fitHeight="92.0" fitWidth="122.0" layoutX="248.0" layoutY="392.0" pickOnBounds="true" preserveRatio="true" />
     </children>
 </AnchorPane>

@@ -39,6 +39,7 @@ public class User implements Serializable {
     @Column(name = "username", nullable = false, unique = true)
     String username;
 
+    String password;
     @Column(name = "password_hash")
     String passwordHash;
 
@@ -55,10 +56,9 @@ public class User implements Serializable {
     Role role;
 
     @Column(name = "Manager")
-
     private String communityManager;
 
-    String password;
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     List<Task> tasks = new ArrayList<>();
     

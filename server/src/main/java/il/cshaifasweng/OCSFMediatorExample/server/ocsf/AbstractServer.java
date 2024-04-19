@@ -4,6 +4,10 @@
 
 package il.cshaifasweng.OCSFMediatorExample.server.ocsf;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.User;
+import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
+import il.cshaifasweng.OCSFMediatorExample.server.ConnectToDataBase;
+
 import java.net.*;
 import java.util.*;
 import java.io.*;
@@ -178,7 +182,16 @@ public abstract class AbstractServer implements Runnable
    */
   final public void stopListening()
   {
+    try {
+      ArrayList<User> loggedInList = UserControl.getLoggedInList();
+      for (User user : loggedInList){
+        ConnectToDataBase.updateIsConnect(false,user);
+      }
+    }catch (Exception e) {
+      throw new RuntimeException(e);
+    }
     readyToStop = true;
+
   }
 
   /**
@@ -437,7 +450,7 @@ public abstract class AbstractServer implements Runnable
     }
     finally
     {
-      readyToStop = true;
+        readyToStop = true;
       connectionListener = null;
 
       // call the hook method to notify that the server has stopped
@@ -508,7 +521,10 @@ public abstract class AbstractServer implements Runnable
    * connections.  The default implementation
    * does nothing. This method may be overriden by subclasses.
    */
-  protected void serverStopped() {}
+  protected void serverStopped() {
+
+
+  }
 
   /**
    * Hook method called when the server is clased.

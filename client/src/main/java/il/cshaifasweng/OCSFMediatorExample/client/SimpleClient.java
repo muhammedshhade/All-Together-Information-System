@@ -49,7 +49,6 @@ public class SimpleClient extends AbstractClient {
                 return;
             }
 
-
             if (msg.equals("saved!")) {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION); // Use INFORMATION alert type
@@ -208,8 +207,8 @@ public class SimpleClient extends AbstractClient {
 
                     // Deserialize the User object received from the server
                     User user = (User) in.readObject();
-                    UserControl.setLoggedInUser(user);
-                    UserControl.setLoggedInUser(user);
+                    UserControl.addUser(user);
+                    UserControl.addUser(user);
                 } catch (ClassNotFoundException e) {
                     throw new RuntimeException(e);
                 }
