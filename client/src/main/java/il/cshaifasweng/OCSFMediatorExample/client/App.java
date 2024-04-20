@@ -54,13 +54,12 @@ public class App extends Application {
 
                     if (user != null)
                         SimpleClient.getClient().sendToServer("log out " + user.getID());
-                    stage.close();
                 } catch (IOException e) {
                     primaryStage.close();
                     throw new RuntimeException(e);
                 }
+                stage.close();
             }
-
         });
         stage.show();
     }

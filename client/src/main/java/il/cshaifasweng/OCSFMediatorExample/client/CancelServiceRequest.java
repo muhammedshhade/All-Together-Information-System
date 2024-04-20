@@ -64,6 +64,7 @@ public class CancelServiceRequest {
 
     public void initialize() {
         // im.setImage(myImage1);
+        note.setEditable(false);
         if (getRequestService.isEmpty()) {
             // If requests list is empty, do nothing
             return;
