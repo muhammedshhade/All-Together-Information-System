@@ -149,7 +149,8 @@ public class CheckRequestService {
             String fitst=requestedTask.getUser().getFirstName();
             String userid=requestedTask.getUser().getID();
             int status=requestedTask.getStatus();
-            String x = String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nState: %d", id, serviceType, fitst, userid, status);
+            String note= requestedTask.getNote();
+            String x = String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nState: %d\nNote: %s", id, serviceType, fitst, userid, status,note);
             showAlert(x);
         }
     }

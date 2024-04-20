@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
+import javafx.scene.control.TextArea;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -36,6 +37,11 @@ public class CommunityTaskControl {
     private Button tasks; // Value injected by FXMLLoader
     @FXML
     private ImageView im;
+
+
+    @FXML
+    private TextArea note;
+
     public static List<Task> getCommunityTask = new ArrayList<>();
     private Task requestedTask = null;
     private InputStream stream;
@@ -51,6 +57,7 @@ public class CommunityTaskControl {
     Image myImage1 = new Image(stream);
 
     public void initialize() {
+        note.setEditable(false);
         im.setImage(myImage1);
         if (getCommunityTask.isEmpty()) {
             // If getCommunityTask list is empty, do nothing
@@ -123,7 +130,8 @@ public class CommunityTaskControl {
             String fitst = requestedTask.getUser().getFirstName();
             String userid = requestedTask.getUser().getID();
             int status = requestedTask.getStatus();
-            String x = String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nState: %d", id, serviceType, fitst, userid, status);
+            String note = requestedTask.getNote();
+            String x = String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nState: %d\nNote: %s", id, serviceType, fitst, userid, status, note);
             showAlert(x);
         }
     }

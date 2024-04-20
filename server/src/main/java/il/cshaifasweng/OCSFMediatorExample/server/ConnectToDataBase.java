@@ -1,6 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
-import il.cshaifasweng.OCSFMediatorExample.client.SecondaryController;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
@@ -305,44 +304,46 @@ public class ConnectToDataBase {
         }
         return null;
     }
+    public static void logoutAllUsers() {
+        try {
+            for (User user : UserControl.getLoggedInList()) {
+                ConnectToDataBase.updateIsConnect(false, user);
+                System.out.println("User logged out: " + user.getUsername());
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("Error logging out users", e);
+        }
+    }
 
     public static void updateIsConnect(boolean newVal, User userLog) throws Exception {
         SessionFactory sessionFactory = getSessionFactory();
         User temp = null;
-        if (UserControl.getLoggedInList() == null)
-            return;
         try {
-            users = getAllUsers();
+            List<User> users = getAllUsers(); // Assuming getAllUsers returns all users
             for (User user : users) {
                 if (user.getID().equals(userLog.getID())) {
                     temp = user;
                     break;
                 }
             }
+            System.out.println("Number of users retrieved: " + users.size());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Error retrieving users", e);
         }
-        try {
-            session = sessionFactory.openSession();
+
+        try (Session session = sessionFactory.openSession()) {
             session.beginTransaction();
             if (temp != null) {
                 temp.setConnected(newVal);
                 session.update(temp);
-                session.flush();
                 session.getTransaction().commit();
-                System.out.println("User connect status updated successfully.");
-
+                System.out.println("User connection status updated successfully: " + temp.getUsername());
             } else {
-                System.out.println("user not found.");
+                System.out.println("User not found: " + userLog.getUsername());
             }
         } catch (Exception e) {
-            if (session != null) {
-                session.getTransaction().rollback();
-            }
-        } finally {
-            if (session != null) {
-                session.close();
-            }
+            System.out.println("Error updating user connection status: " + e.getMessage());
+            throw e; // Rethrow the exception after logging
         }
     }
 

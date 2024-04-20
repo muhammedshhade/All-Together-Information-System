@@ -12,7 +12,10 @@
    <children>
       <ChoiceBox fx:id="services" layoutX="270.0" layoutY="108.0" prefWidth="150.0" style="-fx-background-color: white; -fx-border-color: gray;" />
       <TextField fx:id="explainService" layoutX="270.0" layoutY="160.0" prefHeight="50.0" prefWidth="150.0" style="-fx-border-color: gray;" />
-      <Button fx:id="previousPage" layoutX="300.0" layoutY="305.0" mnemonicParsing="false" onAction="#getPrevious" prefWidth="80.0" style="-fx-background-color: #7ad0ea;" text="Back" />
+      <Button fx:id="previousPage" layoutX="300.0" layoutY="305.0" mnemonicParsing="false" onAction="#getPrevious" prefWidth="80.0" style="-fx-background-color: #7ad0ea;" text="Back" textFill="WHITE">
+         <font>
+            <Font name="David Bold" size="14.0" />
+         </font></Button>
       <Button fx:id="submit" layoutX="280.0" layoutY="232.0" mnemonicParsing="false" onAction="#submitRequest" prefHeight="14.0" prefWidth="120.0" style="-fx-background-color: without;" />
       <Label fx:id="note" layoutX="155.0" layoutY="170.0" prefHeight="30.0" prefWidth="90.0" text="Note:">
          <font>

@@ -9,16 +9,6 @@ public class UserControl extends User {
   //  private static User loggedInUser;
     public static ArrayList<User> LoggedInList = new ArrayList<>();
 
-    // Getter for logged-in user
-    /*public static User getLoggedInUser() {
-        return loggedInUser;
-    }*/
-
-    // Setter for logged-in user
-  /*  public static void setLoggedInUser(User user) {
-        loggedInUser = user;
-    }*/
-
     // Method to set the entire LoggedInList
     public static void setLoggedInList(ArrayList<User> list) {
         LoggedInList = list;
