@@ -6,7 +6,6 @@ import java.util.Base64;
 import javax.persistence.Entity;
 
 public class UserControl extends User {
-  //  private static User loggedInUser;
     public static ArrayList<User> LoggedInList = new ArrayList<>();
 
     // Method to set the entire LoggedInList

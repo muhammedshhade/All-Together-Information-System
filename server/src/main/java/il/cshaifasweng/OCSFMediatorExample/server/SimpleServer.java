@@ -1,6 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
-import il.cshaifasweng.OCSFMediatorExample.client.SecondaryController;
+import il.cshaifasweng.OCSFMediatorExample.client.TaskCancellationEvent;
 import il.cshaifasweng.OCSFMediatorExample.client.UpdateTaskDetails;
 import il.cshaifasweng.OCSFMediatorExample.entities.MessageToUser;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
@@ -23,18 +23,6 @@ public class SimpleServer extends AbstractServer {
         super(port);
     }
 
-  /*  @Override
-    protected void serverClosed() {
-
-        try {
-
-            ConnectToDataBase.updateIsConnect(false);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }*/
-
-
     private static void modifyTask(int TaskID) {
         try {
             List<Task> tasks = ConnectToDataBase.getAllTasks();
@@ -56,23 +44,18 @@ public class SimpleServer extends AbstractServer {
                 if (messageParts.length == 2 && messageParts[0] instanceof String && messageParts[0].equals("add task to database.")
                         && messageParts[1] instanceof Task) {
                     ConnectToDataBase.addTask((Task) messageParts[1]);
-                } else if (messageParts.length == 2 && messageParts[0] instanceof String &&
+                }
+                else if (messageParts.length == 2 && messageParts[0] instanceof String &&
                         messageParts[0].equals("Cancel request") && messageParts[1] instanceof User) {
                     List<Task> requests = ConnectToDataBase.getTasksWithStatusAndUser(((User) messageParts[1]).getID());
                     Object[] array = new Object[2];
                     array[0] = "ToCancel"; // Assign a String object to the first index
                     array[1] = requests;
                     client.sendToClient(array);
-                } else if (messageParts.length == 2 && messageParts[0] instanceof String &&
+                }
+                else if (messageParts.length == 2 && messageParts[0] instanceof String &&
                         messageParts[0].equals("Get uploaded messages") && messageParts[1] instanceof User) {
-                    Long id = 0L;
-                    List<User> allUsers = ConnectToDataBase.getAllUsers();
-                    for (User user : allUsers) {
-                        if (user.getID().equals(((User) messageParts[1]).getID())) {
-                            id = user.getkeyId();
-                        }
-                    }
-                    List<MessageToUser> requests = ConnectToDataBase.getMessagesBySender(id);
+                    List<MessageToUser> requests = ConnectToDataBase.getMessagesBySender(((User) messageParts[1]).getID());
                     Object[] array = new Object[2];
                     array[0] = "Messages"; // Assign a String object to the first index
                     array[1] = requests;
@@ -88,7 +71,6 @@ public class SimpleServer extends AbstractServer {
                 array[1] = alltasks;
                 client.sendToClient(array);
             } else if (message.startsWith("Get community members")) {
-                System.out.println("adan hi");
                 String[] parts = message.split("@");
                 if (parts.length == 2 && parts[1] != null) {
                     String communityManager = parts[1];
@@ -115,17 +97,13 @@ public class SimpleServer extends AbstractServer {
                 if (parts.length == 2 && parts[1] != null) {
                     String communityManager = parts[1];
                     // Get the community members based on the community manager's ID
-                    List<Task> requests = ConnectToDataBase.getTasksWithStatus(communityManager,3);
+                    List<Task> requests = ConnectToDataBase.getTasksWithStatus(communityManager, 3);
                     Object[] array = new Object[2];
                     array[0] = "request"; // Assign a String object to the first index
                     array[1] = requests;
                     client.sendToClient(array);
                 }
-            /*    List<Task> requests = ConnectToDataBase.getTasksWithStatus(SecondaryController.getUserLogIn().getCommunityManager(), 3);
-                Object[] array = new Object[2];
-                array[0] = "request"; // Assign a String object to the first index
-                array[1] = requests;
-                client.sendToClient(array);*/
+
             } else if (message.startsWith("modify")) {
                 String taskid = message.split(" ")[1];
                 modifyTask(Integer.parseInt(taskid));
@@ -143,13 +121,14 @@ public class SimpleServer extends AbstractServer {
                         int taskIdInt = Integer.parseInt(taskId);
                         Task task = ConnectToDataBase.getTaskById(taskIdInt);
                         if (task != null) {
-                            if (!task.getUser().getCommunity().equals(communityManager)) {
+                            boolean k = task.getUser().getCommunity().equals(communityManager);
+                            if (!k) {
                                 client.sendToClient("notInYourCommunity");
                             } else if (task.getStatus() == 5) {
                                 client.sendToClient("The task is canceled.");
                             } else if (task.getStatus() != 2 && !updateVale.equals("status")) {
                                 client.sendToClient("The task's status isn't 2.");
-                            } else if (task.getUser().getCommunity().equals(communityManager)) {
+                            } else if (k) {
                                 if ((Integer.parseInt(newData) < 0 || Integer.parseInt(newData) > 5) && updateVale.equals("status")) {
                                     client.sendToClient("the status is illegal");
                                     return;
@@ -197,6 +176,11 @@ public class SimpleServer extends AbstractServer {
                         Task task = ConnectToDataBase.getTaskById(taskIdInt);
                         if (task != null) {
                             ConnectToDataBase.updateTaskData(newData, task, "status");
+                            List<Task> requests = ConnectToDataBase.getTasksWithStatus(task.getUser().getCommunity(), 3);
+                            Object[] array = new Object[2];
+                            array[0] = "accept"; // Assign a String object to the first index
+                            array[1] = requests;
+                            client.sendToClient(array);
                         } else {
                             System.out.println("Task with ID " + taskId + " not found.");
                         }
@@ -208,14 +192,29 @@ public class SimpleServer extends AbstractServer {
                 }
             } else if (message.startsWith("cancel request")) {
                 String[] parts = message.split("@");
-                if (parts.length >= 3 && parts[0].equals("cancel request")) {
+                if (parts.length >= 2 && parts[0].equals("cancel request")) {
                     String taskId = parts[1];
                     try {
                         int taskIdInt = Integer.parseInt(taskId);
                         Task task = ConnectToDataBase.getTaskById(taskIdInt);
                         if (task != null) {
                             ConnectToDataBase.updateTaskData("5", task, "status");
-                            client.sendToClient("canceld!");
+                            System.out.println("user id "+ task.getUser().getID());
+
+                            List<Task> requests = ConnectToDataBase.getTasksWithStatusAndUser(task.getUser().getID());
+                            System.out.println("size list "+ requests.size());
+                            Object[] array = new Object[2];
+                            array[0] = "canceled!"; // Assign a String object to the first index
+                            array[1] = requests;
+                            client.sendToClient(array);
+                           array[0] = "update request list for manager"; // Assign a String object to the first index
+                           array[1] = task;
+                           // client.sendToClient(array);
+                           // client.sendToClient("update request list for manager");
+                            //String notify ="Task ("+task.getIdNum()+ ") has been canceled";
+                            //sendToAllClients(notify);
+                            sendToAllClients("canceled!");
+                            sendToAllClients(new TaskCancellationEvent(task));
                         } else {
                             System.out.println("Task with ID " + taskId + " not found.");
                         }
@@ -236,7 +235,7 @@ public class SimpleServer extends AbstractServer {
                 User manger;
                 MessageToUser Message = new MessageToUser();
                 Message.setContent(reason);
-                Long recipientId = Long.valueOf(news);
+                String recipientId = news;
                 Message.setRecipient(recipientId);
                 for (User user : allUsers) {
                     System.out.println("user.getCommunityManager(): " + user.getCommunityManager());
@@ -267,22 +266,8 @@ public class SimpleServer extends AbstractServer {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                 }
-            }/* else if (message.equals("Get uploaded messages")) {
-                Long id = 0L;
-                List<User> allUsers = ConnectToDataBase.getAllUsers();
-                for (User user : allUsers) {
-                    if (user.getID().equals(SecondaryController.getUserLogIn().getID())) {
-                        id = user.getkeyId();
-                    }
-                }
-                List<MessageToUser> requests = ConnectToDataBase.getMessagesBySender(id);
-                Object[] array = new Object[2];
-                array[0] = "Messages"; // Assign a String object to the first index
-                array[1] = requests;
-                client.sendToClient(array);
-            } */ else if (message.equals("Get all users")) {
+            } else if (message.equals("Get all users")) {
                 List<User> allUsers = ConnectToDataBase.getAllUsers();
                 Object[] array = new Object[2];
                 array[0] = "all users send"; // Assign a String object to the first index
@@ -322,7 +307,6 @@ public class SimpleServer extends AbstractServer {
                     isValidLogin = user.login(username, password);
 
                     if (isValidLogin) {
-                        // UserControl.setLoggedInUser(user);
                         UserControl.addUser(user);
                         ByteArrayOutputStream bos = new ByteArrayOutputStream();
                         try (ObjectOutputStream out = new ObjectOutputStream(bos)) {
@@ -337,23 +321,7 @@ public class SimpleServer extends AbstractServer {
                             return;
                         }
                         ConnectToDataBase.updateIsConnect(true, user);
-                      /*  try {
-                            ArrayList<User> loggedInList = UserControl.getLoggedInList();
-                            for (User userLog : loggedInList) {
-                                if (user == userLog) {
-                                    if (user.getisConnected() == true) {
-                                        client.sendToClient("LOGIN_FAIL2");
-                                        return;
-                                    }
-                                }
-                            }
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }*/
-                       /* if (UserControl.getLoggedInUser().getisConnected() == true) {
-                            client.sendToClient("LOGIN_FAIL2");
-                            return;
-                        }*/
+
                         byte[] userBytes = bos.toByteArray();
                         client.sendToClient(userBytes);
                         // Send a success response back to the client

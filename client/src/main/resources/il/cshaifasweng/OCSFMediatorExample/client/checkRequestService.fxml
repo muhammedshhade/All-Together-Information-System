@@ -15,7 +15,7 @@
             </font>
         </Label>
         <ListView fx:id="communityTasks" layoutX="45.0" layoutY="113.0" prefHeight="182.0" prefWidth="509.0" style="-fx-background-color: white;" />
-        <Button fx:id="back" layoutX="45.0" layoutY="323.0" mnemonicParsing="false" onAction="#previous" prefWidth="110.0" style="-fx-background-color: #b473ea;" text="back" textFill="WHITE">
+        <Button fx:id="back" layoutX="45.0" layoutY="323.0" mnemonicParsing="false" onAction="#previous" prefWidth="110.0" style="-fx-background-color: #b473ea;" text="Back" textFill="WHITE">
          <font>
             <Font name="David Bold" size="14.0" />
          </font></Button>
@@ -31,6 +31,11 @@
          <font>
             <Font name="David Bold" size="14.0" />
          </font></Button>
-      <ImageView fx:id="im" fitHeight="92.0" fitWidth="122.0" layoutX="248.0" layoutY="392.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="im" fitHeight="92.0" fitWidth="122.0" layoutX="220.0" layoutY="424.0" pickOnBounds="true" preserveRatio="true" />
+      <Button fx:id="refresh" layoutX="232.0" layoutY="369.0" mnemonicParsing="false" onAction="#Refresh" prefWidth="110.0" style="-fx-background-color: #b473ea;" text="Refresh" textFill="WHITE">
+         <font>
+            <Font name="David Bold" size="14.0" />
+         </font>
+      </Button>
     </children>
 </AnchorPane>

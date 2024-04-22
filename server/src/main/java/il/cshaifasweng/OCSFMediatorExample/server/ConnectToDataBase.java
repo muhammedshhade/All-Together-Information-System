@@ -1,15 +1,11 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
-import javafx.application.Platform;
-import javafx.scene.control.Alert;
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.service.ServiceRegistry;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -276,7 +272,7 @@ public class ConnectToDataBase {
         }
     }
 
-    public static List<MessageToUser> getMessagesBySender(Long senderId) {
+    public static List<MessageToUser> getMessagesBySender(String senderId) {
         try {
             SessionFactory sessionFactory = getSessionFactory();
             session = sessionFactory.openSession();
@@ -304,14 +300,25 @@ public class ConnectToDataBase {
         }
         return null;
     }
+
     public static void logoutAllUsers() {
+
         try {
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            session.beginTransaction();
             for (User user : UserControl.getLoggedInList()) {
-                ConnectToDataBase.updateIsConnect(false, user);
+                user.setConnected(false);
+                session.update(user);
+                session.getTransaction().commit();
                 System.out.println("User logged out: " + user.getUsername());
             }
         } catch (Exception e) {
             throw new RuntimeException("Error logging out users", e);
+        }finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 
@@ -336,6 +343,7 @@ public class ConnectToDataBase {
             if (temp != null) {
                 temp.setConnected(newVal);
                 session.update(temp);
+                session.flush();
                 session.getTransaction().commit();
                 System.out.println("User connection status updated successfully: " + temp.getUsername());
             } else {

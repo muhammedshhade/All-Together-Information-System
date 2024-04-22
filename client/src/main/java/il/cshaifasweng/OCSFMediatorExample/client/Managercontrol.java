@@ -6,6 +6,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -128,14 +129,25 @@ public class Managercontrol {
 
     @FXML
     void updateTaskDetails(ActionEvent event) throws IOException {
-        App.setRoot("updateTaskDetails");
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("updateTaskDetails");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @FXML
     void logOut(ActionEvent event) throws IOException {
         SimpleClient.getClient().sendToServer("log out " + getManagerLogIn().getID());
-        App.setRoot("primary");
-
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("primary");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
 }

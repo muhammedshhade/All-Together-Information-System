@@ -1,6 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -14,6 +15,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +42,8 @@ public class CommunityTaskControl {
     @FXML
     private ImageView im;
 
+    @FXML
+    private Button refresh;
 
     @FXML
     private TextArea note;
@@ -60,7 +66,14 @@ public class CommunityTaskControl {
         note.setEditable(false);
         im.setImage(myImage1);
         if (getCommunityTask.isEmpty()) {
-            // If getCommunityTask list is empty, do nothing
+            Platform.runLater(() -> {
+                showCompletionMessage("Empty", "There are no uploaded requests.");
+                try {
+                    App.setRoot("manager_control");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
             return;
         }
         // Add items to the ListView
@@ -119,20 +132,60 @@ public class CommunityTaskControl {
 
     @FXML
     void previous(ActionEvent event) throws IOException {
-        App.setRoot("manager_control");
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("manager_control");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     @FXML
+    void Refresh(ActionEvent event) {
+        try {
+            SimpleClient.getClient().sendToServer("Get uploaded tasks by community members@"+Managercontrol.getManagerLogIn().getCommunityManager());
+        } catch (IOException e) {
+            showAlert("Error", "Failed to get uploaded community tasks: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    @FXML
     void tasksDetails(ActionEvent event) {
-        if (requestedTask != null) {
-            int id = requestedTask.getIdNum();
-            String serviceType = requestedTask.getServiceType();
-            String fitst = requestedTask.getUser().getFirstName();
-            String userid = requestedTask.getUser().getID();
-            int status = requestedTask.getStatus();
-            String note = requestedTask.getNote();
-            String x = String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nState: %d\nNote: %s", id, serviceType, fitst, userid, status, note);
+        if(requestedTask != null){
+            int id= requestedTask.getIdNum();
+            String serviceType= requestedTask.getServiceType();
+            String fitst=requestedTask.getUser().getFirstName();
+            String userid=requestedTask.getUser().getID();
+            int status=requestedTask.getStatus();
+            String note= requestedTask.getNote();
+            // Retrieve date and time from the requestedTask object
+            LocalDate date = requestedTask.getDate();
+            LocalTime time = requestedTask.getTime();
+
+            // Format date and time strings
+            String formattedDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            String formattedTime = time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+            String x = String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nStatus: %d\nDate: %s\nTime: %s\nNote: %s",
+                    id, serviceType, fitst, userid, status, formattedDate, formattedTime, note);
             showAlert(x);
         }
+    }
+
+    private void showCompletionMessage(String title, String message) {
+        // Display an alert dialog to the user
+        Alert alert = new Alert(Alert.AlertType.INFORMATION); // Use INFORMATION type for completion message
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

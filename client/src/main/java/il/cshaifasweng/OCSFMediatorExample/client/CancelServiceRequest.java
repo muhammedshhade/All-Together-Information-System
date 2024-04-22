@@ -5,12 +5,15 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -37,35 +40,19 @@ public class CancelServiceRequest {
     public static List<Task> getRequestService = new ArrayList<>();
     private Task requestedTask = null;
 
-  /*  public void initialize() {
-        note.setEditable(false);
-        if (getRequestService.isEmpty()) {
-            // If getCommunityTask list is empty, do nothing
-            return;
-        }
-        // Add items to the ListView
-        for (Task task : getRequestService) {
-            this.requestsList.getItems().add(task.getServiceType());
-        }
-        // Set event handler for mouse click on ListView
-        this.requestsList.setOnMouseClicked(event -> {
-            String selectedTaskName = this.requestsList.getSelectionModel().getSelectedItem();
-            if (selectedTaskName != null) {
-                // Find the selected task in the getCommunityTask list
-                for (Task task : getRequestService) {
-                    if (task.getServiceType().equals(selectedTaskName)) {
-                        requestedTask = task;
-                        break;
-                    }
-                }
-            }
-        });
-    }*/
-
     public void initialize() {
+        EventBus.getDefault().register(this);
         // im.setImage(myImage1);
         note.setEditable(false);
         if (getRequestService.isEmpty()) {
+            Platform.runLater(() -> {
+                showCompletionMessage("Empty", "There are no requests to cancel.");
+                try {
+                    App.setRoot("secondary");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
             // If requests list is empty, do nothing
             return;
         }
@@ -93,15 +80,58 @@ public class CancelServiceRequest {
         });
     }
 
+
+    @Subscribe
+    public void updateList(List<Task> listOfTasks ) {
+        System.out.println("update list "+ listOfTasks.size());
+        Platform.runLater(() -> {
+            this.requestsList.getItems().clear();
+            getRequestService = listOfTasks;
+            if (getRequestService.isEmpty()) {
+                Platform.runLater(() -> {
+                    showCompletionMessage("Empty", "There are no requests to cancel.");
+                    try {
+                        App.setRoot("secondary");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+                // If requests list is empty, do nothing
+                return;
+            }
+            for (Task task : getRequestService) {
+                this.requestsList.getItems().add("Task id:" + task.getIdNum() + " - " + task.getServiceType());
+            }
+            this.requestsList.setOnMouseClicked(event -> {
+                String selectedTaskName = this.requestsList.getSelectionModel().getSelectedItem();
+                if (selectedTaskName != null) {
+                    // Find the selected task in the tasks list
+                    for (Task task : getRequestService) {
+                        String[] parts1 = selectedTaskName.split("-");
+                        String[] parts2 = parts1[0].split(":");
+                        // Trim the string before parsing it as an integer
+                        int number = Integer.parseInt(parts2[1].trim());
+                        if (task.getIdNum() == number) {
+                            requestedTask = task;
+                            break;
+                        }
+                    }
+                }
+            });
+        });
+    }
+
     @FXML
     void CancelRequest(ActionEvent event) throws IOException {
         if (requestedTask != null) {
             int id = requestedTask.getIdNum();
             System.out.println(id);
-            String message = "cancel request@" + id + "@" + "0";
+            String message = "cancel request@" + id;
             SimpleClient.getClient().sendToServer(message);
+
+
         }
-        try {
+       /* try {
             Object[] array = new Object[2];
             array[0] = "Cancel request"; // Assign a String object to the first index
             array[1] = SecondaryController.getUserLogIn();
@@ -109,7 +139,7 @@ public class CancelServiceRequest {
         } catch (IOException e) {
             showAlert("Error", "Failed to get your service requests: " + e.getMessage());
             e.printStackTrace();
-        }
+        }*/
     }
 
     private void showAlert(String title, String message) {
@@ -120,9 +150,23 @@ public class CancelServiceRequest {
         alert.showAndWait();
     }
 
+    private void showCompletionMessage(String title, String message) {
+        // Display an alert dialog to the user
+        Alert alert = new Alert(Alert.AlertType.INFORMATION); // Use INFORMATION type for completion message
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
     @FXML
     void back(ActionEvent event) throws IOException {
-        App.setRoot("secondary");
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("secondary");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     private void showAlert(String task) {
@@ -132,6 +176,7 @@ public class CancelServiceRequest {
         alert.setContentText(task);
         alert.showAndWait();
     }
+
 
     @FXML
     void taskDetails(ActionEvent event) {

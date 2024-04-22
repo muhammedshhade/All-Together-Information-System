@@ -1,6 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 
 import java.io.FileInputStream;
@@ -83,7 +84,13 @@ public class PrimaryController implements Initializable {
 
     @FXML
     void distressrequest(ActionEvent event) throws IOException {
-        App.setRoot("distressCall");
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("distressCall");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
     }
 

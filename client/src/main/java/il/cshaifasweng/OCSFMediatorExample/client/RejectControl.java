@@ -3,6 +3,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -53,8 +54,14 @@ public class RejectControl {
     }
 
     @FXML
-    void back(ActionEvent event) throws IOException {
-        App.setRoot("checkRequestService");
+    void back(ActionEvent event) {
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("checkRequestService");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @FXML
@@ -65,9 +72,7 @@ public class RejectControl {
         }
         try {
             showCompletionMessage("Request canceled", "request has been rejected, a message will be sent to the user about it.");
-
             //App.setRoot("checkRequestService");
-
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -81,8 +86,8 @@ public class RejectControl {
         User loggedInUser = Managercontrol.getManagerLogIn();
         Long manger_id = loggedInUser.getkeyId();
         System.out.println(manger_id);
-        Long user_id = t.getUser().getkeyId();
-        SimpleClient.getClient().sendToServer("The reason of rejected is@" + "Your Request: " + service.getRequestedTask().getServiceType() + "is Rejected by your manager,the reason is: " + services.getValue() + "@" + t.getUser().getCommunity() + "@" + String.valueOf(user_id));
+        String user_id = t.getUser().getID();
+        SimpleClient.getClient().sendToServer("The reason of rejected is@" + "Your Request: " + service.getRequestedTask().getServiceType() + "is Rejected by your manager,the reason is: " + services.getValue() + "@" + t.getUser().getCommunity() + "@" + (user_id));
         System.out.println(services.getValue());
         try {
             SimpleClient.getClient().sendToServer("check requests@"+Managercontrol.getManagerLogIn().getCommunityManager());

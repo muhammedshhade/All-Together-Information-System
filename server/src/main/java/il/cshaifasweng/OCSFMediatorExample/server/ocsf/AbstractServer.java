@@ -174,11 +174,16 @@ public abstract class AbstractServer implements Runnable {
      * Causes the server to stop accepting new connections.
      */
     final public void stopListening() {
-        try {
-            ConnectToDataBase.logoutAllUsers();
-        }catch (Exception e) {
-            throw new RuntimeException(e);
+      /*  try {
+            ArrayList<User> loggedInList = UserControl.getLoggedInList();
+
+            //for (User user : UserControl.getLoggedInList()) {
+                User lastUser = loggedInList.get(loggedInList.size() - 1);
+                ConnectToDataBase.updateIsConnect(false,lastUser);
         }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }*/
         readyToStop = true;
     }
 
