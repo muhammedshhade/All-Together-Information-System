@@ -2,6 +2,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -114,12 +115,12 @@ public class SecondaryController implements Initializable {
             showAlert("Error", "Failed to get uploaded community tasks: " + e.getMessage());
             e.printStackTrace();
         }
-        try {
+     /*   try {
             SimpleClient.getClient().sendToServer("Get all users");
         } catch (IOException e) {
             showAlert("Error", "Failed to get uploaded community tasks: " + e.getMessage());
             e.printStackTrace();
-        }
+        }*/
 
     }
 
@@ -149,12 +150,25 @@ public class SecondaryController implements Initializable {
     @FXML
     void LOGOUT(ActionEvent event) throws IOException {
         SimpleClient.getClient().sendToServer("log out " + getUserLogIn().getID());
-        App.setRoot("primary");
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("primary");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @FXML
     void Requesthelp(ActionEvent event) throws IOException {
-        App.setRoot("request_control");
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("request_control");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
         SimpleClient.getClient().sendToServer("Create task");
     }
 
@@ -178,7 +192,7 @@ public class SecondaryController implements Initializable {
         }
     }
 
-    private void showAlert(String title, String message) {
+    public static void showAlert(String title, String message) {
         // Display an alert dialog to the user
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);

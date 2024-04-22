@@ -17,13 +17,14 @@ public class MessageToUser implements Serializable {
     @Column(name = "sender_id", nullable = false)
     private Long sender;
 
-    @Column(name = "recipient_id", nullable = false)
-    private Long recipient;
+    @Column(name = "recipient_id", nullable = false, length = 9)
+    private String recipient;
+
     @Column(name = "sent_time")
     private LocalDateTime sentTime; // Use the LocalDateTime class
 
     // Constructor
-    public MessageToUser(String content, Long sender, Long recipient, LocalDateTime sentTime) {
+    public MessageToUser(String content, Long sender, String recipient, LocalDateTime sentTime) {
         this.content = content;
         this.sender = sender;
         this.recipient = recipient;
@@ -68,11 +69,11 @@ public class MessageToUser implements Serializable {
         this.sender = sender;
     }
 
-    public Long getRecipient() {
+    public String getRecipient() {
         return recipient;
     }
 
-    public void setRecipient(Long recipient) {
+    public void setRecipient(String recipient) {
         this.recipient = recipient;
     }
 

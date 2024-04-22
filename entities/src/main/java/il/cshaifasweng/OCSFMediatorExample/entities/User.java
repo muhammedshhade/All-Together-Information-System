@@ -14,8 +14,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Column;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -23,10 +21,13 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
+
     @Column(name = "userid", nullable = false, length = 9, unique = true)
     String Id;
+
     @Column(name = "First_Name", nullable = false)
     String first_name;
+
     @Column(name = "Last_Name", nullable = false)
     String last_name;
 
@@ -58,10 +59,9 @@ public class User implements Serializable {
     @Column(name = "Manager")
     private String communityManager;
 
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     List<Task> tasks = new ArrayList<>();
-    
+
     public List<Task> getTasks() {
         return tasks;
     }

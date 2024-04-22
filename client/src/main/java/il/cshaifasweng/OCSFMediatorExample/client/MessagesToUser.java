@@ -2,6 +2,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.MessageToUser;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -20,6 +21,10 @@ public class MessagesToUser {
 
     @FXML
     private Button details;
+
+    @FXML
+    private Button refresh;
+
     @FXML // fx:id="memberList"
     private ListView<String> messages; // Value injected by FXMLLoader
 
@@ -28,12 +33,48 @@ public class MessagesToUser {
     public static List<User> users = new ArrayList<>();
 
     @FXML
+    void Refresh(ActionEvent event) {
+        try {
+            Object[] array = new Object[2];
+            array[0] = "Get uploaded messages"; // Assign a String object to the first index
+            array[1] = SecondaryController.getUserLogIn();
+            SimpleClient.getClient().sendToServer(array);
+
+        } catch (IOException e) {
+            SecondaryController.showAlert("Error", "Failed to get uploaded community tasks: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
     void back(ActionEvent event) throws IOException {
-        App.setRoot("secondary");
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("secondary");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    private void showCompletionMessage(String title, String message) {
+        // Display an alert dialog to the user
+        Alert alert = new Alert(Alert.AlertType.INFORMATION); // Use INFORMATION type for completion message
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
     public void initialize() {
         if (message.isEmpty()) {
+            Platform.runLater(() -> {
+                showCompletionMessage("Empty", "There are no messages.");
+                try {
+                    App.setRoot("secondary");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
             return;
         }
 

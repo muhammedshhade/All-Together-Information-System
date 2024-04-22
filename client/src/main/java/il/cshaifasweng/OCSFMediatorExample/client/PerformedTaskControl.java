@@ -2,6 +2,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -57,7 +58,13 @@ public class PerformedTaskControl {
     }
     @FXML
     void previous(ActionEvent event) throws IOException {
-        App.setRoot("manager_control");
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("manager_control");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @FXML
