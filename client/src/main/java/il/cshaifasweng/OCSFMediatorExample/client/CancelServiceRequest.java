@@ -4,6 +4,7 @@
 
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import il.cshaifasweng.OCSFMediatorExample.entities.GlobalDataSaved;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -18,6 +19,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,7 +68,7 @@ public class CancelServiceRequest {
             String selectedTaskName = this.requestsList.getSelectionModel().getSelectedItem();
             if (selectedTaskName != null) {
                 // Find the selected task in the getCommunityTask list
-                for (Task task : getRequestService) {
+                for (Task task :getRequestService) {
                     String[] parts1 = selectedTaskName.split("-");
                     String[] parts2 = parts1[0].split(":");
                     // Trim the string before parsing it as an integer
@@ -87,7 +89,7 @@ public class CancelServiceRequest {
         Platform.runLater(() -> {
             this.requestsList.getItems().clear();
             getRequestService = listOfTasks;
-            if (getRequestService.isEmpty()) {
+          /*  if (getRequestService.isEmpty()) {
                 Platform.runLater(() -> {
                     showCompletionMessage("Empty", "There are no requests to cancel.");
                     try {
@@ -98,7 +100,7 @@ public class CancelServiceRequest {
                 });
                 // If requests list is empty, do nothing
                 return;
-            }
+            }*/
             for (Task task : getRequestService) {
                 this.requestsList.getItems().add("Task id:" + task.getIdNum() + " - " + task.getServiceType());
             }
@@ -180,15 +182,24 @@ public class CancelServiceRequest {
 
     @FXML
     void taskDetails(ActionEvent event) {
-        if (requestedTask != null) {
-            LocalTime time = requestedTask.getTime();
+        if(requestedTask != null){
+            int id= requestedTask.getIdNum();
+            String serviceType= requestedTask.getServiceType();
+            String fitst=requestedTask.getUser().getFirstName();
+            String userid=requestedTask.getUser().getID();
+            int status=requestedTask.getStatus();
+            String note= requestedTask.getNote();
+            // Retrieve date and time from the requestedTask object
             LocalDate date = requestedTask.getDate();
-            String serviceType = requestedTask.getServiceType();
-            String note = requestedTask.getNote();
-            String formattedDetails = String.format("Date: %s\nTime: %s\nTask Description: %s\nNote: %s",
-                    date, time, serviceType, note);
-            showAlert(formattedDetails);
+            LocalTime time = requestedTask.getTime();
+
+            // Format date and time strings
+            String formattedDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            String formattedTime = time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+
+            String x = String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nDate: %s\nTime: %s\nNote: %s",
+                    id, serviceType, fitst, userid, formattedDate, formattedTime, note);
+            showAlert(x);
         }
     }
-
 }

@@ -1,7 +1,9 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.layout.BorderPane;
 import org.greenrobot.eventbus.EventBus;
 
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
@@ -27,15 +29,29 @@ public class SimpleClient extends AbstractClient {
 
     protected void handleMessageFromServer(Object msg) throws IOException {
         try {
-            if (msg.equals("notFound")) {
+            if (msg.equals("back to list")) {
+                Platform.runLater(() -> {
+                    try {
+                        App.setRoot("checkRequestService");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+                return;
+            }if (msg.equals("notFound")) {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
                     alert.setTitle("Error"); // Set the window's title
                     alert.setHeaderText(null); // Optional: you can have a header or set it to null
                     alert.setContentText("Task not found"); // Set the main message/content
                     alert.showAndWait(); // Display the alert and wait for the user to close it
+                    try {
+                        App.setRoot("newTaskData");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 });
-                App.setRoot("newTaskData");
+
                 return;
             }
             if (msg.equals("notInYourCommunity")) {
@@ -62,22 +78,8 @@ public class SimpleClient extends AbstractClient {
                 App.setRoot("updateTaskDetails");
                 return;
             }
-            if (msg.equals("canceled!")) {
-            /*  Platform.runLater(() -> {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION); // Use INFORMATION alert type
-                    alert.setTitle("Thank you"); // Set the window's title
-                    alert.setHeaderText(null); // Optional: you can have a header or set it to null
-                    alert.setContentText("Your request has been canceled.."); // Set the main message/content
-                    alert.showAndWait(); // Display the alert and wait for the user to close it
-                });*/
-                // App.setRoot("cancelServiceRequest");
-                //cancelRequest()
-                //
-                EventBus.getDefault().post(new MessageEvent(new Message("canceled task")));
-                return;
-            }if(msg instanceof TaskCancellationEvent)
-            {
-                EventBus.getDefault().post((Task)msg);
+            if (msg.getClass().equals(Warning.class)) {
+                EventBus.getDefault().post(new WarningEvent((Warning) msg));
                 return;
             }
             if (msg.equals("The task's status isn't 2.")) {
@@ -156,22 +158,10 @@ public class SimpleClient extends AbstractClient {
                             alert.setContentText("Your request has been canceled."); // Set the main message/content
                             alert.showAndWait(); // Display the alert and wait for the user to close it
                             EventBus.getDefault().post((List<Task>) messageParts[1]);
-                            EventBus.getDefault().post(new MessageEvent(new Message("canceled task")));
-
                         });
                     } else if (messageParts[0].equals("accept")) {
                         Platform.runLater(() -> {
                             EventBus.getDefault().post(messageParts[1]);
-                        });
-                    } else if (messageParts[0].equals("update request list for manager")) {
-                        Platform.runLater(() -> {
-
-                            // Message newMessage=new Message("Submitted Successfully");
-                            //EventBus.getDefault().post(new MessageEvent(newMessage));
-                            //EventBus.getDefault().post(new MessageEvent(new Message("Task Canceled")));
-                            //  EventBus.getDefault().post(messageParts);
-
-                            // EventBus.getDefault().post(new WarningEvent(new Warning(messageParts[0]));
                         });
                     } else if (messageParts[0].equals("Messages")) {
                         MessagesToUser.message = (List<MessageToUser>) messageParts[1];
@@ -242,6 +232,11 @@ public class SimpleClient extends AbstractClient {
             }
             if (msg.getClass().equals(Warning.class)) {
                 EventBus.getDefault().post(new WarningEvent((Warning) msg));
+                return;
+            }
+            if (msg.getClass().equals(Task.class)) {
+                EventBus.getDefault().post(new TaskCancellationEvent((Task) msg));
+                return;
             }
             if (msg instanceof List) {
                 List<?> list = (List<?>) msg; // Cast to a list of unknown type

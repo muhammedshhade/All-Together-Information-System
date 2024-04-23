@@ -94,31 +94,31 @@ public class App extends Application {
         return fxmlLoader.load();
     }
 
-   /* @Override
+    @Override
     public void stop() throws Exception {
         // TODO Auto-generated method stub
         EventBus.getDefault().unregister(this);
         super.stop();
-    }*/
-
-
-    @Override
-    public void stop() throws Exception {
-        EventBus.getDefault().unregister(this);
-        try {
-            User user;
-            if (SecondaryController.getUserLogIn() == null)
-                user = Managercontrol.getManagerLogIn();
-            else user = SecondaryController.getUserLogIn();
-            if (user != null)
-                SimpleClient.getClient().sendToServer("log out " + user.getID());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        super.stop();
-        Platform.exit();
-        System.exit(0);
     }
+
+
+//    @Override
+//    public void stop() throws Exception {
+//        EventBus.getDefault().unregister(this);
+//        try {
+//            User user;
+//            if (SecondaryController.getUserLogIn() == null)
+//                user = Managercontrol.getManagerLogIn();
+//            else user = SecondaryController.getUserLogIn();
+//            if (user != null)
+//                SimpleClient.getClient().sendToServer("log out " + user.getID());
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+//        super.stop();
+//        Platform.exit();
+//        System.exit(0);
+//    }
 
     @Subscribe
     public void onWarningEvent(WarningEvent event) {
@@ -131,45 +131,53 @@ public class App extends Application {
             alert.show();
         });
     }
+
     @Subscribe
-    public  void onMessageEvent(MessageEvent event)
-    {
+    public void onMessageEvent(MessageEvent event) {
         Platform.runLater(() -> {
             Alert alert = new Alert(AlertType.INFORMATION,
                     String.format("%s\n%s\n",
-                            event.getMessage().getMsg(),event.getMessage().getTime().toString()));
+                            event.getMessage().getMsg(), event.getMessage().getTime().toString()));
             alert.show();
         });
     }
 
-
-    public  void onTaskCancellationEvent(TaskCancellationEvent event)
-    {
-        Platform.runLater(() -> {
-            for (Task task : CheckRequestService.requests) {
-                if (task.getIdNum() == event.getCanceledTask().getIdNum()) {
-                    //taskToRemove = task;
-                    CheckRequestService.requests.remove(task);
-                    CheckRequestService controller = new CheckRequestService();
-                    controller.initialize(); // Call the initialize method
-                   break;
-                }
-            }
-
-//                Scene scene = App.getPrimaryStage().getScene(); // Assuming you have a method to get the primary stage in your App class
-//            if (scene.getRoot() instanceof Parent) {
-//                Parent root = (Parent) scene.getRoot();
-//                if (root.getId().equals("checkRequestService")) {
-//                    try {
+//    @Subscribe
+//    public void onCancel(TaskCancellationEvent event) {
+//        Platform.runLater(() -> {
+//            try {
+//                    if (Managercontrol.getManagerLogIn() != null) {
+//                        client.sendToServer("check requests@" + Managercontrol.getManagerLogIn().getCommunityManager());
 //                        App.setRoot("checkRequestService");
-//                    } catch (IOException e) {
-//                        throw new RuntimeException(e);
+//                        System.out.println("in app");
 //                    }
-//                }
+//               // }
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
 //            }
+//        });
+//    }
+
+ @Subscribe
+    public void onCancel(TaskCancellationEvent event) {
+        Platform.runLater(() -> {
+            try {
+             //   Scene scene = App.getScene();
+               // Stage stage = (Stage) scene.getWindow();
+             //   Parent root = scene.getRoot();
+            //    if (root != null && root.getId().equals("checkRequestService")) {
+                    if (Managercontrol.getManagerLogIn() != null &&
+                            Managercontrol.getManagerLogIn().getCommunityManager().equals(event.getCanceledTask().getUser().getCommunity())) {
+                        client.sendToServer("check requests@" + Managercontrol.getManagerLogIn().getCommunityManager());
+                        App.setRoot("checkRequestService");
+                        System.out.println("in app");
+                    }
+               // }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         });
     }
-
 
 
     public static Scene getScene() {
@@ -179,7 +187,6 @@ public class App extends Application {
     public static Stage getStage() {
         return primaryStage;
     }
-
 
     public static void main(String[] args) {
         launch();
