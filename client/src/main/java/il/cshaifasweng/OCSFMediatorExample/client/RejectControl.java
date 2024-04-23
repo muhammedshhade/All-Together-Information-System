@@ -89,12 +89,12 @@ public class RejectControl {
         String user_id = t.getUser().getID();
         SimpleClient.getClient().sendToServer("The reason of rejected is@" + "Your Request: " + service.getRequestedTask().getServiceType() + "is Rejected by your manager,the reason is: " + services.getValue() + "@" + t.getUser().getCommunity() + "@" + (user_id));
         System.out.println(services.getValue());
-        try {
+     /*   try {
             SimpleClient.getClient().sendToServer("check requests@"+Managercontrol.getManagerLogIn().getCommunityManager());
         } catch (IOException e) {
             showAlert("Error", "Failed to get community help requests: " + e.getMessage());
             e.printStackTrace();
-        }
+        }*/
     }
 
     private void showAlert(String title, String message) {

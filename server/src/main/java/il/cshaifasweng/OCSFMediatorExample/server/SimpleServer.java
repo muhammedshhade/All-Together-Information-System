@@ -1,11 +1,9 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
+import il.cshaifasweng.OCSFMediatorExample.client.NewTaskDataControl;
 import il.cshaifasweng.OCSFMediatorExample.client.TaskCancellationEvent;
 import il.cshaifasweng.OCSFMediatorExample.client.UpdateTaskDetails;
-import il.cshaifasweng.OCSFMediatorExample.entities.MessageToUser;
-import il.cshaifasweng.OCSFMediatorExample.entities.Task;
-import il.cshaifasweng.OCSFMediatorExample.entities.User;
-import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
+import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
@@ -44,16 +42,14 @@ public class SimpleServer extends AbstractServer {
                 if (messageParts.length == 2 && messageParts[0] instanceof String && messageParts[0].equals("add task to database.")
                         && messageParts[1] instanceof Task) {
                     ConnectToDataBase.addTask((Task) messageParts[1]);
-                }
-                else if (messageParts.length == 2 && messageParts[0] instanceof String &&
+                } else if (messageParts.length == 2 && messageParts[0] instanceof String &&
                         messageParts[0].equals("Cancel request") && messageParts[1] instanceof User) {
                     List<Task> requests = ConnectToDataBase.getTasksWithStatusAndUser(((User) messageParts[1]).getID());
                     Object[] array = new Object[2];
                     array[0] = "ToCancel"; // Assign a String object to the first index
                     array[1] = requests;
                     client.sendToClient(array);
-                }
-                else if (messageParts.length == 2 && messageParts[0] instanceof String &&
+                } else if (messageParts.length == 2 && messageParts[0] instanceof String &&
                         messageParts[0].equals("Get uploaded messages") && messageParts[1] instanceof User) {
                     List<MessageToUser> requests = ConnectToDataBase.getMessagesBySender(((User) messageParts[1]).getID());
                     Object[] array = new Object[2];
@@ -98,10 +94,11 @@ public class SimpleServer extends AbstractServer {
                     String communityManager = parts[1];
                     // Get the community members based on the community manager's ID
                     List<Task> requests = ConnectToDataBase.getTasksWithStatus(communityManager, 3);
-                    Object[] array = new Object[2];
+                   Object[] array = new Object[2];
                     array[0] = "request"; // Assign a String object to the first index
                     array[1] = requests;
                     client.sendToClient(array);
+                 //  System.out.println("size is "+GlobalDataSaved.requestsToCheck.size());
                 }
 
             } else if (message.startsWith("modify")) {
@@ -199,22 +196,22 @@ public class SimpleServer extends AbstractServer {
                         Task task = ConnectToDataBase.getTaskById(taskIdInt);
                         if (task != null) {
                             ConnectToDataBase.updateTaskData("5", task, "status");
-                            System.out.println("user id "+ task.getUser().getID());
-
+                            System.out.println("user id " + task.getUser().getID());
                             List<Task> requests = ConnectToDataBase.getTasksWithStatusAndUser(task.getUser().getID());
-                            System.out.println("size list "+ requests.size());
                             Object[] array = new Object[2];
                             array[0] = "canceled!"; // Assign a String object to the first index
                             array[1] = requests;
                             client.sendToClient(array);
-                           array[0] = "update request list for manager"; // Assign a String object to the first index
-                           array[1] = task;
-                           // client.sendToClient(array);
-                           // client.sendToClient("update request list for manager");
-                            //String notify ="Task ("+task.getIdNum()+ ") has been canceled";
+                            array[0] = "request"; // Assign a String object to the first index
+                            array[1] = ConnectToDataBase.getTasksWithStatus(task.getUser().getCommunity(), 3);
+                            // client.sendToClient(array);
+                            // client.sendToClient("update request list for manager");
+                            String notify = "Task (Id number: " + task.getIdNum() + ") has been canceled";
                             //sendToAllClients(notify);
-                            sendToAllClients("canceled!");
-                            sendToAllClients(new TaskCancellationEvent(task));
+                            sendToAllClients(task);
+                            //notifyConnectedManagers(new TaskCancellationEvent(task));
+                            Warning warning = new Warning(notify);
+                            sendToAllClients(warning);
                         } else {
                             System.out.println("Task with ID " + taskId + " not found.");
                         }
@@ -246,18 +243,22 @@ public class SimpleServer extends AbstractServer {
                 }
                 Message.setSentTime(LocalDateTime.now());
                 ConnectToDataBase.Add_message(Message);
+                client.sendToClient("back to list");
             } else if (message.startsWith("Task is rejected")) {
                 String[] parts = message.split("@");
                 if (parts.length >= 3 && parts[0].equals("Task is rejected")) {
                     String taskId = parts[1];
-                    System.out.println(taskId + "*");
                     String newData = parts[2];
-                    System.out.println(newData + "*");
                     try {
                         int taskIdInt = Integer.parseInt(taskId);
                         Task task = ConnectToDataBase.getTaskById(taskIdInt);
                         if (task != null) {
                             ConnectToDataBase.updateTaskData(newData, task, "status");
+                            List<Task> requests = ConnectToDataBase.getTasksWithStatus(task.getUser().getCommunity(), 3);
+                            Object[] array = new Object[2];
+                            array[0] = "accept"; // Assign a String object to the first index
+                            array[1] = requests;
+                            client.sendToClient(array);
                         } else {
                             System.out.println("Task with ID " + taskId + " not found.");
                         }
@@ -316,7 +317,7 @@ public class SimpleServer extends AbstractServer {
                             // Handle serialization exception
                             e.printStackTrace();
                         }
-                        if (user.getisConnected() == true) {
+                        if (user.getisConnected()) {
                             client.sendToClient("LOGIN_FAIL2");
                             return;
                         }
