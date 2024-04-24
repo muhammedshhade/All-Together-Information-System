@@ -98,7 +98,18 @@ public class SimpleServer extends AbstractServer {
                     array[0] = "request"; // Assign a String object to the first index
                     array[1] = requests;
                     client.sendToClient(array);
-                 //  System.out.println("size is "+GlobalDataSaved.requestsToCheck.size());
+                }
+
+            } else if (message.startsWith("check requests@")) {
+                String[] parts = message.split("@");
+                if (parts.length == 2 && parts[1] != null) {
+                    String communityManager = parts[1];
+                    // Get the community members based on the community manager's ID
+                    List<Task> requests = ConnectToDataBase.getTasksWithStatus(communityManager, 3);
+                   Object[] array = new Object[2];
+                    array[0] = "request"; // Assign a String object to the first index
+                    array[1] = requests;
+                    client.sendToClient(array);
                 }
 
             } else if (message.startsWith("modify")) {
@@ -202,8 +213,8 @@ public class SimpleServer extends AbstractServer {
                             array[0] = "canceled!"; // Assign a String object to the first index
                             array[1] = requests;
                             client.sendToClient(array);
-                            array[0] = "request"; // Assign a String object to the first index
-                            array[1] = ConnectToDataBase.getTasksWithStatus(task.getUser().getCommunity(), 3);
+                            //array[0] = "request"; // Assign a String object to the first index
+                            //[1] = ConnectToDataBase.getTasksWithStatus(task.getUser().getCommunity(), 3);
                             // client.sendToClient(array);
                             // client.sendToClient("update request list for manager");
                             String notify = "Task (Id number: " + task.getIdNum() + ") has been canceled";
@@ -246,19 +257,21 @@ public class SimpleServer extends AbstractServer {
                 client.sendToClient("back to list");
             } else if (message.startsWith("Task is rejected")) {
                 String[] parts = message.split("@");
-                if (parts.length >= 3 && parts[0].equals("Task is rejected")) {
+                if (parts.length >= 2 && parts[0].equals("Task is rejected")) {
                     String taskId = parts[1];
-                    String newData = parts[2];
                     try {
                         int taskIdInt = Integer.parseInt(taskId);
                         Task task = ConnectToDataBase.getTaskById(taskIdInt);
                         if (task != null) {
-                            ConnectToDataBase.updateTaskData(newData, task, "status");
+                            ConnectToDataBase.updateTaskData(String.valueOf(4), task, "status");
                             List<Task> requests = ConnectToDataBase.getTasksWithStatus(task.getUser().getCommunity(), 3);
                             Object[] array = new Object[2];
                             array[0] = "accept"; // Assign a String object to the first index
                             array[1] = requests;
                             client.sendToClient(array);
+                            Message update=new Message("update cancel list");
+                            update.setObj(task);
+                            sendToAllClients(update);// to update the requests that the client can cancel.
                         } else {
                             System.out.println("Task with ID " + taskId + " not found.");
                         }

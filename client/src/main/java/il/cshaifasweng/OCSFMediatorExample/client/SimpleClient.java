@@ -78,10 +78,6 @@ public class SimpleClient extends AbstractClient {
                 App.setRoot("updateTaskDetails");
                 return;
             }
-            if (msg.getClass().equals(Warning.class)) {
-                EventBus.getDefault().post(new WarningEvent((Warning) msg));
-                return;
-            }
             if (msg.equals("The task's status isn't 2.")) {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
@@ -107,15 +103,6 @@ public class SimpleClient extends AbstractClient {
                     alert.setContentText("The status should be between 0 and 5."); // Set the main message/content
                     alert.showAndWait(); // Display the alert and wait for the user to close it
                 });
-            } else if (msg instanceof Object[] && ((Object[]) msg).length == 2 && ((Object[]) msg)[1] instanceof Task) {
-                Object[] messageParts = (Object[]) msg;
-                System.out.println("adaaaaaaaaaan");
-                if (messageParts[0].equals("update request list for manager") && messageParts[1] instanceof Task) {
-                    long id = ((Task) messageParts[1]).getIdNum();
-                    String notify = "Task (" + id + ") has been canceled";
-                    EventBus.getDefault().post(notify);
-                    //EventBus.getDefault().post(new TaskCancellationEvent((Task) messageParts[1]));
-                }
             } else if (msg instanceof Object[]) {
                 Object[] messageParts = (Object[]) msg;
                 if (messageParts.length == 2 && messageParts[0] instanceof String && messageParts[1] instanceof List) {
@@ -232,6 +219,10 @@ public class SimpleClient extends AbstractClient {
             }
             if (msg.getClass().equals(Warning.class)) {
                 EventBus.getDefault().post(new WarningEvent((Warning) msg));
+                return;
+            } if (msg.getClass().equals(Message.class)) {
+                System.out.println("In simple client");
+                EventBus.getDefault().post(((Message) msg).getObj());
                 return;
             }
             if (msg.getClass().equals(Task.class)) {

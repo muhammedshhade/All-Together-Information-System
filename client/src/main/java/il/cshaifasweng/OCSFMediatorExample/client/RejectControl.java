@@ -71,8 +71,7 @@ public class RejectControl {
             return;
         }
         try {
-            showCompletionMessage("Request canceled", "request has been rejected, a message will be sent to the user about it.");
-            //App.setRoot("checkRequestService");
+            showCompletionMessage("Request rejected", "request has been rejected, a message will be sent to the user about it.");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -81,7 +80,7 @@ public class RejectControl {
         Task t = service.getRequestedTask();
         int id = t.getIdNum();
         System.out.println(id);
-        String message = "Task is rejected@" + id + "@" + "4";
+        String message = "Task is rejected@" + id;
         SimpleClient.getClient().sendToServer(message);
         User loggedInUser = Managercontrol.getManagerLogIn();
         Long manger_id = loggedInUser.getkeyId();

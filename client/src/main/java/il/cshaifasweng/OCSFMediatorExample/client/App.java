@@ -87,6 +87,8 @@ public class App extends Application {
 
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
+        primaryStage.setTitle(fxml);
+
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
@@ -142,43 +144,45 @@ public class App extends Application {
         });
     }
 
-//    @Subscribe
-//    public void onCancel(TaskCancellationEvent event) {
-//        Platform.runLater(() -> {
-//            try {
-//                    if (Managercontrol.getManagerLogIn() != null) {
-//                        client.sendToServer("check requests@" + Managercontrol.getManagerLogIn().getCommunityManager());
-//                        App.setRoot("checkRequestService");
-//                        System.out.println("in app");
-//                    }
-//               // }
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        });
-//    }
 
- @Subscribe
+    @Subscribe
     public void onCancel(TaskCancellationEvent event) {
         Platform.runLater(() -> {
             try {
-             //   Scene scene = App.getScene();
-               // Stage stage = (Stage) scene.getWindow();
-             //   Parent root = scene.getRoot();
-            //    if (root != null && root.getId().equals("checkRequestService")) {
+                if (getStage() != null && getStage().getTitle().equals("checkRequestService")) {
                     if (Managercontrol.getManagerLogIn() != null &&
                             Managercontrol.getManagerLogIn().getCommunityManager().equals(event.getCanceledTask().getUser().getCommunity())) {
                         client.sendToServer("check requests@" + Managercontrol.getManagerLogIn().getCommunityManager());
-                        App.setRoot("checkRequestService");
                         System.out.println("in app");
                     }
-               // }
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         });
     }
 
+    @Subscribe // when the manager reject request, the user can't cancel it.
+    public void onReject(Task event) {
+        Platform.runLater(() -> {
+            try {
+                if (getStage() != null && getStage().getTitle().equals("cancelServiceRequest")) {
+
+                    if (SecondaryController.getUserLogIn() != null &&
+                            SecondaryController.getUserLogIn().getID().equals(event.getUser().getID())) {
+                        Object[] array = new Object[2];
+                        array[0] = "Cancel request"; // Assign a String object to the first index
+                        array[1] = SecondaryController.getUserLogIn();
+                        SimpleClient.getClient().sendToServer(array);
+                        App.setRoot("cancelServiceRequest");
+                        System.out.println("in reject");
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
 
     public static Scene getScene() {
         return scene;
