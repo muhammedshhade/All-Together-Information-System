@@ -166,6 +166,22 @@ public class App extends Application {
         });
     }
 
+    @Subscribe
+    public void updateUploadedTasksList(ModifyTaskDetailEvent event) {
+        Platform.runLater(() -> {
+            try {
+                if (getStage() != null && getStage().getTitle().equals("CommunityTasks")) {
+                    if (Managercontrol.getManagerLogIn() != null &&
+                            Managercontrol.getManagerLogIn().getCommunityManager().equals(event.getModifyTask().getUser().getCommunity())) {
+                        SimpleClient.getClient().sendToServer("Get uploaded tasks by community members@" + Managercontrol.getManagerLogIn().getCommunityManager());
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
     @Subscribe // when the manager reject request, the user can't cancel it.
     public void onReject(Task event) {
         Platform.runLater(() -> {

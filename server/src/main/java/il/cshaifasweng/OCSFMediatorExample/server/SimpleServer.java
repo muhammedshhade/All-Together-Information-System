@@ -43,6 +43,10 @@ public class SimpleServer extends AbstractServer {
                         && messageParts[1] instanceof Task) {
                     ConnectToDataBase.addTask((Task) messageParts[1]);
                     sendToAllClients((Task) messageParts[1]);// to update the requests that the client can cancel.
+                    Message update = new Message("update uploaded tasks list");
+                    update.setObj((Task) messageParts[1]);
+                    sendToAllClients(update);// to update the requests that the client can cancel.
+
                 } else if (messageParts.length == 2 && messageParts[0] instanceof String &&
                         messageParts[0].equals("Cancel request") && messageParts[1] instanceof User) {
                     List<Task> requests = ConnectToDataBase.getTasksWithStatusAndUser(((User) messageParts[1]).getID());
@@ -223,6 +227,10 @@ public class SimpleServer extends AbstractServer {
                             sendToAllClients(task);
                             Warning warning = new Warning(notify);
                             sendToAllClients(warning);
+
+                            Message update = new Message("update uploaded tasks list");
+                            update.setObj(task);
+                            sendToAllClients(update);// to update the requests that the client can cancel.
                         } else {
                             System.out.println("Task with ID " + taskId + " not found.");
                         }
@@ -269,7 +277,7 @@ public class SimpleServer extends AbstractServer {
                             array[0] = "accept"; // Assign a String object to the first index
                             array[1] = requests;
                             client.sendToClient(array);
-                            Message update = new Message("update cancel list");
+                            Message update = new Message("update manager check list");
                             update.setObj(task);
                             sendToAllClients(update);// to update the requests that the client can cancel.
                         } else {
