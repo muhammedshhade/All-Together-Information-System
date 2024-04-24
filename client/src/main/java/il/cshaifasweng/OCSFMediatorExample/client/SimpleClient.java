@@ -242,8 +242,13 @@ public class SimpleClient extends AbstractClient {
             }
             if (msg.getClass().equals(Message.class)) {
                 System.out.println("In simple client");
-                EventBus.getDefault().post(((Message) msg).getObj());
+                if(((Message) msg).getMsg().equals("update manager check list")) {
+                    EventBus.getDefault().post(((Message) msg).getObj());
+                }else if(((Message) msg).getMsg().equals("update uploaded tasks list"))
+                    EventBus.getDefault().post(new ModifyTaskDetailEvent((Task) ((Message) msg).getObj()));
+
                 return;
+
             }
             if (msg.getClass().equals(Task.class)) {
                 EventBus.getDefault().post(new TaskCancellationEvent((Task) msg));
