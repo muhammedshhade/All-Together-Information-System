@@ -62,6 +62,8 @@ public class App extends Application {
                 stage.close();
             }
         });
+        stage.setTitle("Primary");
+
         stage.show();
     }
 
@@ -96,31 +98,33 @@ public class App extends Application {
         return fxmlLoader.load();
     }
 
-    @Override
-    public void stop() throws Exception {
-        // TODO Auto-generated method stub
-        EventBus.getDefault().unregister(this);
-        super.stop();
-    }
-
-
 //    @Override
 //    public void stop() throws Exception {
+//        // TODO Auto-generated method stub
 //        EventBus.getDefault().unregister(this);
-//        try {
-//            User user;
-//            if (SecondaryController.getUserLogIn() == null)
-//                user = Managercontrol.getManagerLogIn();
-//            else user = SecondaryController.getUserLogIn();
-//            if (user != null)
-//                SimpleClient.getClient().sendToServer("log out " + user.getID());
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
 //        super.stop();
-//        Platform.exit();
-//        System.exit(0);
 //    }
+
+
+    @Override
+    public void stop() throws Exception {
+        EventBus.getDefault().unregister(this);
+        try {
+            User user;
+            if (SecondaryController.getUserLogIn() == null)
+                user = Managercontrol.getManagerLogIn();
+            else user = SecondaryController.getUserLogIn();
+            if (user != null) {
+                SimpleClient.getClient().sendToServer("log out " + user.getID());
+                System.out.println("trying to log out");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        super.stop();
+        Platform.exit();
+        System.exit(0);
+    }
 
     @Subscribe
     public void onWarningEvent(WarningEvent event) {
@@ -146,7 +150,7 @@ public class App extends Application {
 
 
     @Subscribe
-    public void onCancel(TaskCancellationEvent event) {
+    public void onCancelOrAddTask(TaskCancellationEvent event) {
         Platform.runLater(() -> {
             try {
                 if (getStage() != null && getStage().getTitle().equals("checkRequestService")) {

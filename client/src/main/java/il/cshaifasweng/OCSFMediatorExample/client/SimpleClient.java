@@ -38,7 +38,8 @@ public class SimpleClient extends AbstractClient {
                     }
                 });
                 return;
-            }if (msg.equals("notFound")) {
+            }
+            if (msg.equals("notFound")) {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
                     alert.setTitle("Error"); // Set the window's title
@@ -61,9 +62,13 @@ public class SimpleClient extends AbstractClient {
                     alert.setHeaderText(null); // Optional: you can have a header or set it to null
                     alert.setContentText("This task was uploaded by a user who is not part of our community."); // Set the main message/content
                     alert.showAndWait(); // Display the alert and wait for the user to close it
-
+                    try {
+                        App.setRoot("newTaskData");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 });
-                App.setRoot("newTaskData");
+
                 return;
             }
 
@@ -74,8 +79,13 @@ public class SimpleClient extends AbstractClient {
                     alert.setHeaderText(null); // Optional: you can have a header or set it to null
                     alert.setContentText("The task has been modified."); // Set the main message/content
                     alert.showAndWait(); // Display the alert and wait for the user to close it
+                    try {
+                        App.setRoot("updateTaskDetails");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
                 });
-                App.setRoot("updateTaskDetails");
                 return;
             }
             if (msg.equals("The task's status isn't 2.")) {
@@ -85,8 +95,13 @@ public class SimpleClient extends AbstractClient {
                     alert.setHeaderText(null); // Optional: you can have a header or set it to null
                     alert.setContentText("The task has not been completed yet."); // Set the main message/content
                     alert.showAndWait(); // Display the alert and wait for the user to close it
+                    try {
+                        App.setRoot("newTaskData");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
                 });
-                App.setRoot("newTaskData");
             } else if (msg.equals("The task is canceled.")) {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
@@ -117,9 +132,14 @@ public class SimpleClient extends AbstractClient {
                         });
                     } else if (messageParts[0].equals("alltasks")) {
                         VolunterControl.tasks = (List<Task>) messageParts[1];
-                        App.setRoot("volunter_control");
+                        Platform.runLater(() -> {
+                            try {
+                                App.setRoot("volunter_control");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
                     } else if (messageParts[0].equals("ToCancel")) {
-                        //EventBus.getDefault().post(messageParts[1]);
                         CancelServiceRequest.getRequestService = (List<Task>) messageParts[1];
                         Platform.runLater(() -> {
                             try {
@@ -179,7 +199,6 @@ public class SimpleClient extends AbstractClient {
                 // Handling LOGIN_FAIL message
                 if ("LOGIN_FAIL".equals(message)) {
                     System.out.println("Login failed. Please try again.");
-
                     // Ensure this runs on the JavaFX Application Thread
                     Platform.runLater(() -> {
                         Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
@@ -220,7 +239,8 @@ public class SimpleClient extends AbstractClient {
             if (msg.getClass().equals(Warning.class)) {
                 EventBus.getDefault().post(new WarningEvent((Warning) msg));
                 return;
-            } if (msg.getClass().equals(Message.class)) {
+            }
+            if (msg.getClass().equals(Message.class)) {
                 System.out.println("In simple client");
                 EventBus.getDefault().post(((Message) msg).getObj());
                 return;
@@ -249,10 +269,8 @@ public class SimpleClient extends AbstractClient {
             }
             if (msg instanceof byte[]) {
                 byte[] receivedUserBytes = (byte[]) msg;
-
                 try (ByteArrayInputStream bis = new ByteArrayInputStream(receivedUserBytes);
                      ObjectInputStream in = new ObjectInputStream(bis)) {
-
                     // Deserialize the User object received from the server
                     User user = (User) in.readObject();
                     UserControl.addUser(user);
