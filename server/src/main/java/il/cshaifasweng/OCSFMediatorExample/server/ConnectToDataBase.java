@@ -36,7 +36,6 @@ public class ConnectToDataBase {
     static List<User> getAllUsers() throws Exception {
         try {
             SessionFactory sessionFactory = getSessionFactory();
-
             session = sessionFactory.openSession();
             session.beginTransaction();
             System.out.println("getALlUsers");
