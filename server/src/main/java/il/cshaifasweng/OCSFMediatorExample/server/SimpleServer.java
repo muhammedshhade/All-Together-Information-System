@@ -94,7 +94,7 @@ public class SimpleServer extends AbstractServer {
                     String communityManager = parts[1];
                     // Get the community members based on the community manager's ID
                     List<Task> requests = ConnectToDataBase.getTasksWithStatus(communityManager, 3);
-                   Object[] array = new Object[2];
+                    Object[] array = new Object[2];
                     array[0] = "request"; // Assign a String object to the first index
                     array[1] = requests;
                     client.sendToClient(array);
@@ -106,7 +106,7 @@ public class SimpleServer extends AbstractServer {
                     String communityManager = parts[1];
                     // Get the community members based on the community manager's ID
                     List<Task> requests = ConnectToDataBase.getTasksWithStatus(communityManager, 3);
-                   Object[] array = new Object[2];
+                    Object[] array = new Object[2];
                     array[0] = "request"; // Assign a String object to the first index
                     array[1] = requests;
                     client.sendToClient(array);
@@ -140,6 +140,11 @@ public class SimpleServer extends AbstractServer {
                                 if ((Integer.parseInt(newData) < 0 || Integer.parseInt(newData) > 5) && updateVale.equals("status")) {
                                     client.sendToClient("the status is illegal");
                                     return;
+                                }
+                                if (updateVale.equals("status") && (task.getStatus() == 3 || task.getStatus() == 0) && (Integer.parseInt(newData)!=0 || Integer.parseInt(newData)!=1)) {
+                                    Message update = new Message("update cancel list");
+                                    update.setObj(task);
+                                    sendToAllClients(update);// to update the requests that the client can cancel.
                                 }
                                 ConnectToDataBase.updateTaskData(newData, task, updateVale);
                                 client.sendToClient("saved!");
@@ -213,14 +218,8 @@ public class SimpleServer extends AbstractServer {
                             array[0] = "canceled!"; // Assign a String object to the first index
                             array[1] = requests;
                             client.sendToClient(array);
-                            //array[0] = "request"; // Assign a String object to the first index
-                            //[1] = ConnectToDataBase.getTasksWithStatus(task.getUser().getCommunity(), 3);
-                            // client.sendToClient(array);
-                            // client.sendToClient("update request list for manager");
                             String notify = "Task (Id number: " + task.getIdNum() + ") has been canceled";
-                            //sendToAllClients(notify);
                             sendToAllClients(task);
-                            //notifyConnectedManagers(new TaskCancellationEvent(task));
                             Warning warning = new Warning(notify);
                             sendToAllClients(warning);
                         } else {
@@ -269,7 +268,7 @@ public class SimpleServer extends AbstractServer {
                             array[0] = "accept"; // Assign a String object to the first index
                             array[1] = requests;
                             client.sendToClient(array);
-                            Message update=new Message("update cancel list");
+                            Message update = new Message("update cancel list");
                             update.setObj(task);
                             sendToAllClients(update);// to update the requests that the client can cancel.
                         } else {

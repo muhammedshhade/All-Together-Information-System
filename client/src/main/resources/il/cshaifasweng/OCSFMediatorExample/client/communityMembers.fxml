@@ -19,7 +19,7 @@
          <font>
             <Font name="David Bold" size="14.0" />
          </font></Button>
-      <Button fx:id="back" layoutX="140.0" layoutY="320.0" mnemonicParsing="false" onAction="#previous" prefWidth="115.0" style="-fx-background-color: #b473ea;" text="back" textFill="#fcfafa">
+      <Button fx:id="back" layoutX="140.0" layoutY="320.0" mnemonicParsing="false" onAction="#previous" prefWidth="115.0" style="-fx-background-color: #b473ea;" text="Back" textFill="#fcfafa">
          <font>
             <Font name="David Bold" size="14.0" />
          </font></Button>

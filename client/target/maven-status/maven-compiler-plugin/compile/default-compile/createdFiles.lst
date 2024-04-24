@@ -19,6 +19,5 @@ il\cshaifasweng\OCSFMediatorExample\client\ocsf\ObservableClient.class
 il\cshaifasweng\OCSFMediatorExample\client\Managercontrol.class
 il\cshaifasweng\OCSFMediatorExample\client\MessageEvent.class
 il\cshaifasweng\OCSFMediatorExample\client\ocsf\AdaptableClient.class
-il\cshaifasweng\OCSFMediatorExample\client\TaskCancellationEvent.class
 il\cshaifasweng\OCSFMediatorExample\client\SecondaryController.class
 il\cshaifasweng\OCSFMediatorExample\client\CancelServiceRequest.class

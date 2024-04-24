@@ -25,14 +25,14 @@
             <Font name="David Bold" size="14.0" />
          </font>
       </Label>
-      <Button fx:id="save" layoutX="361.0" layoutY="129.0" mnemonicParsing="false" onAction="#saveData" prefHeight="5.0" prefWidth="110.0" style="-fx-background-color: #b473ea;" text="save" textFill="WHITE">
+      <Button fx:id="save" layoutX="361.0" layoutY="129.0" mnemonicParsing="false" onAction="#saveData" prefHeight="5.0" prefWidth="110.0" style="-fx-background-color: #b473ea;" text="Save" textFill="WHITE">
          <font>
             <Font name="David Bold" size="14.0" />
          </font>
       </Button>
       <TextField fx:id="taskId" layoutX="159.0" layoutY="129.0" />
       <TextField fx:id="newData" layoutX="159.0" layoutY="174.0" />
-      <Button fx:id="back" layoutX="361.0" layoutY="173.0" mnemonicParsing="false" onAction="#homePage" prefHeight="5.0" prefWidth="110.0" style="-fx-background-color: #b473ea;" text="back" textFill="WHITE">
+      <Button fx:id="back" layoutX="361.0" layoutY="173.0" mnemonicParsing="false" onAction="#homePage" prefHeight="5.0" prefWidth="110.0" style="-fx-background-color: #b473ea;" text="Back" textFill="WHITE">
          <font>
             <Font name="David Bold" size="14.0" />
          </font>
