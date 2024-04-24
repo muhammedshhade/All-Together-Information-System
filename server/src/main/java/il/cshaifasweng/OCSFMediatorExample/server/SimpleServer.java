@@ -42,6 +42,7 @@ public class SimpleServer extends AbstractServer {
                 if (messageParts.length == 2 && messageParts[0] instanceof String && messageParts[0].equals("add task to database.")
                         && messageParts[1] instanceof Task) {
                     ConnectToDataBase.addTask((Task) messageParts[1]);
+                    sendToAllClients((Task) messageParts[1]);// to update the requests that the client can cancel.
                 } else if (messageParts.length == 2 && messageParts[0] instanceof String &&
                         messageParts[0].equals("Cancel request") && messageParts[1] instanceof User) {
                     List<Task> requests = ConnectToDataBase.getTasksWithStatusAndUser(((User) messageParts[1]).getID());
