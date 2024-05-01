@@ -59,7 +59,7 @@ public class SecondaryController implements Initializable {
 
     {
         try {
-            stream1 = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\siren.png");
+            stream1 = new FileInputStream("C:\\Users\\ASUS\\Downloads\\WhatsApp Image 2024-04-24 at 23.21.57.jpeg");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -67,15 +67,15 @@ public class SecondaryController implements Initializable {
 
     InputStream stream;
 
-    {
-        try {
-            stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\introduction.png");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//    {
+//        try {
+//            stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\introduction.png");
+//        } catch (FileNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 
-    Image myImage = new Image(stream);
+    //Image myImage = new Image(stream);
 
     Image myImage1 = new Image(stream1);
 
@@ -87,7 +87,7 @@ public class SecondaryController implements Initializable {
         imageView.setFitWidth(desiredWidth);
         imageView.setFitHeight(desiredHeight);
         DistressButtonControl.setGraphic(imageView);
-        im.setImage(myImage);
+        im.setImage(myImage1);
         ArrayList<User> loggedInList = UserControl.getLoggedInList();
         if (!loggedInList.isEmpty()) {
             User lastUser = loggedInList.get(loggedInList.size() - 1);
@@ -173,7 +173,9 @@ public class SecondaryController implements Initializable {
     }
 
     @FXML
-    void distress(ActionEvent event) {
+    void distress(ActionEvent event) throws IOException {
+        App.setRoot("distressCallsecondary");
+
     }
 
     @FXML

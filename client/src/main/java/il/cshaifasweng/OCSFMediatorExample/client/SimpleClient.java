@@ -1,22 +1,15 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.*;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.layout.BorderPane;
-import org.greenrobot.eventbus.EventBus;
-
 import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
+import il.cshaifasweng.OCSFMediatorExample.entities.*;
+import javafx.application.Platform;
+import javafx.scene.control.Alert;
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.ArrayList;
 import java.util.List;
-
-import org.greenrobot.eventbus.EventBus;
-import javafx.application.Platform;
-import javafx.scene.control.Alert;
 
 public class SimpleClient extends AbstractClient {
 
@@ -210,6 +203,49 @@ public class SimpleClient extends AbstractClient {
         try {
             if (msg instanceof String) {
                 String message = (String) msg;
+                if ("The key id is true".equals(message)) {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION); // Use ERROR alert type
+                        alert.setTitle("Request has been sent"); // Set the window's title
+                        alert.setHeaderText(null); // Optional: you can have a header or set it to null
+                        alert.setContentText("Thanks for contacting us. \nThe request has been sent."); // Set the main message/content
+                        alert.showAndWait(); // Display the alert and wait for the user to close it
+                    });
+
+
+                    App.setRoot("primary");
+
+                }
+                if ("distresscall added successfully to the database.".equals(message)) {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION); // Use ERROR alert type
+                        alert.setTitle("Request has been sent"); // Set the window's title
+                        alert.setHeaderText(null); // Optional: you can have a header or set it to null
+                        alert.setContentText("Thanks for contacting us. \nThe request has been sent."); // Set the main message/content
+                        alert.showAndWait(); // Display the alert and wait for the user to close it
+                    });
+                    Platform.runLater(() -> {
+
+
+                        try {
+                            App.setRoot("secondary");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+
+                }
+                if ("The key id is false".equals(message)) {
+                    Platform.runLater(() -> {
+                        Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
+                        alert.setTitle("Error"); // Set the window's title
+                        alert.setHeaderText(null); // Optional: you can have a header or set it to null
+                        alert.setContentText("Unidentified Code. Please try again."); // Set the main message/content
+                        alert.showAndWait(); // Display the alert and wait for the user to close it
+                    });
+
+
+                }
                 // Handling LOGIN_FAIL message
                 if ("LOGIN_FAIL".equals(message)) {
                     System.out.println("Login failed. Please try again.");
@@ -240,13 +276,14 @@ public class SimpleClient extends AbstractClient {
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
-                        } else {
+                        }  else if("Manager_LOGIN_SUCCESS".equals(message)){
                             try {
                                 App.setRoot("manager_control");
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
                         }
+
                     });
                 }
             }
