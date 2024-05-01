@@ -43,6 +43,11 @@ public class SimpleServer extends AbstractServer {
                 if (messageParts.length == 2 && messageParts[0] instanceof String && messageParts[0].equals("add task to database.")
                         && messageParts[1] instanceof Task) {
                     ConnectToDataBase.addTask((Task) messageParts[1]);
+                    sendToAllClients((Task) messageParts[1]);// to update the requests that the client can cancel.
+                    Message update = new Message("update uploaded tasks list");
+                    update.setObj((Task) messageParts[1]);
+                    sendToAllClients(update);// to update the requests that the client can cancel.
+
                 } else if (messageParts.length == 2 && messageParts[0] instanceof String &&
                         messageParts[0].equals("Cancel request") && messageParts[1] instanceof User) {
                     List<Task> requests = ConnectToDataBase.getTasksWithStatusAndUser(((User) messageParts[1]).getID());
@@ -269,6 +274,8 @@ public class SimpleServer extends AbstractServer {
                                 client.sendToClient("notInYourCommunity");
                             } else if (task.getStatus() == 5) {
                                 client.sendToClient("The task is canceled.");
+                            } else if (task.getStatus() == 4) {
+                                client.sendToClient("You can't update the status the task has been rejected.");
                             } else if (task.getStatus() != 2 && !updateVale.equals("status")) {
                                 client.sendToClient("The task's status isn't 2.");
                             } else if (k) {
@@ -276,7 +283,7 @@ public class SimpleServer extends AbstractServer {
                                     client.sendToClient("the status is illegal");
                                     return;
                                 }
-                                if (updateVale.equals("status") && (task.getStatus() == 3 || task.getStatus() == 0) && (Integer.parseInt(newData)!=0 || Integer.parseInt(newData)!=1)) {
+                                if (updateVale.equals("status") && (task.getStatus() == 3 || task.getStatus() == 0) && (Integer.parseInt(newData) != 0 || Integer.parseInt(newData) != 1)) {
                                     Message update = new Message("update cancel list");
                                     update.setObj(task);
                                     sendToAllClients(update);// to update the requests that the client can cancel.
@@ -357,6 +364,10 @@ public class SimpleServer extends AbstractServer {
                             sendToAllClients(task);
                             Warning warning = new Warning(notify);
                             sendToAllClients(warning);
+
+                            Message update = new Message("update uploaded tasks list");
+                            update.setObj(task);
+                            sendToAllClients(update);// to update the requests that the client can cancel.
                         } else {
                             System.out.println("Task with ID " + taskId + " not found.");
                         }
@@ -403,7 +414,7 @@ public class SimpleServer extends AbstractServer {
                             array[0] = "accept"; // Assign a String object to the first index
                             array[1] = requests;
                             client.sendToClient(array);
-                            Message update = new Message("update cancel list");
+                            Message update = new Message("update manager check list");
                             update.setObj(task);
                             sendToAllClients(update);// to update the requests that the client can cancel.
                         } else {
