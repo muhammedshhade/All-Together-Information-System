@@ -1,7 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
-import il.cshaifasweng.OCSFMediatorExample.client.NewTaskDataControl;
-import il.cshaifasweng.OCSFMediatorExample.client.TaskCancellationEvent;
 import il.cshaifasweng.OCSFMediatorExample.client.UpdateTaskDetails;
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
@@ -10,8 +8,11 @@ import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SimpleServer extends AbstractServer {
@@ -60,6 +61,140 @@ public class SimpleServer extends AbstractServer {
                 return;
             }
             String message = (String) msg;
+            if(message.startsWith("The key"))
+            {
+                String[] parts1 = message.split("@");
+                String[] parts = parts1[0].split(":", 2);
+                if (parts.length < 2) {
+
+                }
+                String keyStr = parts[1].trim();
+
+                if (keyStr.isEmpty()) {
+                    System.out.println("There is no key id provided.");
+                } else {
+                    // Attempt to convert the trimmed string to an int
+                    try {
+                        int keyId = Integer.parseInt(keyStr);
+                        System.out.println("The key id is a number: " + keyId);
+                        List<User> allUsers = ConnectToDataBase.getAllUsers();
+                        boolean x=false;
+                        for(User user : allUsers )
+                        {
+                            if (user.getkeyId()==keyId)
+                            {
+                                client.sendToClient("The key id is true");
+                                String user_id=user.getID();
+                                x=true;
+                                List<EmergencyCenter> allcenters = ConnectToDataBase.getAllcenters();
+                                for(EmergencyCenter emergencyCenter:allcenters)
+                                {
+                                    if(emergencyCenter.getLocation().equals(parts1[2]))
+                                    {
+                                        if(emergencyCenter.getService().equals(parts1[1]))
+                                        {
+                                            DistressCall newdistress=new DistressCall();
+                                            newdistress.setRegistered(true);
+                                            newdistress.setDate(LocalDate.now());
+                                            newdistress.setLocation(parts1[2]);
+                                            newdistress.setTime(LocalTime.now());
+                                            newdistress.setUser_ID(user_id);
+                                            newdistress.setEmergencyCenter(emergencyCenter);
+                                            ConnectToDataBase.Add_distress(newdistress);
+
+
+                                        }
+                                    }
+                                }
+
+
+                            }
+                        }
+                        if(x==false)
+                        {
+                            client.sendToClient("The key id is false");
+                            DistressCall newdistress=new DistressCall();
+                            newdistress.setRegistered(false);
+                            newdistress.setDate(LocalDate.now());
+                            newdistress.setLocation("?");
+                            newdistress.setTime(LocalTime.now());
+                            ConnectToDataBase.Add_distress(newdistress);
+
+                        }
+
+                    } catch (NumberFormatException e) {
+                        System.out.println("The provided key id is not a valid number.");
+                    }
+                }
+
+            }
+            if(message.startsWith("2The key"))
+            {
+                String[] parts1 = message.split("@");
+                String[] parts = parts1[0].split(":", 2);
+                if (parts.length < 2) {
+
+                }
+                String keyStr = parts[1].trim();
+
+                if (keyStr.isEmpty()) {
+                    System.out.println("There is no key id provided.");
+                } else {
+                    // Attempt to convert the trimmed string to an int
+                    try {
+                       // int keyId = Integer.parseInt(keyStr);
+                        //System.out.println("The key id is a number: " + keyId);
+                        List<User> allUsers = ConnectToDataBase.getAllUsers();
+                        boolean x=false;
+                        for(User user : allUsers )
+                        {
+                            if (user.getID().equals(keyStr))
+                            {
+                                client.sendToClient("distresscall added successfully to the database.");
+                                String user_id=user.getID();
+                                x=true;
+                                List<EmergencyCenter> allcenters = ConnectToDataBase.getAllcenters();
+                                for(EmergencyCenter emergencyCenter:allcenters)
+                                {
+                                    if(emergencyCenter.getLocation().equals(parts1[2]))
+                                    {
+                                        if(emergencyCenter.getService().equals(parts1[1]))
+                                        {
+                                            DistressCall newdistress=new DistressCall();
+                                            newdistress.setRegistered(true);
+                                            newdistress.setDate(LocalDate.now());
+                                            newdistress.setLocation(parts1[2]);
+                                            newdistress.setTime(LocalTime.now());
+                                            newdistress.setUser_ID(user_id);
+                                            newdistress.setEmergencyCenter(emergencyCenter);
+                                            ConnectToDataBase.Add_distress(newdistress);
+
+
+                                        }
+                                    }
+                                }
+
+
+                            }
+                        }
+                        if(x==false)
+                        {
+                            client.sendToClient("The key id is false");
+                            DistressCall newdistress=new DistressCall();
+                            newdistress.setRegistered(false);
+                            newdistress.setDate(LocalDate.now());
+                            newdistress.setLocation("?");
+                            newdistress.setTime(LocalTime.now());
+                            ConnectToDataBase.Add_distress(newdistress);
+
+                        }
+
+                    } catch (NumberFormatException e) {
+                        System.out.println("The provided key id is not a valid number.");
+                    }
+                }
+
+            }
             if (message.equals("get tasks")) {
                 List<Task> alltasks = ConnectToDataBase.getAllTasks();
                 Object[] array = new Object[2];

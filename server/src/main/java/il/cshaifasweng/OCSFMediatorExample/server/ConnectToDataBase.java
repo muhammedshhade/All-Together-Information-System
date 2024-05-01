@@ -15,7 +15,6 @@ import javax.persistence.criteria.Root;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
 
 public class ConnectToDataBase {
@@ -29,6 +28,8 @@ public class ConnectToDataBase {
         configuration.addAnnotatedClass(Task.class);
         configuration.addAnnotatedClass(UserControl.class);
         configuration.addAnnotatedClass(MessageToUser.class);
+        configuration.addAnnotatedClass(DistressCall.class);
+        configuration.addAnnotatedClass(EmergencyCenter.class);
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
         return configuration.buildSessionFactory(serviceRegistry);
     }
@@ -87,7 +88,53 @@ public class ConnectToDataBase {
         }
         return null;
     }
+    static List<EmergencyCenter> getAllcenters() throws Exception {
+        try {
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<EmergencyCenter> query = builder.createQuery(EmergencyCenter.class);
+            query.from(EmergencyCenter.class);
+            List<EmergencyCenter> data = session.createQuery(query).getResultList();
+            return data;
+        } catch (Exception e) {
+            if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
+                session.getTransaction().rollback(); // Rollback transaction if an exception occurs
+            }
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return null;
+    }
+    static void Add_distress(DistressCall distressCall) throws Exception {
+        try {
+            System.out.println("Trying to add a distresscall to the database...");
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            session.beginTransaction();
 
+            session.save(distressCall); // Save the message
+
+            session.flush(); // Flush changes to the session
+            session.getTransaction().commit(); // Commit the transaction
+
+            System.out.println("distresscall added successfully to the database.");
+        } catch (HibernateException e) {
+            if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
+                session.getTransaction().rollback(); // Rollback the transaction if an exception occurs during the transaction
+            }
+            // Log the exception or handle it accordingly
+            System.err.println("Error adding distresscall to the database: " + e.getMessage());
+        } finally {
+            if (session != null) {
+                session.close(); // Close the session
+            }
+        }
+    }
     public static List<Task> getTasksUploadedByCommunityMembers(String community) {
         try {
             SessionFactory sessionFactory = getSessionFactory();
@@ -505,6 +552,54 @@ public class ConnectToDataBase {
         session.update(user6);
         session.flush();
         session.update(user7);
+        session.flush();
+        EmergencyCenter center16 = new EmergencyCenter("123-456-7390", 8.0f, 20.0f, "UMM El Fahem", "Ambulance Alert");
+        EmergencyCenter center17 = new EmergencyCenter("123-456-7489", 8.0f, 20.0f, "Yaffa Nazareth", "Police Alret");
+        EmergencyCenter center18 = new EmergencyCenter("123-456-7192", 8.0f, 20.0f, "Yaffa Nazareth", "Fire Alret");
+        EmergencyCenter center1 = new EmergencyCenter("123-456-7890", 8.0f, 20.0f, "Yaffa Nazareth", "Ambulance Alert");
+        EmergencyCenter center2 = new EmergencyCenter("123-456-7891", 8.0f, 20.0f, "Yaffa Nazareth", "Police Alret");
+        EmergencyCenter center3 = new EmergencyCenter("123-456-7892", 8.0f, 20.0f, "Yaffa Nazareth", "Fire Alret");
+        EmergencyCenter center4 = new EmergencyCenter("123-456-7893", 8.0f, 20.0f, "Kabul", "Ambulance Alert");
+        EmergencyCenter center5 = new EmergencyCenter("123-456-7894", 8.0f, 20.0f, "Kabul", "Police Alret");
+        EmergencyCenter center6 = new EmergencyCenter("123-456-7895", 8.0f, 20.0f, "Kabul", "Fire Alret");
+        EmergencyCenter center7 = new EmergencyCenter("123-456-7896", 8.0f, 20.0f, "Nazareth", "Ambulance Alert");
+        EmergencyCenter center8 = new EmergencyCenter("123-456-7897", 8.0f, 20.0f, "Nazareth", "Police Alret");
+        EmergencyCenter center9 = new EmergencyCenter("123-456-7898", 8.0f, 20.0f, "Nazareth", "Fire Alret");
+        EmergencyCenter center10 = new EmergencyCenter("123-456-7899", 8.0f, 20.0f, "Tamra", "Ambulance Alert");
+        EmergencyCenter center11 = new EmergencyCenter("123-456-7840", 8.0f, 20.0f, "Tamra", "Police Alret");
+        EmergencyCenter center12 = new EmergencyCenter("123-456-7830", 8.0f, 20.0f, "Tamra", "Fire Alret");
+        EmergencyCenter center13 = new EmergencyCenter("123-456-7810", 8.0f, 20.0f, "Kukab", "Ambulance Alert");
+        EmergencyCenter center14 = new EmergencyCenter("123-456-7820", 8.0f, 20.0f, "Kukab", "Police Alret");
+        EmergencyCenter center15 = new EmergencyCenter("123-456-7805", 8.0f, 20.0f, "Kukab", "Fire Alret");
+        session.save(center15);
+        session.flush();
+        session.save(center14);
+        session.flush();
+        session.save(center13);
+        session.flush();
+        session.save(center12);
+        session.flush();
+        session.save(center11);
+        session.flush();
+        session.save(center10);
+        session.flush();
+        session.save(center9);
+        session.flush();
+        session.save(center8);
+        session.flush();
+        session.save(center7);
+        session.flush();
+        session.save(center6);
+        session.flush();
+        session.save(center5);
+        session.flush();
+        session.save(center4);
+        session.flush();
+        session.save(center3);
+        session.flush();
+        session.save(center2);
+        session.flush();
+        session.save(center1);
         session.flush();
         System.out.print("Data Creation Finish");
 

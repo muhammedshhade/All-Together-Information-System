@@ -39,7 +39,7 @@
             <Image url="@../../../../../../../../../../../Pictures/im.png" />
          </image>
       </ImageView>
-      <Button fx:id="distressRequest" layoutX="328.0" layoutY="357.0" mnemonicParsing="false" style="-fx-background-color: white;">
+      <Button fx:id="distressRequest" layoutX="328.0" layoutY="357.0" mnemonicParsing="false" onAction="#distressRequest" style="-fx-background-color: white;">
 
 
       </Button>

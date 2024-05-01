@@ -1,29 +1,22 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.entities.User;
-import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import javafx.fxml.Initializable;
-
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-
-import javafx.scene.image.ImageView;
 
 public class PrimaryController implements Initializable {
 
@@ -57,19 +50,19 @@ public class PrimaryController implements Initializable {
 
     @FXML // fx:id="txt_usrn"
     private TextField txt_usrn; // Value injected by FXMLLoader
-    InputStream stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\im.png");
+    InputStream stream = new FileInputStream("C:\\Users\\ASUS\\Downloads\\WhatsApp Image 2024-04-24 at 23.21.57.jpeg");
 
     Image myImage = new Image(stream);
-    InputStream stream1 = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\siren.png");
+    //InputStream stream1 = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\siren.png");
 
-    Image myImage1 = new Image(stream1);
+   // Image myImage1 = new Image(stream1);
 
     public PrimaryController() throws FileNotFoundException {
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ImageView imageView = new ImageView(myImage1);
+        ImageView imageView = new ImageView(myImage);
         double desiredWidth = 50; // Adjust as needed
         double desiredHeight = 50; // Adjust as needed
         imageView.setFitWidth(desiredWidth);
@@ -81,18 +74,15 @@ public class PrimaryController implements Initializable {
         LabelUser.setEditable(false);
         passwordlabel.setEditable(false);
     }
-
     @FXML
-    void distressrequest(ActionEvent event) throws IOException {
-        Platform.runLater(() -> {
-            try {
-                App.setRoot("distressCall");
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
+    void distressRequest(ActionEvent event) throws IOException {
+
+
+          App.setRoot("distressCall");
 
     }
+
+
 
     @FXML
     void sendWarning(ActionEvent event) {
