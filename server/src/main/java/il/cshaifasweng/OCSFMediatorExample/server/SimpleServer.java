@@ -139,6 +139,8 @@ public class SimpleServer extends AbstractServer {
                                 client.sendToClient("notInYourCommunity");
                             } else if (task.getStatus() == 5) {
                                 client.sendToClient("The task is canceled.");
+                            } else if (task.getStatus() == 4) {
+                                client.sendToClient("You can't update the status the task has been rejected.");
                             } else if (task.getStatus() != 2 && !updateVale.equals("status")) {
                                 client.sendToClient("The task's status isn't 2.");
                             } else if (k) {
@@ -146,7 +148,7 @@ public class SimpleServer extends AbstractServer {
                                     client.sendToClient("the status is illegal");
                                     return;
                                 }
-                                if (updateVale.equals("status") && (task.getStatus() == 3 || task.getStatus() == 0) && (Integer.parseInt(newData)!=0 || Integer.parseInt(newData)!=1)) {
+                                if (updateVale.equals("status") && (task.getStatus() == 3 || task.getStatus() == 0) && (Integer.parseInt(newData) != 0 || Integer.parseInt(newData) != 1)) {
                                     Message update = new Message("update cancel list");
                                     update.setObj(task);
                                     sendToAllClients(update);// to update the requests that the client can cancel.
