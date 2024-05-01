@@ -102,6 +102,20 @@ public class SimpleClient extends AbstractClient {
                     }
 
                 });
+            } if (msg.equals("You can't update the status the task has been rejected.")) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
+                    alert.setTitle("Error"); // Set the window's title
+                    alert.setHeaderText(null); // Optional: you can have a header or set it to null
+                    alert.setContentText("You can't update the status the task has been rejected."); // Set the main message/content
+                    alert.showAndWait(); // Display the alert and wait for the user to close it
+                    try {
+                        App.setRoot("newTaskData");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+
+                });
             } else if (msg.equals("The task is canceled.")) {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
