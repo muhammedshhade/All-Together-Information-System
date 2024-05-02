@@ -50,25 +50,25 @@ public class PrimaryController implements Initializable {
 
     @FXML // fx:id="txt_usrn"
     private TextField txt_usrn; // Value injected by FXMLLoader
-    InputStream stream = new FileInputStream("C:\\Users\\ASUS\\Downloads\\WhatsApp Image 2024-04-24 at 23.21.57.jpeg");
+    //InputStream stream = new FileInputStream("C:\\Users\\ASUS\\Downloads\\WhatsApp Image 2024-04-24 at 23.21.57.jpeg");
 
-    Image myImage = new Image(stream);
-    //InputStream stream1 = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\siren.png");
+    //Image myImage = new Image(stream);
+    InputStream stream1 = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\siren.png");
 
-   // Image myImage1 = new Image(stream1);
+    Image myImage1 = new Image(stream1);
 
     public PrimaryController() throws FileNotFoundException {
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ImageView imageView = new ImageView(myImage);
+        ImageView imageView = new ImageView(myImage1);
         double desiredWidth = 50; // Adjust as needed
         double desiredHeight = 50; // Adjust as needed
         imageView.setFitWidth(desiredWidth);
         imageView.setFitHeight(desiredHeight);
         distressRequest.setGraphic(imageView);
-        im.setImage(myImage);
+//        im.setImage(myImage);
         title.setEditable(false);
         request.setEditable(false);
         LabelUser.setEditable(false);
@@ -76,8 +76,6 @@ public class PrimaryController implements Initializable {
     }
     @FXML
     void distressRequest(ActionEvent event) throws IOException {
-
-
           App.setRoot("distressCall");
 
     }
@@ -120,9 +118,7 @@ public class PrimaryController implements Initializable {
         }
     }
 
-    @FXML
-    void CancelDistress1(ActionEvent event) {
-    }
+
 
     @FXML
     void Log_In(ActionEvent event) throws IOException {
