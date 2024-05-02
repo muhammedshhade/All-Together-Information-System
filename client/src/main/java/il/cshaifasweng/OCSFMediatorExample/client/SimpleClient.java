@@ -19,7 +19,6 @@ public class SimpleClient extends AbstractClient {
         super(host, port);
     }
 
-
     protected void handleMessageFromServer(Object msg) throws IOException {
         try {
             if (msg.equals("back to list")) {
@@ -45,7 +44,6 @@ public class SimpleClient extends AbstractClient {
                         throw new RuntimeException(e);
                     }
                 });
-
                 return;
             }
             if (msg.equals("notInYourCommunity")) {
@@ -77,7 +75,6 @@ public class SimpleClient extends AbstractClient {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-
                 });
                 return;
             }
@@ -93,9 +90,8 @@ public class SimpleClient extends AbstractClient {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-
                 });
-            } if (msg.equals("You can't update the status the task has been rejected.")) {
+            } else if (msg.equals("You can't update the status the task has been rejected.")) {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
                     alert.setTitle("Error"); // Set the window's title
@@ -107,7 +103,6 @@ public class SimpleClient extends AbstractClient {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-
                 });
             } else if (msg.equals("The task is canceled.")) {
                 Platform.runLater(() -> {

@@ -8,9 +8,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.control.TextField;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -57,27 +57,27 @@ public class SecondaryController implements Initializable {
     private static User userLogIn;
     InputStream stream1;
 
-    {
-        try {
-            stream1 = new FileInputStream("C:\\Users\\ASUS\\Downloads\\WhatsApp Image 2024-04-24 at 23.21.57.jpeg");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    InputStream stream;
-
 //    {
 //        try {
-//            stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\introduction.png");
+//            stream1 = new FileInputStream("C:\\Users\\ASUS\\Downloads\\WhatsApp Image 2024-04-24 at 23.21.57.jpeg");
 //        } catch (FileNotFoundException e) {
 //            throw new RuntimeException(e);
 //        }
 //    }
 
+    InputStream stream;
+
+    {
+        try {
+            stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\siren.png");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     //Image myImage = new Image(stream);
 
-    Image myImage1 = new Image(stream1);
+    Image myImage1 = new Image(stream);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -87,7 +87,7 @@ public class SecondaryController implements Initializable {
         imageView.setFitWidth(desiredWidth);
         imageView.setFitHeight(desiredHeight);
         DistressButtonControl.setGraphic(imageView);
-        im.setImage(myImage1);
+        //im.setImage(myImage1);
         ArrayList<User> loggedInList = UserControl.getLoggedInList();
         if (!loggedInList.isEmpty()) {
             User lastUser = loggedInList.get(loggedInList.size() - 1);
@@ -138,11 +138,6 @@ public class SecondaryController implements Initializable {
     }
 
     @FXML
-    void CancelDistress(ActionEvent event) {
-
-    }
-
-    @FXML
     void Cancelvoluntering(ActionEvent event) {
 
     }
@@ -175,7 +170,6 @@ public class SecondaryController implements Initializable {
     @FXML
     void distress(ActionEvent event) throws IOException {
         App.setRoot("distressCallsecondary");
-
     }
 
     @FXML
