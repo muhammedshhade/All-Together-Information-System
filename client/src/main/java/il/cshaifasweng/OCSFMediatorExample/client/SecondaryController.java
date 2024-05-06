@@ -21,10 +21,6 @@ import java.util.ResourceBundle;
 
 public class SecondaryController implements Initializable {
 
-
-    @FXML
-    private Button CANCEL_VOLUNTERINGbt;
-
     @FXML
     private Button Canceldistressbt;
 
@@ -54,7 +50,7 @@ public class SecondaryController implements Initializable {
     private TextField userName;
 
     private static User userLogIn;
-    InputStream stream1;
+    /*InputStream stream1;
 
     {
         try {
@@ -62,9 +58,9 @@ public class SecondaryController implements Initializable {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
-    InputStream stream;
+    /*InputStream stream;
 
     {
         try {
@@ -72,21 +68,21 @@ public class SecondaryController implements Initializable {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
-    Image myImage = new Image(stream);
+    //Image myImage = new Image(stream);
 
-    Image myImage1 = new Image(stream1);
+    //Image myImage1 = new Image(stream1);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ImageView imageView = new ImageView(myImage1);
+        //ImageView imageView = new ImageView(myImage1);
         double desiredWidth = 50;
         double desiredHeight = 50;
-        imageView.setFitWidth(desiredWidth);
-        imageView.setFitHeight(desiredHeight);
-        DistressButtonControl.setGraphic(imageView);
-        im.setImage(myImage);
+       // imageView.setFitWidth(desiredWidth);
+       // imageView.setFitHeight(desiredHeight);
+       // DistressButtonControl.setGraphic(imageView);
+       // im.setImage(myImage);
         ArrayList<User> loggedInList = UserControl.getLoggedInList();
         if (!loggedInList.isEmpty()) {
             User lastUser = loggedInList.get(loggedInList.size() - 1);
@@ -142,11 +138,6 @@ public class SecondaryController implements Initializable {
     }
 
     @FXML
-    void Cancelvoluntering(ActionEvent event) {
-
-    }
-
-    @FXML
     void LOGOUT(ActionEvent event) throws IOException {
         SimpleClient.getClient().sendToServer("log out " + getUserLogIn().getID());
         App.setRoot("primary");
@@ -164,14 +155,8 @@ public class SecondaryController implements Initializable {
 
     @FXML
     void volunter(ActionEvent event) throws IOException {
-        // Retrieving the username and password
-//        Preferences prefs = Preferences.userNodeForPackage(SecondaryController.class);
-//        String savedUsername = prefs.get("username", "");
-//        String savedPassword = prefs.get("password", "");
-//        System.out.println(savedPassword);
-//        System.out.println(savedUsername);
         try {
-            SimpleClient.getClient().sendToServer("get tasks");
+            SimpleClient.getClient().sendToServer("getVolunteerTasks");
         } catch (IOException e) {
             showAlert("Error", "Failed to Get Login message!" + e.getMessage());
             e.printStackTrace();

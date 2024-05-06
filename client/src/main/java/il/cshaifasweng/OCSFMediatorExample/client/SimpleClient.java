@@ -9,6 +9,7 @@ import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.application.Platform;
@@ -71,6 +72,17 @@ public class SimpleClient extends AbstractClient {
                 App.setRoot("cancelServiceRequest");
                 return;
             }
+            if (msg.equals("canceld!!")) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION); // Use INFORMATION alert type
+                    alert.setTitle("Thank you"); // Set the window's title
+                    alert.setHeaderText(null); // Optional: you can have a header or set it to null
+                    alert.setContentText("Your volunteer request has been canceled.."); // Set the main message/content
+                    alert.showAndWait(); // Display the alert and wait for the user to close it
+                });
+                App.setRoot("cancelVolunteerRequest");
+                return;
+            }
             if (msg.equals("The task's status isn't 2.")) {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
@@ -109,14 +121,28 @@ public class SimpleClient extends AbstractClient {
                     } else if (messageParts[0].equals("alltasks")) {
                         VolunterControl.tasks = (List<Task>) messageParts[1];
                         App.setRoot("volunter_control");
-                    } else if (messageParts[0].equals("ToCancel")) {
+                    }else if (messageParts[0].equals("myModify")) {
+                        EventBus.getDefault().post((List<Task>) messageParts[1]);
+                    }else if (messageParts[0].equals("removeAcceptTaskManager")) {
+                        EventBus.getDefault().post((ArrayList<Task>) messageParts[1]);
+                    } else if (messageParts[0].equals("getVolunteerTasks")) {
+                        VolunterControl.tasks = (List<Task>) messageParts[1];
+                        Platform.runLater(() -> {
+                            try {
+                                App.setRoot("volunter_control");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                    }
+                    else if (messageParts[0].equals("ToCancel")) {
                         CancelServiceRequest.getRequestService = (List<Task>) messageParts[1];
                         try {
                             App.setRoot("cancelServiceRequest");
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
-                    } else if (messageParts[0].equals("uploaded")) {
+                    }else if (messageParts[0].equals("uploaded")) {
                         CommunityTaskControl.getCommunityTask = (List<Task>) messageParts[1];
                         Platform.runLater(() -> {
                             try {
@@ -125,8 +151,7 @@ public class SimpleClient extends AbstractClient {
                                 throw new RuntimeException(e);
                             }
                         });
-                    }
-                    else if (messageParts[0].equals("Messages")) {
+                    }else if (messageParts[0].equals("Messages")) {
                         System.out.println("hh");
                         MessagesToUser.message= (List<MessageToUser>) messageParts[1];
                         // MessagesToUser.users=(List<User>)messageParts[2];

@@ -122,11 +122,6 @@ public class Managercontrol {
     }
 
     @FXML
-    void showVolunteerRequests(ActionEvent event) {
-        //manager check
-    }
-
-    @FXML
     void updateTaskDetails(ActionEvent event) throws IOException {
         App.setRoot("updateTaskDetails");
     }

@@ -12,15 +12,19 @@ import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.service.ServiceRegistry;
 
+
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Predicate;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import java.util.Collections;
 
 public class ConnectToDataBase {
     private static Session session;
@@ -456,8 +460,8 @@ public class ConnectToDataBase {
         Task task2 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(9, 30), 3, "Buy Medicine", "", 0.0f);
         Task task3 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(11, 15), 3, "Nanny", "", 0.0f);
         Task task4 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(13, 4), 3, "Transportation", "I want to go to the Hospital", 0.0f);
-        Task task5 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(15, 20), 0, "Transportation", "", 0.0f);
-        Task task6 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(17, 10), 0, "Buy Medicine", "", 0.0f);
+        Task task5 = new Task(LocalDate.of(2024, 4, 22), LocalTime.of(15, 20), 0, "Transportation", "", 0.0f);
+        Task task6 = new Task(LocalDate.of(2024, 4, 22), LocalTime.of(17, 10), 0, "Buy Medicine", "", 0.0f);
         user2.getTasks().add(task1);
         user7.getTasks().add(task2);
         user3.getTasks().add(task3);

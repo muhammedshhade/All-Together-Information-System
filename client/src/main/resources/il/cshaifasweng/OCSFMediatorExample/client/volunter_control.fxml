@@ -25,7 +25,7 @@
             <Image url="@../../../../../../../../../../Downloads/imm.png" />
          </image>
       </ImageView>
-      <Label alignment="BOTTOM_CENTER" layoutX="142.0" layoutY="54.0" prefHeight="31.0" prefWidth="316.0" style="-fx-background-color: white;" text="Uploaded Task List" textAlignment="CENTER" textFill="#12d0f2">
+      <Label alignment="BOTTOM_CENTER" layoutX="142.0" layoutY="54.0" prefHeight="31.0" prefWidth="316.0" style="-fx-background-color: white;" text="Available tasks for volunteering" textAlignment="CENTER" textFill="#12d0f2">
          <font>
             <Font name="David Bold" size="20.0" />
          </font>

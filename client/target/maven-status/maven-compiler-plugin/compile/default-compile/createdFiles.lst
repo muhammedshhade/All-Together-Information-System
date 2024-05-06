@@ -16,6 +16,7 @@ il\cshaifasweng\OCSFMediatorExample\client\CommunityTaskControl.class
 il\cshaifasweng\OCSFMediatorExample\client\NewTaskDataControl.class
 il\cshaifasweng\OCSFMediatorExample\client\WarningEvent.class
 il\cshaifasweng\OCSFMediatorExample\client\ocsf\ObservableSWRClient.class
+il\cshaifasweng\OCSFMediatorExample\client\ModifyTaskDetailEvent.class
 il\cshaifasweng\OCSFMediatorExample\client\SimpleClient.class
 il\cshaifasweng\OCSFMediatorExample\client\ocsf\ObservableClient.class
 il\cshaifasweng\OCSFMediatorExample\client\Managercontrol.class

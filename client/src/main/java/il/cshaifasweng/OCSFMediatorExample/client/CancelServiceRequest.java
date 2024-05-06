@@ -37,30 +37,6 @@ public class CancelServiceRequest {
     public static List<Task> getRequestService = new ArrayList<>();
     private Task requestedTask = null;
 
-  /*  public void initialize() {
-        note.setEditable(false);
-        if (getRequestService.isEmpty()) {
-            // If getCommunityTask list is empty, do nothing
-            return;
-        }
-        // Add items to the ListView
-        for (Task task : getRequestService) {
-            this.requestsList.getItems().add(task.getServiceType());
-        }
-        // Set event handler for mouse click on ListView
-        this.requestsList.setOnMouseClicked(event -> {
-            String selectedTaskName = this.requestsList.getSelectionModel().getSelectedItem();
-            if (selectedTaskName != null) {
-                // Find the selected task in the getCommunityTask list
-                for (Task task : getRequestService) {
-                    if (task.getServiceType().equals(selectedTaskName)) {
-                        requestedTask = task;
-                        break;
-                    }
-                }
-            }
-        });
-    }*/
 
     public void initialize() {
         // im.setImage(myImage1);

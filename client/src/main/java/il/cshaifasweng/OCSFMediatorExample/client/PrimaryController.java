@@ -56,25 +56,25 @@ public class PrimaryController implements Initializable {
 
     @FXML // fx:id="txt_usrn"
     private TextField txt_usrn; // Value injected by FXMLLoader
-    InputStream stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\im.png");
+    //InputStream stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\im.png");
 
-    Image myImage = new Image(stream);
-    InputStream stream1 = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\siren.png");
+   // Image myImage = new Image(stream);
+   // InputStream stream1 = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\siren.png");
 
-    Image myImage1 = new Image(stream1);
+    //Image myImage1 = new Image(stream1);
 
     public PrimaryController() throws FileNotFoundException {
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        ImageView imageView = new ImageView(myImage1);
+        //ImageView imageView = new ImageView(myImage1);
         double desiredWidth = 50; // Adjust as needed
         double desiredHeight = 50; // Adjust as needed
-        imageView.setFitWidth(desiredWidth);
-        imageView.setFitHeight(desiredHeight);
-        distressRequest.setGraphic(imageView);
-        im.setImage(myImage);
+       // imageView.setFitWidth(desiredWidth);
+       // imageView.setFitHeight(desiredHeight);
+       // distressRequest.setGraphic(imageView);
+       // im.setImage(myImage);
         title.setEditable(false);
         request.setEditable(false);
         LabelUser.setEditable(false);

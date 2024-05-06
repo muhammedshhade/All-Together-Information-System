@@ -6,7 +6,6 @@ import java.util.Base64;
 import javax.persistence.Entity;
 
 public class UserControl extends User {
-  //  private static User loggedInUser;
     public static ArrayList<User> LoggedInList = new ArrayList<>();
 
     // Method to set the entire LoggedInList
@@ -24,7 +23,7 @@ public class UserControl extends User {
         LoggedInList.add(user);
     }
 
-   public UserControl(String ID,String first_name,String
+    public UserControl(String ID,String first_name,String
             Last_name,boolean isConnected, String commentary,
                        String username,String communityManager, String Password, String address,String email, Role role){
         super( ID,first_name,
@@ -63,24 +62,24 @@ public class UserControl extends User {
         // Implement cancel request logic here
         // This method could handle the cancellation of a particular request
     }
-    
-    String hashPassword(String password, String salt) {
-		try {
-			String passwordWithSalt = password + salt;
-			MessageDigest md = MessageDigest.getInstance("SHA-512");
-			byte[] hashedPassword = md.digest(passwordWithSalt.getBytes());
-			return bytesToHex(hashedPassword);
-		} catch (NoSuchAlgorithmException e) {
-			// Handle the exception
-			return null;
-		}
-	}
 
-	private String bytesToHex(byte[] bytes) {
-		StringBuilder result = new StringBuilder();
-		for (byte b : bytes) {
-			result.append(String.format("%02x", b));
-		}
-		return result.toString();
-	}
+    String hashPassword(String password, String salt) {
+        try {
+            String passwordWithSalt = password + salt;
+            MessageDigest md = MessageDigest.getInstance("SHA-512");
+            byte[] hashedPassword = md.digest(passwordWithSalt.getBytes());
+            return bytesToHex(hashedPassword);
+        } catch (NoSuchAlgorithmException e) {
+            // Handle the exception
+            return null;
+        }
+    }
+
+    private String bytesToHex(byte[] bytes) {
+        StringBuilder result = new StringBuilder();
+        for (byte b : bytes) {
+            result.append(String.format("%02x", b));
+        }
+        return result.toString();
+    }
 }

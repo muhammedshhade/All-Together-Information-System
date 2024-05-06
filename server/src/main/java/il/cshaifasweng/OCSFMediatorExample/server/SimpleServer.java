@@ -1,6 +1,5 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
-import il.cshaifasweng.OCSFMediatorExample.client.SecondaryController;
 import il.cshaifasweng.OCSFMediatorExample.client.UpdateTaskDetails;
 import il.cshaifasweng.OCSFMediatorExample.entities.MessageToUser;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
@@ -9,11 +8,14 @@ import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.AbstractServer;
 import il.cshaifasweng.OCSFMediatorExample.server.ocsf.ConnectionToClient;
 
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.time.LocalDateTime;
 import java.util.*;
+
+import static il.cshaifasweng.OCSFMediatorExample.server.ConnectToDataBase.updateTaskData;
 
 
 public class SimpleServer extends AbstractServer {
@@ -47,6 +49,20 @@ public class SimpleServer extends AbstractServer {
         }
     }
 
+    private static void myModifyTask(int TaskID) {
+        try {
+            List<Task> tasks = ConnectToDataBase.getAllTasks();
+            for (Task task : tasks) {
+                if (task.getIdNum() == TaskID) {
+                    task.setStatus(1);
+                    updateTaskData("1", task, "status");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
 
     protected void handleMessageFromClient(Object msg, ConnectionToClient client) {
@@ -63,7 +79,7 @@ public class SimpleServer extends AbstractServer {
                     array[0] = "ToCancel"; // Assign a String object to the first index
                     array[1] = requests;
                     client.sendToClient(array);
-                } else if (messageParts.length == 2 && messageParts[0] instanceof String &&
+                }else if (messageParts.length == 2 && messageParts[0] instanceof String &&
                         messageParts[0].equals("Get uploaded messages") && messageParts[1] instanceof User) {
                     Long id = 0L;
                     List<User> allUsers = ConnectToDataBase.getAllUsers();
@@ -126,6 +142,32 @@ public class SimpleServer extends AbstractServer {
                 array[0] = "request"; // Assign a String object to the first index
                 array[1] = requests;
                 client.sendToClient(array);*/
+            } else if (message.equals("getVolunteerTasks")) {
+                List<Task> alltasks = ConnectToDataBase.getAllTasks();
+                List<Task> newOne = new ArrayList<>();
+                for(Task task: alltasks){
+                    if(task.getStatus() == 0){
+                        newOne.add(task);
+                    }
+                }
+                Object[] array = new Object[2];
+                array[0] = "getVolunteerTasks"; // Assign a String object to the first index
+                array[1] = newOne;
+                client.sendToClient(array);
+            }else if (message.startsWith("myModify")) {
+                String taskid = message.split(" ")[1];
+                myModifyTask(Integer.parseInt(taskid));
+                List<Task> alltasks = ConnectToDataBase.getAllTasks();
+                List<Task> newOne = new ArrayList<>();
+                for(Task task: alltasks){
+                    if(task.getStatus() == 0){
+                        newOne.add(task);
+                    }
+                }
+                Object[] array = new Object[2];
+                array[0] = "myModify"; // Assign a String object to the first index
+                array[1] = newOne;
+                client.sendToClient(array);
             } else if (message.startsWith("modify")) {
                 String taskid = message.split(" ")[1];
                 modifyTask(Integer.parseInt(taskid));
@@ -225,7 +267,27 @@ public class SimpleServer extends AbstractServer {
                         e.printStackTrace();
                     }
                 }
-            } else if (message.startsWith("The reason of rejected is")) {
+            }else if (message.startsWith("cancel volunteer request")) {
+                String[] parts = message.split("@");
+                if (parts.length >= 3 && parts[0].equals("cancel volunteer request")) {
+                    String TaskId = parts[1];
+                    try {
+                        int taskIdInt = Integer.parseInt(TaskId);
+                        Task task = ConnectToDataBase.getTaskById(taskIdInt);
+                        if (task != null) {
+                            ConnectToDataBase.updateTaskData("0", task, "status");
+                            client.sendToClient("canceld!!");
+                        } else {
+                            System.out.println("Task with ID " + TaskId + " not found.");
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid task ID: " + TaskId);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            else if (message.startsWith("The reason of rejected is")) {
                 String[] parts = message.split("@");
                 String reason = parts[1];
                 System.out.println(reason);

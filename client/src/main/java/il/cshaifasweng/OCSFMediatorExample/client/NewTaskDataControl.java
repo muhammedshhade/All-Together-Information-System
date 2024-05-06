@@ -42,7 +42,7 @@ public class NewTaskDataControl {
 
     @FXML
     private ImageView im2;
-    private InputStream stream;
+   /* private InputStream stream;
 
     {
         try {
@@ -61,11 +61,11 @@ public class NewTaskDataControl {
             throw new RuntimeException(e);
         }
     }
-    Image myImage2 = new Image(stream);
+    Image myImage2 = new Image(stream);*/
 
     public void initialize() {
-        im1.setImage(myImage2);
-        im2.setImage(myImage1);
+      //  im1.setImage(myImage2);
+      //  im2.setImage(myImage1);
         title.setEditable(false);
         note.setEditable(false);
         title.setText("Please enter the value of "+ UpdateTaskDetails.getUpdateVale()+".");

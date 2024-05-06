@@ -36,7 +36,7 @@ public class RequestController {
     @FXML
     private ImageView image;
     private InputStream stream;
-    private InputStream stream1;
+   /* private InputStream stream1;
 
     {
         try {
@@ -44,26 +44,26 @@ public class RequestController {
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
-    Image myImage1=new Image(stream); {
+   /* Image myImage1=new Image(stream); {
         try {
             stream1 = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\help.png");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
-    Image myImage2=new Image(stream1);
+    //Image myImage2=new Image(stream1);
     @FXML
     void initialize() {
-        ImageView imageView = new ImageView(myImage1);
+       // ImageView imageView = new ImageView(myImage1);
         double desiredWidth = 90; // Adjust as needed
         double desiredHeight = 50; // Adjust as needed
-        imageView.setFitWidth(desiredWidth);
-        imageView.setFitHeight(desiredHeight);
-        submit.setGraphic(imageView);
-        image.setImage(myImage2);
+       // imageView.setFitWidth(desiredWidth);
+       // imageView.setFitHeight(desiredHeight);
+       // submit.setGraphic(imageView);
+       // image.setImage(myImage2);
 
         // Initialize the ChoiceBox with choices
         services.getItems().add("Dog walker");

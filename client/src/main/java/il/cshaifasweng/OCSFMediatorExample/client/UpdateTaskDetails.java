@@ -30,23 +30,23 @@ public class UpdateTaskDetails {
     @FXML
     private ImageView im;
     private static String updateVale;
-    InputStream stream;
+   /* InputStream stream;
 
-    {
+   {
         try {
             stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\update.png");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
-    Image myImage = new Image(stream);
+    //Image myImage = new Image(stream);
     public static String getUpdateVale() {
         return updateVale;
     }
     public void initialize() {
         text.setEditable(false);
-        im.setImage(myImage);
+     //   im.setImage(myImage);
 
     }
 
