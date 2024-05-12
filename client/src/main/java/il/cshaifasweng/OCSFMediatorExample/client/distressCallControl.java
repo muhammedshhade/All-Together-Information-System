@@ -165,8 +165,5 @@ public class distressCallControl {
     @FXML
     void Back(ActionEvent event) throws IOException {
         App.setRoot("primary");
-
     }
-
-
 }
