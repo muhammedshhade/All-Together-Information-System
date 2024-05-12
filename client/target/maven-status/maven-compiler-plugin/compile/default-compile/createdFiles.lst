@@ -9,6 +9,9 @@ il\cshaifasweng\OCSFMediatorExample\client\CheckRequestService.class
 il\cshaifasweng\OCSFMediatorExample\client\confirmVol.class
 il\cshaifasweng\OCSFMediatorExample\client\CommunityMembers.class
 il\cshaifasweng\OCSFMediatorExample\client\CommunityTaskControl.class
+il\cshaifasweng\OCSFMediatorExample\client\Distresscalloption.class
+il\cshaifasweng\OCSFMediatorExample\client\CommunityDistress.class
+il\cshaifasweng\OCSFMediatorExample\client\AddCallEvent.class
 il\cshaifasweng\OCSFMediatorExample\client\accepTaskEvent.class
 il\cshaifasweng\OCSFMediatorExample\client\ocsf\ObservableClient.class
 il\cshaifasweng\OCSFMediatorExample\client\Managercontrol.class
@@ -22,6 +25,7 @@ il\cshaifasweng\OCSFMediatorExample\client\DistressCallsecondary.class
 il\cshaifasweng\OCSFMediatorExample\client\MessagesToUser.class
 il\cshaifasweng\OCSFMediatorExample\client\NewTaskDataControl.class
 il\cshaifasweng\OCSFMediatorExample\client\WarningEvent.class
+il\cshaifasweng\OCSFMediatorExample\client\AllCalls.class
 il\cshaifasweng\OCSFMediatorExample\client\ocsf\ObservableSWRClient.class
 il\cshaifasweng\OCSFMediatorExample\client\VolunteerEvent.class
 il\cshaifasweng\OCSFMediatorExample\client\ModifyTaskDetailEvent.class

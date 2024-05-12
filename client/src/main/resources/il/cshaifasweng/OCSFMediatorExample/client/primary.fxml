@@ -32,12 +32,17 @@
       <TextField fx:id="passwordlabel" layoutX="144.0" layoutY="223.0" prefHeight="26.0" prefWidth="80.0" style="-fx-background-color: without;" text="Password:" />
       <ImageView fx:id="im" fitHeight="112.0" fitWidth="150.0" layoutX="34.0" layoutY="331.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../../../../../../../Pictures/im.png" />
+            <Image url="@pic/im.png" />
          </image>
       </ImageView>
       <Button fx:id="distressRequest" layoutX="322.0" layoutY="427.0" mnemonicParsing="false" onAction="#distressRequest" style="-fx-background-color: white;">
-
-
+         <graphic>
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="10.0" layoutY="10.0">
+               <image>
+                  <Image url="@pic/siren.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
       <Label layoutX="253.0" layoutY="340.0" prefHeight="35.0" prefWidth="184.0" text="         Are you in emergency?" textAlignment="CENTER">
          <font>

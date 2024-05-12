@@ -550,6 +550,39 @@ public class ConnectToDataBase {
         return null;
     }
 
+
+
+    public static List<DistressCall> getallDistressCallsBetweenDates(LocalDate targetDate) {
+        Session session = null;
+        try {
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<DistressCall> query = builder.createQuery(DistressCall.class);
+            Root<DistressCall> root = query.from(DistressCall.class);
+            Join<DistressCall, User> userJoin = root.join("user", JoinType.LEFT);
+            LocalDate currentDate = LocalDate.now();
+            query.select(root).where(
+                    builder.and(
+                            builder.between(root.get("date"), targetDate, currentDate)
+                    )
+            );
+            List<DistressCall> distressCalls = session.createQuery(query).getResultList();
+
+            return distressCalls;
+        } catch (Exception e) {
+            if (session != null) {
+                session.getTransaction().rollback();
+                e.printStackTrace();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return null;
+    }
     public static void updateTaskData(String newData, Task task, String updateValue) throws Exception {
         SessionFactory sessionFactory = getSessionFactory();
         try {
@@ -965,8 +998,11 @@ public class ConnectToDataBase {
 
     public static void initializeDatabase() throws IOException {
         try {
-            if (!getAllTasks().isEmpty() && !getAllUsers().isEmpty()) {
-                users = getAllUsers();
+            List<Task> tasks = getAllTasks();
+            List<User> usersList = getAllUsers();
+
+            if (tasks != null && !tasks.isEmpty() && usersList != null && !usersList.isEmpty()) {
+                users = usersList;
                 return;
             }
         } catch (Exception e) {
