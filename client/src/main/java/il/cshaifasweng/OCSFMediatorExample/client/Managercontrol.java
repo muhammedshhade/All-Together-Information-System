@@ -12,12 +12,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 public class Managercontrol {
 
@@ -103,8 +100,8 @@ public class Managercontrol {
     }
 
     @FXML
-    void getDistressCalls(ActionEvent event) {
-
+    void getDistressCalls(ActionEvent event) throws IOException {
+        App.setRoot("Distresscalloption");
     }
 
     @FXML

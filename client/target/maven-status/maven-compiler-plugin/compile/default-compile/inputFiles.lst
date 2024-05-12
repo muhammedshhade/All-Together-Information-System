@@ -1,5 +1,7 @@
 C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\Main.java
 C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\ModifyTaskDetailEvent.java
+C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\AllCalls.java
+C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\Distresscalloption.java
 C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\UpdateTaskDetails.java
 C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\ocsf\AbstractClient.java
 C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\CancelServiceRequest.java
@@ -10,6 +12,7 @@ C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\O
 C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\RejectControl.java
 C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\DistressCallsecondary.java
 C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\App.java
+C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\CommunityDistress.java
 C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\ocsf\AdaptableClient.java
 C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\PerformedTaskControl.java
 C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\distressCallControl.java
@@ -22,6 +25,7 @@ C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\O
 C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\CheckRequestService.java
 C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\SecondaryController.java
 C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\Managercontrol.java
+C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\AddCallEvent.java
 C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\PrimaryController.java
 C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\CommunityMembers.java
 C:\Users\IMOE001\Documents\software\p2-g5\client\src\main\java\il\cshaifasweng\OCSFMediatorExample\client\TaskCancellationEvent.java

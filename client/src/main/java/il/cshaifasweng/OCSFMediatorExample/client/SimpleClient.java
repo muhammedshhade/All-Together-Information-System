@@ -63,6 +63,7 @@ public class SimpleClient extends AbstractClient {
                 return;
             }
 
+
             if (msg.equals("saved!")) {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION); // Use INFORMATION alert type
@@ -168,6 +169,24 @@ public class SimpleClient extends AbstractClient {
                             alert.showAndWait(); // Display the alert and wait for the user to close it
                             EventBus.getDefault().post((List<Task>) messageParts[1]);
                         });
+                    } else if (messageParts[0].equals("my community calls")) {
+                        CommunityDistress.getCommunitycalls = (List<DistressCall>) messageParts[1];
+                        Platform.runLater(() -> {
+                            try {
+                                App.setRoot("Community_distress");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                    } else if (messageParts[0].equals("all communities calls")) {
+                        AllCalls.getAllCommunitycalls = (List<DistressCall>) messageParts[1];
+                        Platform.runLater(() -> {
+                            try {
+                                App.setRoot("allCalls");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
                     } else if (messageParts[0].equals("accept")) {
                         Platform.runLater(() -> {
                             EventBus.getDefault().post(messageParts[1]);
@@ -207,8 +226,14 @@ public class SimpleClient extends AbstractClient {
                         alert.showAndWait(); // Display the alert and wait for the user to close it
                     });
 
-
-                    App.setRoot("primary");
+                    Platform.runLater(() -> {
+                        // Code to update UI goes here
+                        try {
+                            App.setRoot("primary");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
 
                 }
                 if ("distresscall added successfully to the database.".equals(message)) {
@@ -220,8 +245,6 @@ public class SimpleClient extends AbstractClient {
                         alert.showAndWait(); // Display the alert and wait for the user to close it
                     });
                     Platform.runLater(() -> {
-
-
                         try {
                             App.setRoot("secondary");
                         } catch (IOException e) {
@@ -238,8 +261,6 @@ public class SimpleClient extends AbstractClient {
                         alert.setContentText("Unidentified Code. Please try again."); // Set the main message/content
                         alert.showAndWait(); // Display the alert and wait for the user to close it
                     });
-
-
                 }
                 // Handling LOGIN_FAIL message
                 if ("LOGIN_FAIL".equals(message)) {
@@ -271,7 +292,7 @@ public class SimpleClient extends AbstractClient {
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
-                        }  else if("Manager_LOGIN_SUCCESS".equals(message)){
+                        } else if ("Manager_LOGIN_SUCCESS".equals(message)) {
                             try {
                                 App.setRoot("manager_control");
                             } catch (IOException e) {
@@ -288,11 +309,12 @@ public class SimpleClient extends AbstractClient {
             }
             if (msg.getClass().equals(Message.class)) {
                 System.out.println("In simple client");
-                if(((Message) msg).getMsg().equals("update manager check list")) {
+                if (((Message) msg).getMsg().equals("update manager check list")) {
                     EventBus.getDefault().post(((Message) msg).getObj());
-                }else if(((Message) msg).getMsg().equals("update uploaded tasks list"))
+                } else if (((Message) msg).getMsg().equals("update uploaded tasks list"))
                     EventBus.getDefault().post(new ModifyTaskDetailEvent((Task) ((Message) msg).getObj()));
-
+                else if (((Message) msg).getMsg().equals("update manager distress call list"))
+                    EventBus.getDefault().post(new AddCallEvent((DistressCall) ((Message) msg).getObj()));
                 return;
 
             }

@@ -18,6 +18,19 @@ public class DistressCall implements Serializable {
     private EmergencyCenter emergencyCenter;
     private String User_ID;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user")
+    User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+
+    }
+
 
     // Constructor
     public DistressCall(boolean isRegistered, LocalTime time, String location, LocalDate date,String id) {

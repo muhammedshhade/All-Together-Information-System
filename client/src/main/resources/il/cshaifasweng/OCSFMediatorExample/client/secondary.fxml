@@ -20,7 +20,7 @@
             <Font name="David Bold" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="LOGOUTBUTTON" layoutX="177.0" layoutY="359.0" mnemonicParsing="false" onAction="#LOGOUT" prefWidth="250.0" style="-fx-background-color: rgba(122,208,234,0.85);" text="Log Out" textFill="WHITE">
+      <Button fx:id="LOGOUTBUTTON" layoutX="177.0" layoutY="302.0" mnemonicParsing="false" onAction="#LOGOUT" prefWidth="250.0" style="-fx-background-color: rgba(122,208,234,0.85);" text="Log Out" textFill="WHITE">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
@@ -40,12 +40,7 @@
             <Font name="David Bold" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="CANCEL_VOLUNTERINGbt" layoutX="176.0" layoutY="251.0" mnemonicParsing="false" onAction="#Cancelvoluntering" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Cancel Voluntering Request" textFill="WHITE">
-         <font>
-            <Font name="David Bold" size="16.0" />
-         </font>
-      </Button>
-      <Button fx:id="message" layoutX="177.0" layoutY="305.0" mnemonicParsing="false" onAction="#message" prefHeight="30.0" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Messages" textFill="WHITE">
+      <Button fx:id="message" layoutX="177.0" layoutY="247.0" mnemonicParsing="false" onAction="#message" prefHeight="30.0" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Messages" textFill="WHITE">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
