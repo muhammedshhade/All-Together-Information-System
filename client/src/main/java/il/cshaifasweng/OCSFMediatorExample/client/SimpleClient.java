@@ -9,8 +9,11 @@ import org.greenrobot.eventbus.EventBus;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.List;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class SimpleClient extends AbstractClient {
 
@@ -31,6 +34,15 @@ public class SimpleClient extends AbstractClient {
                     }
                 });
                 return;
+            }
+            if ("The key id is false".equals(msg)) {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
+                    alert.setTitle("Error"); // Set the window's title
+                    alert.setHeaderText(null); // Optional: you can have a header or set it to null
+                    alert.setContentText("Unidentified Code. Please try again."); // Set the main message/content
+                    alert.showAndWait(); // Display the alert and wait for the user to close it
+                });
             }
             if (msg.equals("notFound")) {
                 Platform.runLater(() -> {
@@ -224,6 +236,26 @@ public class SimpleClient extends AbstractClient {
                             alert.showAndWait(); // Display the alert and wait for the user to close it
                             EventBus.getDefault().post((List<Task>) messageParts[1]);
                         });
+                    }
+                    if(messageParts[0].equals("histograms calls"))
+                    {
+                        List<DistressCall> distressCalls=(List<DistressCall>) messageParts[1];
+                        Map<LocalDate, Integer> dateCounts = new HashMap<>();
+
+                        // Count each date
+                        for (DistressCall call : distressCalls) {
+                            LocalDate date = call.getDate();
+                            dateCounts.put(date, dateCounts.getOrDefault(date, 0) + 1);
+                        }
+                        Histogram.dateCounts=dateCounts;
+                        Platform.runLater(() -> {
+                            try {
+                                App.setRoot("histogram");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+
                     }
                     else if (messageParts[0].equals("accept")) {
                         Platform.runLater(() -> {

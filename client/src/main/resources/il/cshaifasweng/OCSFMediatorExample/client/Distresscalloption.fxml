@@ -17,38 +17,47 @@
             </font>
         </Label>
         <TextField fx:id="name" layoutX="129.0" layoutY="52.0" />
-        <Label layoutX="361.0" layoutY="56.0" text="Id:">
+        <Label layoutX="329.0" layoutY="56.0" text="Id:">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>
         </Label>
         <TextField fx:id="id" layoutX="399.0" layoutY="52.0" />
-        <Label layoutX="63.0" layoutY="123.0" prefHeight="34.0" prefWidth="140.0" text="Please select start date:">
+        <Label layoutX="17.0" layoutY="123.0" prefHeight="34.0" prefWidth="224.0" text="Select start date:">
             <font>
                 <Font name="System Bold" size="12.0" />
             </font>
         </Label>
-        <Button layoutX="212.0" layoutY="224.0" mnemonicParsing="false" onAction="#All" prefHeight="35.0" prefWidth="200.0" style="-fx-background-color: B98EDCFF;" text="All communities" textFill="WHITE">
+        <Button layoutX="72.0" layoutY="211.0" mnemonicParsing="false" onAction="#All" prefHeight="35.0" prefWidth="200.0" style="-fx-background-color: B98EDCFF;" text="All Calls" textFill="WHITE">
+            <font>
+                <Font name="David Bold" size="14.0" />
+            </font>
+        </Button>
+        <Button layoutX="72.0" layoutY="285.0" mnemonicParsing="false" onAction="#YOUR_Community" prefHeight="35.0" prefWidth="200.0" style="-fx-background-color: B98EDCFF;" text="My Community" textFill="WHITE">
+            <font>
+                <Font name="David Bold" size="14.0" />
+            </font>
+        </Button>
+        <Button layoutX="52.0" layoutY="433.0" mnemonicParsing="false" onAction="#Back" prefHeight="47.0" prefWidth="68.0" style="-fx-background-color: B98EDCFF;" text="Back" textFill="WHITE">
             <font>
                 <Font name="David Bold" size="16.0" />
             </font>
         </Button>
-        <Button layoutX="212.0" layoutY="282.0" mnemonicParsing="false" onAction="#YOUR_Community" prefHeight="35.0" prefWidth="200.0" style="-fx-background-color: B98EDCFF;" text="My community" textFill="WHITE">
+        <DatePicker fx:id="date" layoutX="213.0" layoutY="128.0" onAction="#date" />
+        <Button layoutX="324.0" layoutY="213.0" mnemonicParsing="false" onAction="#histogram" prefHeight="35.0" prefWidth="200.0" style="-fx-background-color: B98EDCFF;" text="All Calls histogram" textFill="WHITE">
             <font>
-                <Font name="David Bold" size="16.0" />
+                <Font name="David Bold" size="14.0" />
             </font>
         </Button>
-        <Button layoutX="43.0" layoutY="432.0" mnemonicParsing="false" onAction="#Back" prefHeight="30.0" prefWidth="60.0" style="-fx-background-color: B98EDCFF;" text="Back" textFill="WHITE">
+        <Button layoutX="329.0" layoutY="285.0" mnemonicParsing="false" onAction="#community_histogram" prefHeight="35.0" prefWidth="200.0" style="-fx-background-color: B98EDCFF;" text="My Community Histogram" textFill="WHITE">
             <font>
-                <Font name="David Bold" size="16.0" />
+                <Font name="David Bold" size="14.0" />
             </font>
         </Button>
-        <DatePicker fx:id="date" layoutX="212.0" layoutY="127.0" onAction="#date" prefWidth="200.0" />
-        <ImageView fx:id="im" fitHeight="112.0" fitWidth="150.0" layoutX="244.0" layoutY="350.0" pickOnBounds="true" preserveRatio="true">
+        <ImageView fx:id="im" fitHeight="112.0" fitWidth="150.0" layoutX="244.0" layoutY="345.0" pickOnBounds="true" preserveRatio="true">
             <image>
                 <Image url="@pic/download.jpeg" />
             </image>
         </ImageView>
-
     </children>
 </AnchorPane>

@@ -25,7 +25,7 @@ public class AllCalls {
     public void initialize() {
         if (getAllCommunitycalls.isEmpty()) {
             Platform.runLater(() -> {
-                showCompletionMessage("Empty", "There are no calls.");
+                showCompletionMessage("Empty", "There are no calls in your community.");
                 try {
                     App.setRoot("manager_control");
                 } catch (IOException e) {
@@ -87,18 +87,33 @@ public class AllCalls {
     void callsDetails(ActionEvent event) {
         System.out.println("4");
         if (requestedcall != null) {
-            System.out.println("5");
-            Long id = requestedcall.getId();
-            String name = requestedcall.getUser().getFirstName() + " " + requestedcall.getUser().getLastName();
-            System.out.println(name);
-            String community = requestedcall.getUser().getCommunity();
-            String address = requestedcall.getEmergencyCenter().getService();
-            LocalDate callDate = requestedcall.getDate();
-            LocalTime callTime = requestedcall.getTime();
-            String details = String.format("Call ID: %s\nUser Name: %s\nCommunity: %s\nService: %s\nDate: %s\nTime: %s",
-                    id, name, community, address, callDate.toString(), callTime.toString());
+            if(requestedcall.isRegistered()==true) {
+                Long id = requestedcall.getId();
 
-            showAlert(details);
+                String name = requestedcall.getUser().getFirstName() + " " + requestedcall.getUser().getLastName();
+                String community = requestedcall.getUser().getCommunity();
+                String address = requestedcall.getEmergencyCenter().getService();
+                LocalDate callDate = requestedcall.getDate();
+                LocalTime callTime = requestedcall.getTime();
+                String details = String.format("Call ID: %s\nUser Name: %s\nCommunity: %s\nService: %s\nDate: %s\nTime: %s",
+                        id, name, community, address, callDate.toString(), callTime.toString());
+
+                showAlert(details);
+            }
+            else{
+                Long id = requestedcall.getId();
+
+                //String name = requestedcall.getUser().getFirstName() + " " + requestedcall.getUser().getLastName();
+                //String community = requestedcall.getUser().getCommunity();
+                String address = requestedcall.getEmergencyCenter().getService();
+                LocalDate callDate = requestedcall.getDate();
+                LocalTime callTime = requestedcall.getTime();
+                String details = String.format("Call ID: %s\nis not registered \nService: %s\nDate: %s\nTime: %s",
+                        id, address, callDate.toString(), callTime.toString());
+
+                showAlert(details);
+            }
+
         }
     }
 

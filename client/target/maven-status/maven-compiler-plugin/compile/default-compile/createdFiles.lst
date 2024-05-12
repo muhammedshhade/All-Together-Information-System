@@ -32,6 +32,7 @@ il\cshaifasweng\OCSFMediatorExample\client\ModifyTaskDetailEvent.class
 il\cshaifasweng\OCSFMediatorExample\client\SimpleClient.class
 il\cshaifasweng\OCSFMediatorExample\client\distressCallControl.class
 il\cshaifasweng\OCSFMediatorExample\client\MessageEvent.class
+il\cshaifasweng\OCSFMediatorExample\client\Histogram.class
 il\cshaifasweng\OCSFMediatorExample\client\TaskCancellationEvent.class
 il\cshaifasweng\OCSFMediatorExample\client\SecondaryController.class
 il\cshaifasweng\OCSFMediatorExample\client\CancelServiceRequest.class
