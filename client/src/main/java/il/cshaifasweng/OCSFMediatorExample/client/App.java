@@ -1,13 +1,10 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
-import il.cshaifasweng.OCSFMediatorExample.entities.Message;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
-
-
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,12 +12,13 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.event.EventHandler;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
+import static il.cshaifasweng.OCSFMediatorExample.client.Distresscalloption.selectedDate;
+
 
 /**
  * JavaFX App
@@ -176,6 +174,27 @@ public class App extends Application {
                         SimpleClient.getClient().sendToServer("Get uploaded tasks by community members@" + Managercontrol.getManagerLogIn().getCommunityManager());
                     }
                 }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    @Subscribe
+    public void onAddCall(AddCallEvent event) {
+        Platform.runLater(() -> {
+            try {
+                if (getStage() != null && getStage().getTitle().equals("Community_distress")) {
+                    if (Managercontrol.getManagerLogIn() != null &&
+                            Managercontrol.getManagerLogIn().getCommunityManager().equals(event.getDistressCall().getUser().getCommunity())) {
+                        SimpleClient.getClient().sendToServer("My community@" + Managercontrol.getManagerLogIn().getCommunityManager() + "@" + selectedDate);
+                    }
+                }
+                if (getStage() != null && getStage().getTitle().equals("allCalls")) {
+                    SimpleClient.getClient().sendToServer("All communities@" + selectedDate);
+
+                }
+
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

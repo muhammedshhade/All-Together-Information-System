@@ -106,13 +106,11 @@ public class DistressCallsecondary {
         }
         userId.setEditable(false);
         userName.setEditable(false);
-
     }
 
     @FXML
     void Back(ActionEvent event) throws IOException {
         App.setRoot("secondary");
-
     }
 
     @FXML
@@ -134,20 +132,14 @@ public class DistressCallsecondary {
 
             try {
                 ArrayList<User> loggedInList = UserControl.getLoggedInList();
-
-
                 User lastUser = loggedInList.get(loggedInList.size() - 1);
                 String x = lastUser.getID();
-
                 System.out.println(x);
                 String stringValue = String.valueOf(x);
                 SimpleClient.getClient().sendToServer("2The key id is:" + stringValue + "@" + buttonText + "@" + Location.getValue());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-
-
         }
     }
-
 }

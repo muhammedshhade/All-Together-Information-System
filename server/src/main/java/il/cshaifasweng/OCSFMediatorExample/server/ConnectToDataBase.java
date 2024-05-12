@@ -8,10 +8,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.service.ServiceRegistry;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -88,6 +85,43 @@ public class ConnectToDataBase {
         }
         return null;
     }
+    public static List<DistressCall> getDistressCallsBetweenDates(String community, LocalDate targetDate) {
+        Session session = null;
+        try {
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<DistressCall> query = builder.createQuery(DistressCall.class);
+            Root<DistressCall> root = query.from(DistressCall.class);
+
+            Join<DistressCall, User> userJoin = root.join("user", JoinType.LEFT);
+
+            LocalDate currentDate = LocalDate.now();
+
+            query.select(root).where(
+                    builder.and(
+                            builder.equal(userJoin.get("community"), community),
+                            builder.between(root.get("date"), targetDate, currentDate)
+                    )
+            );
+
+            List<DistressCall> distressCalls = session.createQuery(query).getResultList();
+            return distressCalls;
+        } catch (Exception e) {
+            if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
+                session.getTransaction().rollback(); // Rollback transaction if an exception occurs
+            }
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return null;
+    }
+
     static List<EmergencyCenter> getAllcenters() throws Exception {
         try {
             SessionFactory sessionFactory = getSessionFactory();
@@ -277,6 +311,38 @@ public class ConnectToDataBase {
                 session.getTransaction().rollback(); // Rollback transaction if an exception occurs
             }
             e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return null;
+    }
+
+    public static List<DistressCall> getallDistressCallsBetweenDates(LocalDate targetDate) {
+        Session session = null;
+        try {
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<DistressCall> query = builder.createQuery(DistressCall.class);
+            Root<DistressCall> root = query.from(DistressCall.class);
+            Join<DistressCall, User> userJoin = root.join("user", JoinType.LEFT);
+            LocalDate currentDate = LocalDate.now();
+            query.select(root).where(
+                    builder.and(
+                            builder.between(root.get("date"), targetDate, currentDate)
+                    )
+            );
+            List<DistressCall> distressCalls = session.createQuery(query).getResultList();
+
+            return distressCalls;
+        } catch (Exception e) {
+            if (session != null) {
+                session.getTransaction().rollback();
+                e.printStackTrace();
+            }
         } finally {
             if (session != null) {
                 session.close();
