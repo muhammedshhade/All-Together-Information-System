@@ -163,6 +163,7 @@ public class App extends Application {
                 throw new RuntimeException(e);
             }
         });
+
     }  @Subscribe
     public void onVolunteer(VolunteerEvent event) {
         Platform.runLater(() -> {
