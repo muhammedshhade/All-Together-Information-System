@@ -2,15 +2,16 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.control.ListView;
 
 public class PerformedTaskControl {
 
@@ -25,14 +26,37 @@ public class PerformedTaskControl {
 
     public static List<Task> doneTasks =new ArrayList<>();
     private Task requestedTask = null;
+
+
+    private void showCompletionMessage(String title, String message) {
+        // Display an alert dialog to the user
+        Alert alert = new Alert(Alert.AlertType.INFORMATION); // Use INFORMATION type for completion message
+        alert.setTitle(title);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
     public void initialize(){
-        while (doneTasks.isEmpty()){
+        if (doneTasks.isEmpty()) {
+            Platform.runLater(() -> {
+                showCompletionMessage("Empty", "There are no performed tasks.");
+                try {
+                    App.setRoot("manager_control");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            return;
+        }
+
+        while (doneTasks.isEmpty()) {
             try {
                 Thread.currentThread().sleep(1);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         }
+
         for(Task task : doneTasks){
             this.communityTasks.getItems().addAll(task.getServiceType());
         }
@@ -48,6 +72,7 @@ public class PerformedTaskControl {
             }
         });
     }
+
     private void showAlert(String task){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Task details");
@@ -57,7 +82,13 @@ public class PerformedTaskControl {
     }
     @FXML
     void previous(ActionEvent event) throws IOException {
-        App.setRoot("manager_control");
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("manager_control");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @FXML
@@ -68,7 +99,8 @@ public class PerformedTaskControl {
             String fitst=requestedTask.getUser().getFirstName();
             String userid=requestedTask.getUser().getID();
             int status=requestedTask.getStatus();
-            String x = String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nStatus: %d", id, serviceType, fitst, userid, status);
+            String volId = requestedTask.getVolId();
+            String x = String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nVolunteer Id: %s\nStatus: %d", id, serviceType, fitst, userid,volId,status);
             showAlert(x);
         }
     }

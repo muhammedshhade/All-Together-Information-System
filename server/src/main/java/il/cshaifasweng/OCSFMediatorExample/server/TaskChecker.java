@@ -33,12 +33,19 @@ class TaskChecker implements Runnable {
                     String userid = task.getUser().getID();
                     int status = task.getStatus();
 
-                    String str = String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nState: %d", id, serviceType, firstName, userid, status);
+                    String str = String.format("task for immediately volunteer: \nTask ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nState: %d", id, serviceType, firstName, userid, status);
+
+
                     Long sender = 0L;
+
                     assert users != null;
                     for (User user : users) {
                         try {
-                            ConnectToDataBase.Add_message(new MessageToUser(str, sender, user.getkeyId(), now));
+                            //long keyId = user.getkeyId();
+                            //String ID = String.valueOf(keyId);
+                            String keyId = user.getID();
+
+                            ConnectToDataBase.Add_message(new MessageToUser(str, sender,keyId, now));
                         } catch (Exception e) {
                             throw new RuntimeException(e);
                         }

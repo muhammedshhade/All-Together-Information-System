@@ -6,17 +6,15 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.ResourceBundle;
 
 public class Managercontrol {
 
@@ -102,12 +100,30 @@ public class Managercontrol {
     }
 
     @FXML
-    void getDistressCalls(ActionEvent event) {
-
+    void getDistressCalls(ActionEvent event) throws IOException {
+        App.setRoot("Distresscalloption");
     }
 
     @FXML
     void getDoneTasks(ActionEvent event) {
+        try {
+            System.out.println("yessss");
+            System.out.println(managerLogIn.getCommunityManager());
+            SimpleClient.getClient().sendToServer("Get performed tasks@"+managerLogIn.getCommunityManager());
+        } catch (IOException e) {
+            showAlert("Error", "Failed to get the performed tasks: " + e.getMessage());
+            e.printStackTrace();
+        }
+       /* try {
+            Object[] array = new Object[2];
+            array[0] = "Get maneger messages"; // Assign a String object to the first index
+            array[1] = managerLogIn.getID();
+            SimpleClient.getClient().sendToServer(array);
+
+        } catch (IOException e) {
+            showAlert("Error", "Failed to get the performed tasks: " + e.getMessage());
+            e.printStackTrace();
+        }*/
     }
 
     @FXML
@@ -123,14 +139,25 @@ public class Managercontrol {
 
     @FXML
     void updateTaskDetails(ActionEvent event) throws IOException {
-        App.setRoot("updateTaskDetails");
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("updateTaskDetails");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @FXML
     void logOut(ActionEvent event) throws IOException {
         SimpleClient.getClient().sendToServer("log out " + getManagerLogIn().getID());
-        App.setRoot("primary");
-
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("primary");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
 }

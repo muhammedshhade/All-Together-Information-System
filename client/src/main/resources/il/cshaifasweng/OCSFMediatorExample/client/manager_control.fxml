@@ -6,46 +6,52 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="491.0" prefWidth="600.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.Managercontrol">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="475.0" prefWidth="600.0" style="-fx-background-color: WHITE;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.Managercontrol">
     <children>
 
-        <Button fx:id="members" layoutX="142.0" layoutY="85.0" mnemonicParsing="false" onAction="#getCommunityMembers" prefWidth="340.0" style="-fx-background-color: B98EDCFF;" text="Community Memberes" textFill="WHITE">
+        <Button fx:id="members" layoutX="142.0" layoutY="87.0" mnemonicParsing="false" onAction="#getCommunityMembers" prefWidth="340.0" style="-fx-background-color: B98EDCFF;" text="Community Memberes" textFill="WHITE">
             <font>
                 <Font name="David Bold" size="16.0" />
             </font>
         </Button>
-        <Button fx:id="serviceRequest" layoutX="142.0" layoutY="141.0" mnemonicParsing="false" onAction="#showServiceRequests" prefWidth="340.0" style="-fx-background-color: B98EDCFF;" text="Check Help Requests" textFill="WHITE">
+        <Button fx:id="serviceRequest" layoutX="142.0" layoutY="142.0" mnemonicParsing="false" onAction="#showServiceRequests" prefWidth="340.0" style="-fx-background-color: B98EDCFF;" text="Check Help Requests" textFill="WHITE">
             <font>
                 <Font name="David Bold" size="16.0" />
             </font>
         </Button>
-        <Button fx:id="doneTasks" layoutX="142.0" layoutY="195.0" mnemonicParsing="false" onAction="#getDoneTasks" prefWidth="340.0" style="-fx-background-color: B98EDCFF;" text="Performed Tasks By Community Members" textFill="WHITE">
+        <Button fx:id="doneTasks" layoutX="142.0" layoutY="193.0" mnemonicParsing="false" onAction="#getDoneTasks" prefWidth="340.0" style="-fx-background-color: B98EDCFF;" text="Performed Tasks By Community Members" textFill="WHITE">
             <font>
                 <Font name="David Bold" size="16.0" />
             </font>
         </Button>
-        <Button fx:id="distress" layoutX="142.0" layoutY="250.0" mnemonicParsing="false" onAction="#getDistressCalls" prefWidth="340.0" style="-fx-background-color: B98EDCFF;" text="Distress Calls" textFill="WHITE">
+        <Button fx:id="distress" layoutX="142.0" layoutY="243.0" mnemonicParsing="false" onAction="#getDistressCalls" prefWidth="340.0" style="-fx-background-color: B98EDCFF;" text="Distress Calls" textFill="WHITE">
             <font>
                 <Font name="David Bold" size="16.0" />
             </font>
         </Button>
-      <Button fx:id="requests" layoutX="142.0" layoutY="356.0" mnemonicParsing="false" onAction="#communityRequests" prefWidth="340.0" style="-fx-background-color: B98EDCFF;" text="Community Submitted Requests" textFill="WHITE">
+      <Button fx:id="requests" layoutX="142.0" layoutY="342.0" mnemonicParsing="false" onAction="#communityRequests" prefWidth="340.0" style="-fx-background-color: B98EDCFF;" text="Community Submitted Requests" textFill="WHITE">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="updateTask" layoutX="142.0" layoutY="303.0" mnemonicParsing="false" onAction="#updateTaskDetails" prefWidth="340.0" style="-fx-background-color: B98EDCFF;" text="Update Task Details" textFill="WHITE">
+      <Button fx:id="updateTask" layoutX="142.0" layoutY="291.0" mnemonicParsing="false" onAction="#updateTaskDetails" prefWidth="340.0" style="-fx-background-color: B98EDCFF;" text="Update Task Details" textFill="WHITE">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
       </Button>
-      <Button layoutX="142.0" layoutY="409.0" mnemonicParsing="false" onAction="#logOut" prefWidth="340.0" style="-fx-background-color: B98EDCFF;" text="Log Out" textFill="#f7f6f6">
+      <Button layoutX="142.0" layoutY="391.0" mnemonicParsing="false" onAction="#logOut" prefWidth="340.0" style="-fx-background-color: B98EDCFF;" text="Log Out" textFill="#f7f6f6">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
       </Button>
-      <Label layoutX="71.0" layoutY="37.0" prefHeight="18.0" prefWidth="61.0" text="Welcome" />
-      <Label layoutX="388.0" layoutY="37.0" text="Id:" />
+      <Label layoutX="71.0" layoutY="37.0" prefHeight="18.0" prefWidth="61.0" text="Welcome">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
+      <Label layoutX="388.0" layoutY="37.0" text="Id:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Label>
       <TextField fx:id="name" layoutX="142.0" layoutY="33.0" />
       <TextField fx:id="id" layoutX="414.0" layoutY="33.0" />
     </children>

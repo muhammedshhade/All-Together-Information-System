@@ -5,7 +5,6 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import static java.util.concurrent.Executors.newScheduledThreadPool;
 
 public class App {
     private static SimpleServer server;
@@ -21,7 +20,7 @@ public class App {
 
             /* ********here *********** */
             TaskChecker taskChecker = new TaskChecker();
-            ScheduledExecutorService scheduler = newScheduledThreadPool(1);
+            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
             scheduler.scheduleAtFixedRate(taskChecker, 0, 10, TimeUnit.MINUTES);
 
         } catch (IOException e) {

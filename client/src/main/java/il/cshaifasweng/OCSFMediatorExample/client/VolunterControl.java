@@ -1,7 +1,6 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
-import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,11 +11,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
-import java.util.prefs.Preferences;
 
 public class VolunterControl {
 
@@ -87,6 +83,7 @@ public class VolunterControl {
     }
     @Subscribe
     public void updateList(List<Task> listOfTasks){
+        System.out.println("update list at vol: " + listOfTasks.size());
         Platform.runLater(() -> {
             this.TasksList.getItems().removeAll();
             for(Task task: tasks){
@@ -120,7 +117,7 @@ public class VolunterControl {
             alert.setHeaderText(selectedTask.getServiceType());
             if (selectedTask.getStatus() == 0 && (!selectedTask.getUser().getID().equals(SecondaryController.getUserLogIn().getID()))) {
                 alert.setContentText(selectedTask.getServiceType() + " was picked");
-                SimpleClient.getClient().sendToServer("myModify " + selectedTask.getIdNum());
+                SimpleClient.getClient().sendToServer("myModify " + selectedTask.getIdNum()+ " " + SecondaryController.getUserLogIn().getID());
                 alert.showAndWait();
             } else {
                 Platform.runLater(() -> {

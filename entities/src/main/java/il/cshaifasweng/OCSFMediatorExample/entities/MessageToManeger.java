@@ -5,8 +5,9 @@ import java.time.LocalDateTime;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "messages")
-public class MessageToUser implements Serializable {
+@Table(name = "mangermasseges")
+
+public class MessageToManeger implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -24,7 +25,7 @@ public class MessageToUser implements Serializable {
     private LocalDateTime sentTime; // Use the LocalDateTime class
 
     // Constructor
-    public MessageToUser(String content, Long sender, String recipient, LocalDateTime sentTime) {
+    public MessageToManeger(String content, Long sender, String recipient, LocalDateTime sentTime) {
         this.content = content;
         this.sender = sender;
         this.recipient = recipient;
@@ -32,11 +33,11 @@ public class MessageToUser implements Serializable {
     }
 
 
-    public MessageToUser() {
+    public MessageToManeger() {
 
     }
 
-    public MessageToUser(String str, Long sender, Long aLong, LocalDateTime now) {
+    public MessageToManeger(String str, Long sender, Long aLong, LocalDateTime now) {
     }
 
     public LocalDateTime getSentTime() {

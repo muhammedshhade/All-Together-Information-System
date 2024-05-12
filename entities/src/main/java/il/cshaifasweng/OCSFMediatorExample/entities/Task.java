@@ -24,6 +24,9 @@ public class Task implements Serializable {
     @Column(name = "status")
     int status;
 
+    @Column(name = "vol_Id")
+    String vol_Id;
+
     @Column(name = "serviceType")
     String serviceType;
 
@@ -50,10 +53,11 @@ public class Task implements Serializable {
         // Assign the next available ID to the task
     }
 
-    public Task(LocalDate date, LocalTime time, int status, String serviceType, String note, float executionTime) {
+    public Task(LocalDate date, LocalTime time, int status, String vol_Id, String serviceType, String note, float executionTime) {
         this.date = date;
         this.time = time;
         this.status = status;
+        this.vol_Id = vol_Id;
         this.serviceType = serviceType;
         this.note = note;
         this.executionTime = executionTime;
@@ -67,6 +71,10 @@ public class Task implements Serializable {
     public void setIdNum(int idNum) {
         this.idNum = idNum;
     }
+
+    public String getVolId(){return vol_Id;}
+
+    public void setVolId(String volId){this.vol_Id = volId;}
 
     public LocalDate getDate() {
         return date;

@@ -22,7 +22,7 @@
          <font>
             <Font name="David Bold" size="14.0" />
          </font></Button>
-      <Button fx:id="back" layoutX="283.0" layoutY="254.0" mnemonicParsing="false" onAction="#homePage" prefHeight="38.0" prefWidth="84.0" style="-fx-background-color: #b473ea; -fx-background-image: save.png;" text="back" textFill="#fcfcfc">
+      <Button fx:id="back" layoutX="283.0" layoutY="254.0" mnemonicParsing="false" onAction="#homePage" prefHeight="38.0" prefWidth="84.0" style="-fx-background-color: #b473ea; -fx-background-image: save.png;" text="Back" textFill="#fcfcfc">
          <font>
             <Font name="David Bold" size="14.0" />
          </font></Button>

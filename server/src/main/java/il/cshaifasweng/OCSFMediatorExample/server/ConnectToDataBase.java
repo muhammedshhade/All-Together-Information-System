@@ -1,30 +1,19 @@
 package il.cshaifasweng.OCSFMediatorExample.server;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.*;
-import javafx.application.Platform;
-import javafx.scene.control.Alert;
-import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.criterion.Restrictions;
 import org.hibernate.service.ServiceRegistry;
 
-
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
-
-import java.util.Collections;
 
 public class ConnectToDataBase {
     private static Session session;
@@ -37,6 +26,8 @@ public class ConnectToDataBase {
         configuration.addAnnotatedClass(Task.class);
         configuration.addAnnotatedClass(UserControl.class);
         configuration.addAnnotatedClass(MessageToUser.class);
+        configuration.addAnnotatedClass(DistressCall.class);
+        configuration.addAnnotatedClass(EmergencyCenter.class);
         ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
         return configuration.buildSessionFactory(serviceRegistry);
     }
@@ -44,7 +35,6 @@ public class ConnectToDataBase {
     static List<User> getAllUsers() throws Exception {
         try {
             SessionFactory sessionFactory = getSessionFactory();
-
             session = sessionFactory.openSession();
             session.beginTransaction();
             System.out.println("getALlUsers");
@@ -65,6 +55,7 @@ public class ConnectToDataBase {
         }
         return null;
     }
+
 
     static List<User> getCommunityMembers(String community) throws Exception {
         try {
@@ -96,7 +87,259 @@ public class ConnectToDataBase {
         }
         return null;
     }
+    static List<Task> getTasksWithUserCommunityAndStatus(String community) throws Exception {
+        try {
+            SessionFactory sessionFactory = getSessionFactory();
 
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            System.out.println("Getting tasks with user community matching: " + community + " and status equal to 2");
+
+            // Assuming 'session' is your Hibernate session object
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Task> query = builder.createQuery(Task.class);
+
+            // Creating a query root for the Task entity
+            Root<Task> taskRoot = query.from(Task.class);
+
+            // Fetching the user ID from the Task entity
+            Expression<Integer> volIdExpression = taskRoot.get("vol_Id");
+
+            // Creating a subquery to fetch the user's community
+            Subquery<String> subquery = query.subquery(String.class);
+            Root<User> userRoot = subquery.from(User.class);
+            subquery.select(userRoot.get("community"));
+            subquery.where(builder.equal(userRoot.get("Id"), volIdExpression));
+
+            // Adding conditions to filter tasks by user community and status equal to 2
+            query.where(
+                    builder.equal(subquery, community),
+                    builder.equal(taskRoot.get("status"), 2)
+            );
+
+            // Executing the query and getting the list of tasks
+            List<Task> tasks = session.createQuery(query).getResultList();
+            return tasks;
+        } catch (Exception e) {
+            if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
+                session.getTransaction().rollback(); // Rollback transaction if an exception occurs
+            }
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return null;
+    }
+
+
+
+    /*public static List<Task> getTasksForCommunityWithStatus(String community){
+        try {
+            SessionFactory sessionFactory = getSessionFactory();
+
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            System.out.println("Getting tasks for community: " + community + " with status: 2");
+
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Task> query = builder.createQuery(Task.class);
+
+            Root<Task> root = query.from(Task.class);
+            Join<Task, User> userJoin = root.join("user");
+
+            query.where(
+                    builder.and(
+                            builder.equal(userJoin.get("community"), community),
+                            builder.equal(root.get("status"), 2)
+                    )
+            );
+
+            List<Task> tasks = session.createQuery(query).getResultList();
+            return tasks;
+        } catch (Exception e) {
+            if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return null;
+    }*/
+
+    /*static List<Task> getTasksForCommunityMember(String community) throws Exception {
+        try {
+            SessionFactory sessionFactory = getSessionFactory();
+
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            System.out.println("Getting tasks for community member in: " + community);
+
+            // Assuming 'session' is your Hibernate session object
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Task> query = builder.createQuery(Task.class);
+            // Creating a query root for the Task entity
+            Root<Task> root = query.from(Task.class);
+
+            // Joining with the User entity to filter tasks by community member
+            Join<Task, User> userJoin = root.join("user");
+
+            // Adding a condition to filter tasks by community
+            query.where(
+                    builder.and(
+                            builder.equal(root.get("status"), 2),
+                            builder.equal(userJoin.get("community"), community)
+                    )
+            );
+
+            query.where(builder.equal(userJoin.get("community"), community));
+            // Executing the query and getting the list of tasks
+            List<Task> tasks = session.createQuery(query).getResultList();
+
+            return tasks;
+        } catch (Exception e) {
+            if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
+                session.getTransaction().rollback(); // Rollback transaction if an exception occurs
+            }
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return null;
+    }*/
+
+
+
+
+   /* static List<Task> getCommunityPerformedTasks(String community) throws Exception {
+        try {
+            SessionFactory sessionFactory = getSessionFactory();
+
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            System.out.println("Getting community tasks for: " + community + " with status: 2");
+            // Assuming 'session' is your Hibernate session object
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Task> query = builder.createQuery(Task.class);
+            // Creating a query root for the Task entity
+            Root<Task> root = query.from(Task.class);
+
+            // Adding conditions to filter tasks by community and vol_Id
+            Join<Task, User> userJoin = root.join("user");
+            query.where(
+                    builder.and(
+                            builder.equal(userJoin.get("community"), community),
+                            builder.equal(root.get("status"), 2)
+                    )
+            );
+            // Executing the query and getting the list of tasks
+            List<Task> tasks = session.createQuery(query).getResultList();
+            return tasks;
+        } catch (Exception e) {
+            if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
+                session.getTransaction().rollback(); // Rollback transaction if an exception occurs
+            }
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return null;
+    }*/
+
+    public static List<DistressCall> getDistressCallsBetweenDates(String community, LocalDate targetDate) {
+        Session session = null;
+        try {
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            Transaction transaction = session.beginTransaction();
+
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<DistressCall> query = builder.createQuery(DistressCall.class);
+            Root<DistressCall> root = query.from(DistressCall.class);
+
+            Join<DistressCall, User> userJoin = root.join("user", JoinType.LEFT);
+
+            LocalDate currentDate = LocalDate.now();
+
+            query.select(root).where(
+                    builder.and(
+                            builder.equal(userJoin.get("community"), community),
+                            builder.between(root.get("date"), targetDate, currentDate)
+                    )
+            );
+
+            List<DistressCall> distressCalls = session.createQuery(query).getResultList();
+
+            transaction.commit();
+            return distressCalls;
+        } catch (Exception e) {
+            if (session != null) {
+                session.getTransaction().rollback();
+                e.printStackTrace();
+            }
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return null;
+    }
+
+    static List<EmergencyCenter> getAllcenters() throws Exception {
+        try {
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<EmergencyCenter> query = builder.createQuery(EmergencyCenter.class);
+            query.from(EmergencyCenter.class);
+            List<EmergencyCenter> data = session.createQuery(query).getResultList();
+            return data;
+        } catch (Exception e) {
+            if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
+                session.getTransaction().rollback(); // Rollback transaction if an exception occurs
+            }
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return null;
+    }
+    static void Add_distress(DistressCall distressCall) throws Exception {
+        try {
+            System.out.println("Trying to add a distresscall to the database...");
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+
+            session.save(distressCall); // Save the message
+
+            session.flush(); // Flush changes to the session
+            session.getTransaction().commit(); // Commit the transaction
+
+            System.out.println("distresscall added successfully to the database.");
+        } catch (HibernateException e) {
+            if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
+                session.getTransaction().rollback(); // Rollback the transaction if an exception occurs during the transaction
+            }
+            // Log the exception or handle it accordingly
+            System.err.println("Error adding distresscall to the database: " + e.getMessage());
+        } finally {
+            if (session != null) {
+                session.close(); // Close the session
+            }
+        }
+    }
     public static List<Task> getTasksUploadedByCommunityMembers(String community) {
         try {
             SessionFactory sessionFactory = getSessionFactory();
@@ -162,6 +405,66 @@ public class ConnectToDataBase {
         }
         return null;
     }
+
+    public static List<Task> getTasksWithVolId(String userId) {
+        try {
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Task> query = builder.createQuery(Task.class);
+            Root<Task> root = query.from(Task.class);
+            // Adding condition for vol_Id
+            query.where(builder.equal(root.get("vol_Id"), userId));
+            // Executing the query and getting the list of tasks
+            List<Task> tasks = session.createQuery(query).getResultList();
+            return tasks;
+        } catch (Exception e) {
+            if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
+                session.getTransaction().rollback(); // Rollback transaction if an exception occurs
+            }
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return null;
+    }
+    static List<Task> getTasksForVolunteerInCommunity(String community, String userId) throws Exception {
+        try {
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            System.out.println("Getting tasks for volunteer: " + userId + " in community: " + community);
+
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<Task> query = builder.createQuery(Task.class);
+            Root<Task> root = query.from(Task.class);
+
+            // Adding conditions to filter tasks by community and volunteer ID
+            query.where(
+                    builder.and(
+                            builder.equal(root.get("community"), community),
+                            builder.equal(root.get("vol_Id"), userId)
+                    )
+            );
+
+            List<Task> tasks = session.createQuery(query).getResultList();
+            return tasks;
+        } catch (Exception e) {
+            if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return null;
+    }
+
 
 
     public static List<Task> getTasksWithStatus(String community, int status) {
@@ -280,7 +583,37 @@ public class ConnectToDataBase {
         }
     }
 
-    public static List<MessageToUser> getMessagesBySender(Long senderId) {
+    public static void updateTaskVolunteerId(String newVolunteerId, Task task) {
+        Session session = null;
+        Transaction transaction = null;
+
+        try {
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            transaction = session.beginTransaction();
+
+            if (task != null) {
+                task.setVolId(newVolunteerId);
+                session.update(task);
+                transaction.commit();
+                System.out.println("Task volunteer id updated successfully.");
+            } else {
+                System.out.println("Task not found.");
+            }
+        } catch (HibernateException e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+
+    public static List<MessageToUser> getMessagesBySender(String senderId) {
         try {
             SessionFactory sessionFactory = getSessionFactory();
             session = sessionFactory.openSession();
@@ -308,14 +641,84 @@ public class ConnectToDataBase {
         }
         return null;
     }
-    public static void logoutAllUsers() {
+
+    public static List<MessageToUser> getMessagesByRecipient(String recipientId) {
+        Session session = null;
         try {
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+            System.out.println("Getting data related to recipient: " + recipientId);
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaQuery<MessageToUser> query = builder.createQuery(MessageToUser.class);
+            Root<MessageToUser> root = query.from(MessageToUser.class);
+
+            // Adding a condition to filter data based on recipient ID
+            query.where(builder.equal(root.get("recipient"), recipientId));
+
+            // Execute the query and get the list of related data
+            List<MessageToUser> dataList = session.createQuery(query).getResultList();
+            return dataList;
+        } catch (Exception e) {
+            if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
+                session.getTransaction().rollback(); // Rollback transaction if an exception occurs
+            }
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+        return null;
+    }
+
+    public static void deleteMessagesByTaskId(String taskId) {
+        try {
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            session.beginTransaction();
+
+            CriteriaBuilder builder = session.getCriteriaBuilder();
+            CriteriaDelete<MessageToUser> deleteQuery = builder.createCriteriaDelete(MessageToUser.class);
+            Root<MessageToUser> root = deleteQuery.from(MessageToUser.class);
+
+            // Adding a condition to delete all messages containing the task ID in their content
+            deleteQuery.where(builder.like(root.get("content"), "%" + "Task ID: " + taskId + "%"));
+
+            int deletedCount = session.createQuery(deleteQuery).executeUpdate();
+            System.out.println("Number of messages deleted: " + deletedCount);
+
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
+                session.getTransaction().rollback();
+            }
+            e.printStackTrace();
+        } finally {
+            if (session != null) {
+                session.close();
+            }
+        }
+    }
+
+    public static void logoutAllUsers() {
+
+        try {
+            SessionFactory sessionFactory = getSessionFactory();
+            session = sessionFactory.openSession();
+            session.beginTransaction();
             for (User user : UserControl.getLoggedInList()) {
-                ConnectToDataBase.updateIsConnect(false, user);
+                user.setConnected(false);
+                session.update(user);
+                session.getTransaction().commit();
                 System.out.println("User logged out: " + user.getUsername());
             }
         } catch (Exception e) {
             throw new RuntimeException("Error logging out users", e);
+        }finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 
@@ -340,6 +743,7 @@ public class ConnectToDataBase {
             if (temp != null) {
                 temp.setConnected(newVal);
                 session.update(temp);
+                session.flush();
                 session.getTransaction().commit();
                 System.out.println("User connection status updated successfully: " + temp.getUsername());
             } else {
@@ -415,7 +819,6 @@ public class ConnectToDataBase {
         }
     }
 
-
     public static void CreateData() throws Exception {
 
         System.out.print("Data Creation Start");
@@ -455,24 +858,29 @@ public class ConnectToDataBase {
         session.flush();
         session.save(user12);
         session.flush();
-        Task task1 = new Task(LocalDate.of(2024, 2, 22), LocalTime.of(3, 50), 3, "Walk my dog", "", 0.0f);
+        Task task1 = new Task(LocalDate.of(2024, 2, 22), LocalTime.of(3, 50), 3,"", "Walk my dog", "", 0.0f);
         task1.setUser(user2);
-        Task task2 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(9, 30), 3, "Buy Medicine", "", 0.0f);
-        Task task3 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(11, 15), 3, "Nanny", "", 0.0f);
-        Task task4 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(13, 4), 3, "Transportation", "I want to go to the Hospital", 0.0f);
-        Task task5 = new Task(LocalDate.of(2024, 4, 22), LocalTime.of(15, 20), 0, "Transportation", "", 0.0f);
-        Task task6 = new Task(LocalDate.of(2024, 4, 22), LocalTime.of(17, 10), 0, "Buy Medicine", "", 0.0f);
+        Task task2 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(9, 30), 3,"", "Buy Medicine", "", 0.0f);
+        Task task3 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(11, 15), 0,"", "Nanny", "", 0.0f);
+        Task task4 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(13, 4), 3,"", "Transportation", "I want to go to the Hospital", 0.0f);
+        Task task5 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(15, 20), 0,"", "Transportation", "", 0.0f);
+        Task task6 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(17, 10), 0,"", "Buy Medicine", "", 0.0f);
+        Task task7 = new Task(LocalDate.of(2024, 4, 15), LocalTime.of(17, 15), 0,"", "Home cleaning", "", 0.0f);
         user2.getTasks().add(task1);
         user7.getTasks().add(task2);
         user3.getTasks().add(task3);
         user4.getTasks().add(task4);
         user5.getTasks().add(task5);
         user6.getTasks().add(task6);
+        user10.getTasks().add(task7);
+
         task2.setUser(user7);
-        task3.setUser(user3);
+        //task3.setUser(user3);
+        task3.setUser(user7);
         task4.setUser(user4);
         task5.setUser(user5);
         task6.setUser(user6);
+        task7.setUser(user10);
 
         session.save(task1);
         session.flush();
@@ -502,6 +910,54 @@ public class ConnectToDataBase {
         session.update(user6);
         session.flush();
         session.update(user7);
+        session.flush();
+        EmergencyCenter center16 = new EmergencyCenter("123-456-7390", 8.0f, 20.0f, "UMM El Fahem", "Ambulance Alert");
+        EmergencyCenter center17 = new EmergencyCenter("123-456-7489", 8.0f, 20.0f, "Yaffa Nazareth", "Police Alret");
+        EmergencyCenter center18 = new EmergencyCenter("123-456-7192", 8.0f, 20.0f, "Yaffa Nazareth", "Fire Alret");
+        EmergencyCenter center1 = new EmergencyCenter("123-456-7890", 8.0f, 20.0f, "Yaffa Nazareth", "Ambulance Alert");
+        EmergencyCenter center2 = new EmergencyCenter("123-456-7891", 8.0f, 20.0f, "Yaffa Nazareth", "Police Alret");
+        EmergencyCenter center3 = new EmergencyCenter("123-456-7892", 8.0f, 20.0f, "Yaffa Nazareth", "Fire Alret");
+        EmergencyCenter center4 = new EmergencyCenter("123-456-7893", 8.0f, 20.0f, "Kabul", "Ambulance Alert");
+        EmergencyCenter center5 = new EmergencyCenter("123-456-7894", 8.0f, 20.0f, "Kabul", "Police Alret");
+        EmergencyCenter center6 = new EmergencyCenter("123-456-7895", 8.0f, 20.0f, "Kabul", "Fire Alret");
+        EmergencyCenter center7 = new EmergencyCenter("123-456-7896", 8.0f, 20.0f, "Nazareth", "Ambulance Alert");
+        EmergencyCenter center8 = new EmergencyCenter("123-456-7897", 8.0f, 20.0f, "Nazareth", "Police Alret");
+        EmergencyCenter center9 = new EmergencyCenter("123-456-7898", 8.0f, 20.0f, "Nazareth", "Fire Alret");
+        EmergencyCenter center10 = new EmergencyCenter("123-456-7899", 8.0f, 20.0f, "Tamra", "Ambulance Alert");
+        EmergencyCenter center11 = new EmergencyCenter("123-456-7840", 8.0f, 20.0f, "Tamra", "Police Alret");
+        EmergencyCenter center12 = new EmergencyCenter("123-456-7830", 8.0f, 20.0f, "Tamra", "Fire Alret");
+        EmergencyCenter center13 = new EmergencyCenter("123-456-7810", 8.0f, 20.0f, "Kukab", "Ambulance Alert");
+        EmergencyCenter center14 = new EmergencyCenter("123-456-7820", 8.0f, 20.0f, "Kukab", "Police Alret");
+        EmergencyCenter center15 = new EmergencyCenter("123-456-7805", 8.0f, 20.0f, "Kukab", "Fire Alret");
+        session.save(center15);
+        session.flush();
+        session.save(center14);
+        session.flush();
+        session.save(center13);
+        session.flush();
+        session.save(center12);
+        session.flush();
+        session.save(center11);
+        session.flush();
+        session.save(center10);
+        session.flush();
+        session.save(center9);
+        session.flush();
+        session.save(center8);
+        session.flush();
+        session.save(center7);
+        session.flush();
+        session.save(center6);
+        session.flush();
+        session.save(center5);
+        session.flush();
+        session.save(center4);
+        session.flush();
+        session.save(center3);
+        session.flush();
+        session.save(center2);
+        session.flush();
+        session.save(center1);
         session.flush();
         System.out.print("Data Creation Finish");
 

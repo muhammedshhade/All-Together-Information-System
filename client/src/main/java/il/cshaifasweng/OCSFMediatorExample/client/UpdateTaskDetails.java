@@ -2,6 +2,7 @@
 
 package il.cshaifasweng.OCSFMediatorExample.client;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -58,7 +59,14 @@ public class UpdateTaskDetails {
     void UpdateExecutionTime(ActionEvent event) {
         try {
             setUpdateVale("execution time");
-            App.setRoot("newTaskData");
+            Platform.runLater(() -> {
+                try {
+
+                    App.setRoot("newTaskData");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
             SimpleClient.getClient().sendToServer(updateVale);
 
         } catch (IOException e) {
@@ -68,7 +76,13 @@ public class UpdateTaskDetails {
 
     @FXML
     void homePage(ActionEvent event) throws IOException {
-        App.setRoot("manager_control");
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("manager_control");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @FXML
@@ -76,8 +90,14 @@ public class UpdateTaskDetails {
         try {
             setUpdateVale("status");
             SimpleClient.getClient().sendToServer(updateVale);
-            App.setRoot("newTaskData");
-        } catch (IOException e) {
+            Platform.runLater(() -> {
+                try {
+
+                    App.setRoot("newTaskData");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });        } catch (IOException e) {
             e.printStackTrace();
         }
     }

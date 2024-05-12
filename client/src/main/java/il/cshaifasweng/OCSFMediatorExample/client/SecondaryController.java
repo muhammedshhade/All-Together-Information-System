@@ -2,17 +2,15 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -20,6 +18,13 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class SecondaryController implements Initializable {
+
+
+    @FXML
+    private Button CANCEL_VOLUNTERINGbt;
+
+    @FXML
+    private Button confim_vol;
 
     @FXML
     private Button Canceldistressbt;
@@ -50,21 +55,21 @@ public class SecondaryController implements Initializable {
     private TextField userName;
 
     private static User userLogIn;
-    /*InputStream stream1;
+    InputStream stream1;
+
+//    {
+//        try {
+//            stream1 = new FileInputStream("C:\\Users\\ASUS\\Downloads\\WhatsApp Image 2024-04-24 at 23.21.57.jpeg");
+//        } catch (FileNotFoundException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
+   /* InputStream stream;
 
     {
         try {
-            stream1 = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\siren.png");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
-
-    /*InputStream stream;
-
-    {
-        try {
-            stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\introduction.png");
+            stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\siren.png");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -72,7 +77,7 @@ public class SecondaryController implements Initializable {
 
     //Image myImage = new Image(stream);
 
-    //Image myImage1 = new Image(stream1);
+    //Image myImage1 = new Image(stream);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -81,8 +86,8 @@ public class SecondaryController implements Initializable {
         double desiredHeight = 50;
        // imageView.setFitWidth(desiredWidth);
        // imageView.setFitHeight(desiredHeight);
-       // DistressButtonControl.setGraphic(imageView);
-       // im.setImage(myImage);
+        //DistressButtonControl.setGraphic(imageView);
+        //im.setImage(myImage1);
         ArrayList<User> loggedInList = UserControl.getLoggedInList();
         if (!loggedInList.isEmpty()) {
             User lastUser = loggedInList.get(loggedInList.size() - 1);
@@ -110,12 +115,12 @@ public class SecondaryController implements Initializable {
             showAlert("Error", "Failed to get uploaded community tasks: " + e.getMessage());
             e.printStackTrace();
         }
-        try {
+     /*   try {
             SimpleClient.getClient().sendToServer("Get all users");
         } catch (IOException e) {
             showAlert("Error", "Failed to get uploaded community tasks: " + e.getMessage());
             e.printStackTrace();
-        }
+        }*/
 
     }
 
@@ -133,24 +138,46 @@ public class SecondaryController implements Initializable {
     }
 
     @FXML
-    void CancelDistress(ActionEvent event) {
-
+    void Confirm(ActionEvent event) {
+        try {
+            Object[] array = new Object[2];
+            array[0] = "Confirm Volunteer"; // Assign a String object to the first index
+            array[1] = SecondaryController.getUserLogIn();
+            SimpleClient.getClient().sendToServer(array);
+        } catch (IOException e) {
+            showAlert("Error", "Failed to confirm your volunteer: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     @FXML
     void LOGOUT(ActionEvent event) throws IOException {
         SimpleClient.getClient().sendToServer("log out " + getUserLogIn().getID());
-        App.setRoot("primary");
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("primary");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     @FXML
     void Requesthelp(ActionEvent event) throws IOException {
-        App.setRoot("request_control");
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("request_control");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+
         SimpleClient.getClient().sendToServer("Create task");
     }
 
     @FXML
-    void distress(ActionEvent event) {
+    void distress(ActionEvent event) throws IOException {
+        App.setRoot("distressCallsecondary");
     }
 
     @FXML
@@ -163,7 +190,7 @@ public class SecondaryController implements Initializable {
         }
     }
 
-    private void showAlert(String title, String message) {
+    public static void showAlert(String title, String message) {
         // Display an alert dialog to the user
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);

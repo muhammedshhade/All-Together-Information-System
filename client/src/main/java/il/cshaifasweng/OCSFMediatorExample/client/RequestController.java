@@ -4,6 +4,7 @@ package il.cshaifasweng.OCSFMediatorExample.client;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -130,6 +131,12 @@ public class RequestController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        App.setRoot("secondary");
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("secondary");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 }

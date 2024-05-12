@@ -8,24 +8,25 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="469.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.SecondaryController">
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="525.0" prefWidth="600.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="il.cshaifasweng.OCSFMediatorExample.client.SecondaryController">
    <children>
-      <Button fx:id="Requesthelpbutton" layoutX="174.0" layoutY="66.0" mnemonicParsing="false" onAction="#Requesthelp" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Submit Service Request" textFill="WHITE">
+      <Button fx:id="Requesthelpbutton" layoutX="175.0" layoutY="84.0" mnemonicParsing="false" onAction="#Requesthelp" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Submit Service Request" textFill="WHITE">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="VOLUNTERBUTTON" layoutX="174.0" layoutY="174.0" mnemonicParsing="false" onAction="#volunter" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Volunter For Tasks" textFill="WHITE">
+      <Button fx:id="VOLUNTERBUTTON" layoutX="175.0" layoutY="192.0" mnemonicParsing="false" onAction="#volunter" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Volunter For Tasks" textFill="WHITE">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="LOGOUTBUTTON" layoutX="175.0" layoutY="332.0" mnemonicParsing="false" onAction="#LOGOUT" prefWidth="250.0" style="-fx-background-color: rgba(122,208,234,0.85);" text="Log Out" textFill="WHITE">
+      <Button fx:id="LOGOUTBUTTON" layoutX="176.0" layoutY="342.0" mnemonicParsing="false" onAction="#LOGOUT" prefWidth="250.0" style="-fx-background-color: rgba(122,208,234,0.85);" text="Log Out" textFill="WHITE">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="DistressButtonControl" layoutX="243.0" layoutY="473.0" mnemonicParsing="false" onAction="#distress" prefHeight="51.0" prefWidth="87.0" style="-fx-background-color: white;" textFill="WHITE" AnchorPane.bottomAnchor="0.6000000000000227" AnchorPane.leftAnchor="243.0" AnchorPane.rightAnchor="270.59999999999997" AnchorPane.topAnchor="473.0">
+      <Button fx:id="DistressButtonControl" layoutX="259.0" layoutY="446.0" mnemonicParsing="false" onAction="#distress" prefHeight="51.0" prefWidth="87.0" style="-fx-background-color: white;" textFill="WHITE" AnchorPane.bottomAnchor="28.399999999999977" AnchorPane.leftAnchor="259.0" AnchorPane.rightAnchor="254.60000000000002" AnchorPane.topAnchor="446.0">
          <font>
             <Font name="Franklin Gothic Demi" size="21.0" />
          </font>
@@ -35,25 +36,43 @@
             <Image url="@../../../../../../../../../../Downloads/ATIS.jpg" />
          </image>
       </ImageView>
-      <Button fx:id="cansel_REQUESTBT" layoutX="175.0" layoutY="120.0" mnemonicParsing="false" onAction="#CANCELREQUST" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Cancel Service Request" textFill="WHITE">
+      <Button fx:id="cansel_REQUESTBT" layoutX="176.0" layoutY="138.0" mnemonicParsing="false" onAction="#CANCELREQUST" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Cancel Service Request" textFill="WHITE">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="Canceldistressbt" layoutX="174.0" layoutY="227.0" mnemonicParsing="false" onAction="#CancelDistress" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Cancel Distress" textFill="WHITE">
+      <Button fx:id="message" layoutX="175.0" layoutY="244.0" mnemonicParsing="false" onAction="#message" prefHeight="30.0" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Notifications" textFill="WHITE">
          <font>
             <Font name="David Bold" size="16.0" />
          </font>
       </Button>
-      <Button fx:id="message" layoutX="174.0" layoutY="280.0" mnemonicParsing="false" onAction="#message" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Messages" textFill="WHITE">
-         <font>
-            <Font name="David Bold" size="16.0" />
-         </font>
-      </Button>
-      <ImageView fx:id="im" fitHeight="100.0" fitWidth="127.0" layoutX="40.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="im" fitHeight="100.0" fitWidth="127.0" layoutX="41.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" />
       <TextField fx:id="userName" layoutX="134.0" layoutY="21.0" prefHeight="30.0" prefWidth="155.0" />
-      <Label layoutX="61.0" layoutY="27.0" prefHeight="18.0" prefWidth="61.0" text="Welcome" />
-      <Label layoutX="378.0" layoutY="27.0" text="Id:" />
+      <Label layoutX="61.0" layoutY="27.0" prefHeight="18.0" prefWidth="61.0" text="Welcome">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="378.0" layoutY="27.0" text="Id:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
       <TextField fx:id="userId" layoutX="402.0" layoutY="23.0" />
+      <Label layoutX="208.0" layoutY="379.0" prefHeight="35.0" prefWidth="184.0" text="         Are you in emergency?" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="169.0" layoutY="414.0" prefHeight="18.0" prefWidth="326.0" text="Press the button below help will reach you soon.">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Button fx:id="confim_vol" layoutX="177.0" layoutY="293.0" mnemonicParsing="false" onAction="#Confirm" prefHeight="30.0" prefWidth="250.0" style="-fx-background-color: #7ad0ea;" text="Confirm Volunteering" textFill="WHITE">
+         <font>
+            <Font name="David Bold" size="16.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>

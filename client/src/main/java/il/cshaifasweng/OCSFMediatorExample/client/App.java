@@ -1,12 +1,10 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
-import il.cshaifasweng.OCSFMediatorExample.client.ocsf.AbstractClient;
 import il.cshaifasweng.OCSFMediatorExample.entities.Task;
-
-
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -14,12 +12,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.event.EventHandler;
-
-import java.io.IOException;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.io.IOException;
 
 /**
  * JavaFX App
@@ -61,6 +57,8 @@ public class App extends Application {
                 stage.close();
             }
         });
+        stage.setTitle("Primary");
+
         stage.show();
     }
 
@@ -86,6 +84,8 @@ public class App extends Application {
 
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
+        primaryStage.setTitle(fxml);
+
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
@@ -93,11 +93,32 @@ public class App extends Application {
         return fxmlLoader.load();
     }
 
+//    @Override
+//    public void stop() throws Exception {
+//        // TODO Auto-generated method stub
+//        EventBus.getDefault().unregister(this);
+//        super.stop();
+//    }
+
+
     @Override
     public void stop() throws Exception {
-        // TODO Auto-generated method stub
         EventBus.getDefault().unregister(this);
+        try {
+            User user;
+            if (SecondaryController.getUserLogIn() == null)
+                user = Managercontrol.getManagerLogIn();
+            else user = SecondaryController.getUserLogIn();
+            if (user != null) {
+                SimpleClient.getClient().sendToServer("log out " + user.getID());
+                System.out.println("trying to log out");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         super.stop();
+        Platform.exit();
+        System.exit(0);
     }
 
     @Subscribe
@@ -112,6 +133,124 @@ public class App extends Application {
         });
     }
 
+    @Subscribe
+    public void onMessageEvent(MessageEvent event) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(AlertType.INFORMATION,
+                    String.format("%s\n%s\n",
+                            event.getMessage().getMsg(), event.getMessage().getTime().toString()));
+            alert.show();
+        });
+    }
+
+
+    @Subscribe
+    public void onCancelOrAddTask(TaskCancellationEvent event) {
+        Platform.runLater(() -> {
+            try {
+                if (getStage() != null && getStage().getTitle().equals("checkRequestService")) {
+                    if (Managercontrol.getManagerLogIn() != null &&
+                            Managercontrol.getManagerLogIn().getCommunityManager().equals(event.getCanceledTask().getUser().getCommunity())) {
+                        client.sendToServer("check requests@" + Managercontrol.getManagerLogIn().getCommunityManager());
+                        System.out.println("in app");
+                    }
+                }
+                else if (getStage() != null && getStage().getTitle().equals("volunter_control")){
+                    client.sendToServer("getVolunteerTasks");
+                    System.out.println("in app");
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }  @Subscribe
+    public void onVolunteer(VolunteerEvent event) {
+        Platform.runLater(() -> {
+            try {
+                if (getStage() != null && getStage().getTitle().equals("volunter_control")) {
+                    {
+                        client.sendToServer("getVolunteerTasks");
+                        System.out.println("in app");
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    @Subscribe
+    public void onComplete(CompleteEvent event) {
+        Platform.runLater(() -> {
+            try {
+                if (getStage() != null && getStage().getTitle().equals("confirm_volunteering")) {
+                    {
+                        Object[] array = new Object[2];
+                        array[0] = "Confirm Volunteer"; // Assign a String object to the first index
+                        array[1] = SecondaryController.getUserLogIn();
+                        client.sendToServer(array);
+                        System.out.println("in app");
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+    @Subscribe
+    public void onManagerAccept(accepTaskEvent event) {
+        Platform.runLater(() -> {
+            try {
+                if (getStage() != null && getStage().getTitle().equals("volunter_control")) {
+                    {
+                        client.sendToServer("getVolunteerTasks");
+                        System.out.println("in app");
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    @Subscribe
+    public void updateUploadedTasksList(ModifyTaskDetailEvent event) {
+        Platform.runLater(() -> {
+            try {
+                if (getStage() != null && getStage().getTitle().equals("CommunityTasks")) {
+                    if (Managercontrol.getManagerLogIn() != null &&
+                            Managercontrol.getManagerLogIn().getCommunityManager().equals(event.getModifyTask().getUser().getCommunity())) {
+                        SimpleClient.getClient().sendToServer("Get uploaded tasks by community members@" + Managercontrol.getManagerLogIn().getCommunityManager());
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    @Subscribe // when the manager reject request, the user can't cancel it.
+    public void onReject(Task event) {
+        Platform.runLater(() -> {
+            try {
+                if (getStage() != null && getStage().getTitle().equals("cancelServiceRequest")) {
+
+                    if (SecondaryController.getUserLogIn() != null &&
+                            SecondaryController.getUserLogIn().getID().equals(event.getUser().getID())) {
+                        Object[] array = new Object[2];
+                        array[0] = "Cancel request"; // Assign a String object to the first index
+                        array[1] = SecondaryController.getUserLogIn();
+                        SimpleClient.getClient().sendToServer(array);
+                        App.setRoot("cancelServiceRequest");
+                        System.out.println("in reject");
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
     public static Scene getScene() {
         return scene;
     }
@@ -120,9 +259,10 @@ public class App extends Application {
         return primaryStage;
     }
 
-
     public static void main(String[] args) {
         launch();
     }
 
 }
+
+

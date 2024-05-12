@@ -1,6 +1,7 @@
 package il.cshaifasweng.OCSFMediatorExample.client;
 
 import il.cshaifasweng.OCSFMediatorExample.entities.User;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -48,6 +49,14 @@ public class CommunityMembers {
         image.setImage(myImage1);
 
         if (users.isEmpty()) {
+            Platform.runLater(() -> {
+                showCompletionMessage("Empty", "There are no members in your community.");
+                try {
+                    App.setRoot("manager_control");
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
             return;
         }
         while (users.isEmpty()) {
@@ -58,16 +67,28 @@ public class CommunityMembers {
             }
         }
         for (User user : users) {
-            this.memberList.getItems().addAll(user.getFirstName() + " " + user.getLastName());
+            this.memberList.getItems().addAll("User Id: "+ user.getID()+ " - " +user.getFirstName() + " " + user.getLastName());
         }
         this.memberList.setOnMouseClicked(event -> {
             String selectedTaskName = this.memberList.getSelectionModel().getSelectedItem();
             if (selectedTaskName != null) {
-                for (User user : users) {
-                    String name = user.getFirstName() + " " + user.getLastName();
-                    if (name.equals(selectedTaskName)) {
-                        selectedUser = user;
-                        break;
+                // Split the selected item based on the delimiter " - "
+                String[] parts = selectedTaskName.split(" - ");
+                if (parts.length > 0) {
+                    // Extract the user ID from the first part of the split string
+                    String userIdString = parts[0].trim();
+                    // Remove the "User Id: " prefix to get the actual user ID
+                    String userId = userIdString.substring("User Id: ".length());
+                    // Parse the user ID string into an integer
+
+                    // Iterate through the list of users
+                    for (User user : users) {
+                        // Check if the user ID matches the selected user ID
+                        if (user.getID().equals( userId)) {
+                            // Found the selected user, assign it to selectedUser and break the loop
+                            selectedUser = user;
+                            break;
+                        }
                     }
                 }
             }
@@ -97,6 +118,14 @@ public class CommunityMembers {
         alert.setTitle("User details");
         alert.setHeaderText("User Details: ");
         alert.setContentText(task);
+        alert.showAndWait();
+    }
+
+    private void showCompletionMessage(String title, String message) {
+        // Display an alert dialog to the user
+        Alert alert = new Alert(Alert.AlertType.INFORMATION); // Use INFORMATION type for completion message
+        alert.setTitle(title);
+        alert.setContentText(message);
         alert.showAndWait();
     }
 

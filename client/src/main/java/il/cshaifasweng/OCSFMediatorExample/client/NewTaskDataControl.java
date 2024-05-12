@@ -3,6 +3,7 @@
  */
 
 package il.cshaifasweng.OCSFMediatorExample.client;
+import javafx.application.Platform;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -72,7 +73,13 @@ public class NewTaskDataControl {
     }
     @FXML
     void homePage(ActionEvent event) throws IOException {
-        App.setRoot("updateTaskDetails");
+        Platform.runLater(() -> {
+            try {
+                App.setRoot("updateTaskDetails");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     private void showAlert(String title, String message) {
