@@ -891,7 +891,7 @@ public class ConnectToDataBase {
         session.flush();
         session.save(user12);
         session.flush();
-        Task task1 = new Task(LocalDate.of(2024, 2, 22), LocalTime.of(3, 50), 3,"", "Walk my dog", "", 0.0f);
+        Task task1 = new Task(LocalDate.of(2024, 2, 22), LocalTime.of(3, 50), 2,"215630125", "Walk my dog", "", 0.0f);
         task1.setUser(user2);
         Task task2 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(9, 30), 3,"", "Buy Medicine", "", 0.0f);
         Task task3 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(11, 15), 0,"", "Nanny", "", 0.0f);

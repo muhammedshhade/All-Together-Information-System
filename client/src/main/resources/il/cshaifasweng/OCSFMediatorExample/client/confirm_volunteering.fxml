@@ -14,7 +14,7 @@
                 <Font name="David Bold" size="20.0" />
             </font>
         </Label>
-        <TextArea fx:id="note" layoutX="70.0" layoutY="79.0" prefHeight="42.0" prefWidth="459.0" text="here you should confirm your volunteering!&#10;please update your community manager when you finish." />
+        <TextArea fx:id="note" layoutX="70.0" layoutY="79.0" prefHeight="42.0" prefWidth="459.0" text="Here you should confirm your volunteering!&#10;please update your community manager when you finish." />
         <ListView fx:id="volList" layoutX="130.0" layoutY="139.0" prefHeight="122.0" prefWidth="308.0" style="-fx-background-color: bright;" />
         <Button fx:id="confirm" layoutX="235.0" layoutY="274.0" mnemonicParsing="false" onAction="#ConfirmVol" prefHeight="15.0" prefWidth="110.0" style="-fx-background-color: #7ad0ea;" text="Confirm" textFill="#fcfcfc">
             <font>

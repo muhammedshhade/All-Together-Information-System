@@ -128,7 +128,31 @@ public class SimpleServer extends AbstractServer {
                 array[1] = calls;
                 client.sendToClient(array);
 
-            } else if (message.startsWith("All communities@")) {
+            }
+            if (message.startsWith("11get my calls"))
+            {
+                String[] parts1 = message.split("@");
+                List<DistressCall> calls = ConnectToDataBase.getDistressCallsBetweenDates(parts1[1],LocalDate.parse(parts1[2]));
+                Object[] array = new Object[2];
+                array[0] = "histograms calls"; // Assign a String object to the first index
+                array[1] = calls;
+                client.sendToClient(array);
+
+
+
+
+
+            }
+            if (message.startsWith("11get all calls")) {
+                String[] parts1 = message.split("@");
+                List<DistressCall> calls = ConnectToDataBase.getallDistressCallsBetweenDates(LocalDate.parse(parts1[1]));
+                Object[] array = new Object[2];
+                array[0] = "histograms calls"; // Assign a String object to the first index
+                array[1] = calls;
+                client.sendToClient(array);
+            }
+
+            else if (message.startsWith("All communities@")) {
                 String[] parts1 = message.split("@");
                 // Extract the target date from the message
                 LocalDate targetDate = LocalDate.parse(parts1[1]);
@@ -203,6 +227,7 @@ public class SimpleServer extends AbstractServer {
                                         ConnectToDataBase.Add_distress(newdistress);
                                         Message update = new Message("update manager distress call list");
                                         update.setObj(newdistress);
+                                        client.sendToClient("The key id is false");
                                         sendToAllClients(update);// to update the requests that the client can cancel.
                                     }
                                 }
@@ -270,6 +295,7 @@ public class SimpleServer extends AbstractServer {
                                         //newdistress.setUser_ID(user_id);
                                         newdistress.setEmergencyCenter(emergencyCenter);
                                         ConnectToDataBase.Add_distress(newdistress);
+                                        client.sendToClient("The key id is false");
                                     }
                                 }
                             }
@@ -403,7 +429,7 @@ public class SimpleServer extends AbstractServer {
                 for(Task task: volunteers){
                     if(task.getStatus() == 1){
                         newOne.add(task);
-                       update.setObj(task);
+                        update.setObj(task);
                     }
                 }
                 Object[] array = new Object[2];

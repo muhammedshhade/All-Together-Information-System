@@ -70,7 +70,7 @@ public class RejectControl {
         System.out.println(manger_id);
         String user_id = t.getUser().getID();
 
-        SimpleClient.getClient().sendToServer("The reason of rejected is@" + "Your Request: " + service.getRequestedTask().getServiceType() + "is Rejected by your manager,the reason is: " + services.getValue() + "@" + t.getUser().getCommunity() + "@" + (user_id));
+        SimpleClient.getClient().sendToServer("The reason of rejected is@" + "Your Request: " + service.getRequestedTask().getServiceType() + "is rejected by your manager, the reason is: " + services.getValue() + "@" + t.getUser().getCommunity() + "@" + (user_id));
         System.out.println(services.getValue());
     }
 

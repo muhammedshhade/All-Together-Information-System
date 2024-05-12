@@ -141,5 +141,85 @@ public class Distresscalloption {
             e.printStackTrace();
         }
     }
+    @FXML
+    void histogram(ActionEvent event) throws IOException {
+
+        if(date.getValue()==null)
+        {
+            //SimpleClient.getClient().sendToServer("is not Registered");
+
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
+                alert.setTitle("Request Error"); // Set the window's title
+                alert.setHeaderText(null); // Optional: you can have a header or set it to null
+                alert.setContentText("your Request is denied,please select date"); // Set the main message/content
+                alert.showAndWait(); // Display the alert and wait for the user to close it
+            });
+        }
+        else try {
+            LocalDate currentDate = LocalDate.now();
+            if(date.getValue().isAfter(currentDate))
+            {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
+                    alert.setTitle("Request Error"); // Set the window's title
+                    alert.setHeaderText(null); // Optional: you can have a header or set it to null
+                    alert.setContentText("your Request is denied,please select a correct date"); // Set the main message/content
+                    alert.showAndWait(); // Display the alert and wait for the user to close it
+                });
+
+
+            }
+            else {
+                SimpleClient.getClient().sendToServer("11get all calls@"+date.getValue());
+
+            }
+
+        } catch (IOException e) {
+            showAlert("Error", "Failed to get community Distress calls: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+    @FXML
+    void community_histogram(ActionEvent event) {
+        if(date.getValue()==null)
+        {
+            //SimpleClient.getClient().sendToServer("is not Registered");
+
+            Platform.runLater(() -> {
+                Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
+                alert.setTitle("Request Error"); // Set the window's title
+                alert.setHeaderText(null); // Optional: you can have a header or set it to null
+                alert.setContentText("your Request is denied,please select date"); // Set the main message/content
+                alert.showAndWait(); // Display the alert and wait for the user to close it
+            });
+        }
+        else try {
+            LocalDate currentDate = LocalDate.now();
+            if(date.getValue().isAfter(currentDate))
+            {
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
+                    alert.setTitle("Request Error"); // Set the window's title
+                    alert.setHeaderText(null); // Optional: you can have a header or set it to null
+                    alert.setContentText("your Request is denied,please select a correct date"); // Set the main message/content
+                    alert.showAndWait(); // Display the alert and wait for the user to close it
+                });
+
+
+            }
+            else {
+                SimpleClient.getClient().sendToServer("11get my calls@"+managerLogIn.getCommunityManager()+"@"+date.getValue());
+
+            }
+
+        } catch (IOException e) {
+            showAlert("Error", "Failed to get community Distress calls: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+
+    }
 
 }
