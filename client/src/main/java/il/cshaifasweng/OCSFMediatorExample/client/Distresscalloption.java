@@ -9,6 +9,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -25,6 +26,8 @@ public class Distresscalloption {
     private ChoiceBox<String> Time;
     @FXML
     private DatePicker date;
+    @FXML // fx:id="im"
+    private ImageView im; // Value injected by FXMLLoader
 
     public static LocalDate selectedDate;
 

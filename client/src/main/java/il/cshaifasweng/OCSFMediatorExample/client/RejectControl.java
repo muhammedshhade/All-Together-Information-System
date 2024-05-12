@@ -25,21 +25,8 @@ public class RejectControl {
 
     @FXML
     private ImageView im;
-
-
-   /* private InputStream stream;
-
-    {
-        try {
-            stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\say-no.png");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-    Image myImage1 = new Image(stream);*/
     @FXML
     void initialize() {
-       // im.setImage(myImage1);
         // Initialize the ChoiceBox with choices
         services.getItems().add("Beyond Scope of Service or Expertise");
         services.getItems().add("Resource Constraints");

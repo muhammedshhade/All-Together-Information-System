@@ -40,21 +40,9 @@ public class CheckRequestService {
 
     public static List<Task> requests = new ArrayList<>();
     private static Task requestedTask = null;
-    /*private InputStream stream;
-
-    {
-        try {
-            stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\candidates.png");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
-
-    //Image myImage1 = new Image(stream);
 
     public void initialize() {
         EventBus.getDefault().register(this);
-       // im.setImage(myImage1);
         if (requests.isEmpty()) {
             Platform.runLater(() -> {
                 showCompletionMessage("Empty", "There are no service requests.");
@@ -88,7 +76,6 @@ public class CheckRequestService {
             }
         });
     }
-
 
     @Subscribe
     public void updateList(List<Task> listOfTasks) {
@@ -233,12 +220,9 @@ public class CheckRequestService {
             // Retrieve date and time from the requestedTask object
             LocalDate date = requestedTask.getDate();
             LocalTime time = requestedTask.getTime();
-
-
             // Format date and time strings
             String formattedDate = date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             String formattedTime = time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-
             String x = String.format("Task ID: %d\nTask Description: %s\nUser Name: %s\nUser ID: %s\nStatus: %d\nDate: %s\nTime: %s\nNote: %s",
                     id, serviceType, fitst, userid, status, formattedDate, formattedTime, note);
             showAlert(x);

@@ -17,6 +17,9 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.IOException;
 
+import static il.cshaifasweng.OCSFMediatorExample.client.Distresscalloption.selectedDate;
+
+
 /**
  * JavaFX App
  */
@@ -179,6 +182,26 @@ public class App extends Application {
             }
         });
     }
+    @Subscribe
+    public void onAddCall(AddCallEvent event) {
+        Platform.runLater(() -> {
+            try {
+                if (getStage() != null && getStage().getTitle().equals("Community_distress")) {
+                    if (Managercontrol.getManagerLogIn() != null &&
+                            Managercontrol.getManagerLogIn().getCommunityManager().equals(event.getDistressCall().getUser().getCommunity())) {
+                        SimpleClient.getClient().sendToServer("My community@" + Managercontrol.getManagerLogIn().getCommunityManager() + "@" + selectedDate);
+                    }
+                }
+                if (getStage() != null && getStage().getTitle().equals("allCalls")) {
+                    SimpleClient.getClient().sendToServer("All communities@" + selectedDate);
+
+                }
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
 
     @Subscribe
     public void onComplete(CompleteEvent event) {
@@ -235,7 +258,6 @@ public class App extends Application {
         Platform.runLater(() -> {
             try {
                 if (getStage() != null && getStage().getTitle().equals("cancelServiceRequest")) {
-
                     if (SecondaryController.getUserLogIn() != null &&
                             SecondaryController.getUserLogIn().getID().equals(event.getUser().getID())) {
                         Object[] array = new Object[2];

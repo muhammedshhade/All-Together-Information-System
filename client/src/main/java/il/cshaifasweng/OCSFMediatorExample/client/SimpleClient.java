@@ -187,7 +187,26 @@ public class SimpleClient extends AbstractClient {
                                 throw new RuntimeException(e);
                             }
                         });
-                    } else if (messageParts[0].equals("canceled!")) {
+                    }else if (messageParts[0].equals("my community calls")) {
+                        CommunityDistress.getCommunitycalls = (List<DistressCall>) messageParts[1];
+                        Platform.runLater(() -> {
+                            try {
+                                App.setRoot("Community_distress");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                    } else if (messageParts[0].equals("all communities calls")) {
+                        AllCalls.getAllCommunitycalls = (List<DistressCall>) messageParts[1];
+                        Platform.runLater(() -> {
+                            try {
+                                App.setRoot("allCalls");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        });
+                    }
+                    else if (messageParts[0].equals("canceled!")) {
                         Platform.runLater(() -> {
                             Alert alert = new Alert(Alert.AlertType.INFORMATION); // Use INFORMATION alert type
                             alert.setTitle("Thank you"); // Set the window's title
@@ -347,9 +366,10 @@ public class SimpleClient extends AbstractClient {
                     EventBus.getDefault().post(new accepTaskEvent((Task) ((Message) msg).getObj()));
                 }else if (((Message) msg).getMsg().equals("complete")) {
                     EventBus.getDefault().post(new CompleteEvent((Task) ((Message) msg).getObj()));
-                }
-
-
+                }else if (((Message) msg).getMsg().equals("update uploaded tasks list"))
+                    EventBus.getDefault().post(new ModifyTaskDetailEvent((Task) ((Message) msg).getObj()));
+                else if (((Message) msg).getMsg().equals("update manager distress call list"))
+                    EventBus.getDefault().post(new AddCallEvent((DistressCall) ((Message) msg).getObj()));
                 return;
             }
             if (msg.getClass().equals(Task.class)) {

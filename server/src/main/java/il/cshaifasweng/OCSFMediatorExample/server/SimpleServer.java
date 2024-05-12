@@ -120,8 +120,31 @@ public class SimpleServer extends AbstractServer {
                 return;
             }
             String message = (String) msg;
-            if(message.startsWith("The key"))
-            {
+            if (message.startsWith("My community")) {
+                String[] parts1 = message.split("@");
+                List<DistressCall> calls = ConnectToDataBase.getDistressCallsBetweenDates(parts1[1], LocalDate.parse(parts1[2]));
+                Object[] array = new Object[2];
+                array[0] = "my community calls"; // Assign a String object to the first index
+                array[1] = calls;
+                client.sendToClient(array);
+
+            } else if (message.startsWith("All communities@")) {
+                String[] parts1 = message.split("@");
+                // Extract the target date from the message
+                LocalDate targetDate = LocalDate.parse(parts1[1]);
+
+                // Retrieve distress calls between the target date
+                List<DistressCall> calls = ConnectToDataBase.getallDistressCallsBetweenDates(targetDate);
+                System.out.println("all communities"+ targetDate + "size"+ calls.size());
+
+                // Prepare data to send to the client
+                Object[] array = new Object[2];
+                array[0] = "all communities calls"; // Assign a String object to the first index
+                array[1] = calls;
+                // Send data back to the client
+                client.sendToClient(array);
+            }
+            if (message.startsWith("The key")) {
                 String[] parts1 = message.split("@");
                 String[] parts = parts1[0].split(":", 2);
                 if (parts.length < 2) {
@@ -137,58 +160,60 @@ public class SimpleServer extends AbstractServer {
                         int keyId = Integer.parseInt(keyStr);
                         System.out.println("The key id is a number: " + keyId);
                         List<User> allUsers = ConnectToDataBase.getAllUsers();
-                        boolean x=false;
-                        for(User user : allUsers )
-                        {
-                            if (user.getkeyId()==keyId)
-                            {
+                        boolean x = false;
+                        for (User user : allUsers) {
+                            if (user.getkeyId() == keyId) {
                                 client.sendToClient("The key id is true");
-                                String user_id=user.getID();
-                                x=true;
+                                String user_id = user.getID();
+                                x = true;
                                 List<EmergencyCenter> allcenters = ConnectToDataBase.getAllcenters();
-                                for(EmergencyCenter emergencyCenter:allcenters)
-                                {
-                                    if(emergencyCenter.getLocation().equals(parts1[2]))
-                                    {
-                                        if(emergencyCenter.getService().equals(parts1[1]))
-                                        {
-                                            DistressCall newdistress=new DistressCall();
+                                for (EmergencyCenter emergencyCenter : allcenters) {
+                                    if (emergencyCenter.getLocation().equals(parts1[2])) {
+                                        if (emergencyCenter.getService().equals(parts1[1])) {
+                                            DistressCall newdistress = new DistressCall();
                                             newdistress.setRegistered(true);
+                                            newdistress.setUser(user);
                                             newdistress.setDate(LocalDate.now());
                                             newdistress.setLocation(parts1[2]);
                                             newdistress.setTime(LocalTime.now());
                                             newdistress.setUser_ID(user_id);
                                             newdistress.setEmergencyCenter(emergencyCenter);
                                             ConnectToDataBase.Add_distress(newdistress);
-
-
+                                            Message update = new Message("update manager distress call list");
+                                            update.setObj(newdistress);
+                                            sendToAllClients(update);// to update the requests that the client can cancel.
                                         }
                                     }
                                 }
-
-
                             }
                         }
-                        if(x==false)
-                        {
-                            client.sendToClient("The key id is false");
-                            DistressCall newdistress=new DistressCall();
-                            newdistress.setRegistered(false);
-                            newdistress.setDate(LocalDate.now());
-                            newdistress.setLocation("?");
-                            newdistress.setTime(LocalTime.now());
-                            ConnectToDataBase.Add_distress(newdistress);
-
+                        if (x == false) {
+                            List<EmergencyCenter> allcenters = ConnectToDataBase.getAllcenters();
+                            for (EmergencyCenter emergencyCenter : allcenters) {
+                                if (emergencyCenter.getLocation().equals(parts1[2])) {
+                                    if (emergencyCenter.getService().equals(parts1[1])) {
+                                        DistressCall newdistress = new DistressCall();
+                                        newdistress.setRegistered(false);
+                                        //newdistress.setUser(user);
+                                        newdistress.setDate(LocalDate.now());
+                                        newdistress.setLocation(parts1[2]);
+                                        newdistress.setTime(LocalTime.now());
+                                        //newdistress.setUser_ID(user_id);
+                                        newdistress.setEmergencyCenter(emergencyCenter);
+                                        ConnectToDataBase.Add_distress(newdistress);
+                                        Message update = new Message("update manager distress call list");
+                                        update.setObj(newdistress);
+                                        sendToAllClients(update);// to update the requests that the client can cancel.
+                                    }
+                                }
+                            }
                         }
-
                     } catch (NumberFormatException e) {
                         System.out.println("The provided key id is not a valid number.");
                     }
                 }
-
             }
-            if(message.startsWith("2The key"))
-            {
+            if (message.startsWith("2The key")) {
                 String[] parts1 = message.split("@");
                 String[] parts = parts1[0].split(":", 2);
                 if (parts.length < 2) {
@@ -201,53 +226,54 @@ public class SimpleServer extends AbstractServer {
                 } else {
                     // Attempt to convert the trimmed string to an int
                     try {
-                       // int keyId = Integer.parseInt(keyStr);
+                        // int keyId = Integer.parseInt(keyStr);
                         //System.out.println("The key id is a number: " + keyId);
                         List<User> allUsers = ConnectToDataBase.getAllUsers();
-                        boolean x=false;
-                        for(User user : allUsers )
-                        {
-                            if (user.getID().equals(keyStr))
-                            {
+                        boolean x = false;
+                        for (User user : allUsers) {
+                            if (user.getID().equals(keyStr)) {
                                 client.sendToClient("distresscall added successfully to the database.");
-                                String user_id=user.getID();
-                                x=true;
+                                String user_id = user.getID();
+                                x = true;
                                 List<EmergencyCenter> allcenters = ConnectToDataBase.getAllcenters();
-                                for(EmergencyCenter emergencyCenter:allcenters)
-                                {
-                                    if(emergencyCenter.getLocation().equals(parts1[2]))
-                                    {
-                                        if(emergencyCenter.getService().equals(parts1[1]))
-                                        {
-                                            DistressCall newdistress=new DistressCall();
+                                for (EmergencyCenter emergencyCenter : allcenters) {
+                                    if (emergencyCenter.getLocation().equals(parts1[2])) {
+                                        if (emergencyCenter.getService().equals(parts1[1])) {
+                                            DistressCall newdistress = new DistressCall();
                                             newdistress.setRegistered(true);
                                             newdistress.setDate(LocalDate.now());
                                             newdistress.setLocation(parts1[2]);
                                             newdistress.setTime(LocalTime.now());
                                             newdistress.setUser_ID(user_id);
                                             newdistress.setEmergencyCenter(emergencyCenter);
+                                            newdistress.setUser(user);
                                             ConnectToDataBase.Add_distress(newdistress);
-
-
+                                            Message update = new Message("update manager distress call list");
+                                            update.setObj(newdistress);
+                                            sendToAllClients(update);// to update the requests that the client can cancel.
                                         }
                                     }
                                 }
-
-
                             }
                         }
-                        if(x==false)
-                        {
-                            client.sendToClient("The key id is false");
-                            DistressCall newdistress=new DistressCall();
-                            newdistress.setRegistered(false);
-                            newdistress.setDate(LocalDate.now());
-                            newdistress.setLocation("?");
-                            newdistress.setTime(LocalTime.now());
-                            ConnectToDataBase.Add_distress(newdistress);
-
+                        if (x == false) {
+                            List<EmergencyCenter> allcenters = ConnectToDataBase.getAllcenters();
+                            for (EmergencyCenter emergencyCenter : allcenters) {
+                                if (emergencyCenter.getLocation().equals(parts1[2])) {
+                                    if (emergencyCenter.getService().equals(parts1[1])) {
+                                        DistressCall newdistress = new DistressCall();
+                                        newdistress.setRegistered(false);
+                                        //newdistress.setUser(user);
+                                        newdistress.setDate(LocalDate.now());
+                                        newdistress.setLocation(parts1[2]);
+                                        newdistress.setTime(LocalTime.now());
+                                        //newdistress.setUser_ID(user_id);
+                                        newdistress.setEmergencyCenter(emergencyCenter);
+                                        ConnectToDataBase.Add_distress(newdistress);
+                                    }
+                                }
+                            }
                         }
-
                     } catch (NumberFormatException e) {
                         System.out.println("The provided key id is not a valid number.");
                     }

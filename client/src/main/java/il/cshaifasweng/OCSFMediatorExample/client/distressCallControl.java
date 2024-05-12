@@ -7,13 +7,9 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class distressCallControl {
     @FXML
@@ -39,46 +35,10 @@ public class distressCallControl {
     @FXML
     private Button Back;
 
-    private InputStream stream;
-    private InputStream stream1;
-    private InputStream stream2;
-
-    {
-        try {
-            stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\hospital.png");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    Image myImage1 = new Image(stream);
-
-    {
-        try {
-            stream1 = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\police-station.png");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    Image myImage2 = new Image(stream1);
-
-    {
-        try {
-            stream2 = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\fire-station.png");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    Image myImage3 = new Image(stream2);
-
     @FXML
     void initialize() {
         // Initialize the ChoiceBox with choices
-        im1.setImage(myImage1);
-        im2.setImage(myImage2);
-        im3.setImage(myImage3);
+
         Location.getItems().add("Yaffa Nazareth");
         Location.getItems().add("Kabul");
         Location.getItems().add("Nazareth");

@@ -7,14 +7,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
+import java.io.IOException;
 
 public class UpdateTaskDetails {
 
@@ -31,15 +26,6 @@ public class UpdateTaskDetails {
     @FXML
     private ImageView im;
     private static String updateVale;
-   /* InputStream stream;
-
-   {
-        try {
-            stream = new FileInputStream("C:\\Users\\IMOE001\\Pictures\\update.png");
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-    }*/
 
     //Image myImage = new Image(stream);
     public static String getUpdateVale() {
@@ -47,7 +33,6 @@ public class UpdateTaskDetails {
     }
     public void initialize() {
         text.setEditable(false);
-     //   im.setImage(myImage);
 
     }
 
