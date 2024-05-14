@@ -33,7 +33,13 @@ public class RequestController {
     private ImageView image;
     private InputStream stream;
 
+    @FXML
+    private Button DistressButtonControl;
 
+    @FXML
+    void distress(ActionEvent event) throws IOException {
+        App.setRoot("distressCallsecondary");
+    }
     @FXML
     void initialize() {
 

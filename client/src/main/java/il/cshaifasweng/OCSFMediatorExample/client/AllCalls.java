@@ -22,6 +22,13 @@ public class AllCalls {
     public static List<DistressCall> getAllCommunitycalls = new ArrayList<>();
     private DistressCall requestedcall = null;
 
+    @FXML
+    private Button DistressButtonControl;
+
+    @FXML
+    void distress(ActionEvent event) throws IOException {
+        App.setRoot("distressCallsecondary");
+    }
     public void initialize() {
         if (getAllCommunitycalls.isEmpty()) {
             Platform.runLater(() -> {
@@ -116,6 +123,7 @@ public class AllCalls {
 
         }
     }
+
 
     private void showAlert(String details) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

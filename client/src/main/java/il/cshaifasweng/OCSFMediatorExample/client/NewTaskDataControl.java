@@ -40,7 +40,13 @@ public class NewTaskDataControl {
     @FXML
     private ImageView im2;
 
+    @FXML
+    private Button DistressButtonControl;
 
+    @FXML
+    void distress(ActionEvent event) throws IOException {
+        App.setRoot("distressCallsecondary");
+    }
     public void initialize() {
         title.setEditable(false);
         note.setEditable(false);

@@ -70,7 +70,9 @@ public class DistressCallsecondary {
 
     @FXML
     void Back(ActionEvent event) throws IOException {
-        App.setRoot("secondary");
+        if(Managercontrol.getManagerLogIn()==null)
+           App.setRoot("secondary");
+        else App.setRoot("manager_control");
     }
 
     @FXML

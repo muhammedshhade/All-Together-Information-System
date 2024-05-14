@@ -13,11 +13,20 @@ import javax.persistence.criteria.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConnectToDataBase {
     private static Session session;
     private static List<User> users;
+
+    public static ArrayList<User> getusersList() {
+        return (ArrayList<User>) users;
+    }
+    // Set method to modify the allUsers list
+    public static void setAllUsers(ArrayList<User> usersList) {
+        users = usersList;
+    }
 
     private static SessionFactory getSessionFactory() throws HibernateException {
         Configuration configuration = new Configuration();
@@ -132,127 +141,6 @@ public class ConnectToDataBase {
         }
         return null;
     }
-
-
-
-    /*public static List<Task> getTasksForCommunityWithStatus(String community){
-        try {
-            SessionFactory sessionFactory = getSessionFactory();
-
-            session = sessionFactory.openSession();
-            session.beginTransaction();
-            System.out.println("Getting tasks for community: " + community + " with status: 2");
-
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Task> query = builder.createQuery(Task.class);
-
-            Root<Task> root = query.from(Task.class);
-            Join<Task, User> userJoin = root.join("user");
-
-            query.where(
-                    builder.and(
-                            builder.equal(userJoin.get("community"), community),
-                            builder.equal(root.get("status"), 2)
-                    )
-            );
-
-            List<Task> tasks = session.createQuery(query).getResultList();
-            return tasks;
-        } catch (Exception e) {
-            if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
-                session.getTransaction().rollback();
-            }
-            e.printStackTrace();
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-        return null;
-    }*/
-
-    /*static List<Task> getTasksForCommunityMember(String community) throws Exception {
-        try {
-            SessionFactory sessionFactory = getSessionFactory();
-
-            session = sessionFactory.openSession();
-            session.beginTransaction();
-            System.out.println("Getting tasks for community member in: " + community);
-
-            // Assuming 'session' is your Hibernate session object
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Task> query = builder.createQuery(Task.class);
-            // Creating a query root for the Task entity
-            Root<Task> root = query.from(Task.class);
-
-            // Joining with the User entity to filter tasks by community member
-            Join<Task, User> userJoin = root.join("user");
-
-            // Adding a condition to filter tasks by community
-            query.where(
-                    builder.and(
-                            builder.equal(root.get("status"), 2),
-                            builder.equal(userJoin.get("community"), community)
-                    )
-            );
-
-            query.where(builder.equal(userJoin.get("community"), community));
-            // Executing the query and getting the list of tasks
-            List<Task> tasks = session.createQuery(query).getResultList();
-
-            return tasks;
-        } catch (Exception e) {
-            if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
-                session.getTransaction().rollback(); // Rollback transaction if an exception occurs
-            }
-            e.printStackTrace();
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-        return null;
-    }*/
-
-
-
-
-   /* static List<Task> getCommunityPerformedTasks(String community) throws Exception {
-        try {
-            SessionFactory sessionFactory = getSessionFactory();
-
-            session = sessionFactory.openSession();
-            session.beginTransaction();
-            System.out.println("Getting community tasks for: " + community + " with status: 2");
-            // Assuming 'session' is your Hibernate session object
-            CriteriaBuilder builder = session.getCriteriaBuilder();
-            CriteriaQuery<Task> query = builder.createQuery(Task.class);
-            // Creating a query root for the Task entity
-            Root<Task> root = query.from(Task.class);
-
-            // Adding conditions to filter tasks by community and vol_Id
-            Join<Task, User> userJoin = root.join("user");
-            query.where(
-                    builder.and(
-                            builder.equal(userJoin.get("community"), community),
-                            builder.equal(root.get("status"), 2)
-                    )
-            );
-            // Executing the query and getting the list of tasks
-            List<Task> tasks = session.createQuery(query).getResultList();
-            return tasks;
-        } catch (Exception e) {
-            if (session != null && session.getTransaction() != null && session.getTransaction().isActive()) {
-                session.getTransaction().rollback(); // Rollback transaction if an exception occurs
-            }
-            e.printStackTrace();
-        } finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-        return null;
-    }*/
 
     public static List<DistressCall> getDistressCallsBetweenDates(String community, LocalDate targetDate) {
         Session session = null;
@@ -734,33 +622,12 @@ public class ConnectToDataBase {
         }
     }
 
-    public static void logoutAllUsers() {
-
-        try {
-            SessionFactory sessionFactory = getSessionFactory();
-            session = sessionFactory.openSession();
-            session.beginTransaction();
-            for (User user : UserControl.getLoggedInList()) {
-                user.setConnected(false);
-                session.update(user);
-                session.getTransaction().commit();
-                System.out.println("User logged out: " + user.getUsername());
-            }
-        } catch (Exception e) {
-            throw new RuntimeException("Error logging out users", e);
-        }finally {
-            if (session != null) {
-                session.close();
-            }
-        }
-    }
-
     public static void updateIsConnect(boolean newVal, User userLog) throws Exception {
         SessionFactory sessionFactory = getSessionFactory();
         User temp = null;
         try {
-            List<User> users = getAllUsers(); // Assuming getAllUsers returns all users
-            for (User user : users) {
+            //List<User> users = getAllUsers(); // Assuming getAllUsers returns all users
+            for (User user : getusersList()) {
                 if (user.getID().equals(userLog.getID())) {
                     temp = user;
                     break;
@@ -791,7 +658,7 @@ public class ConnectToDataBase {
     static void addTask(Task task) throws Exception {
         User temp = null;
         try {
-            users = getAllUsers();
+            users = getusersList();
             for (User user : users) {
                 if (user.getID().equals(task.getUser().getID())) {
                     temp = user;
@@ -808,6 +675,7 @@ public class ConnectToDataBase {
             session = sessionFactory.openSession();
             session.beginTransaction();
             task.setUser(temp);
+            task.setVolId("");
             temp.getTasks().add(task); // Add the task to the user's list of tasks
             session.save(task); // Save the task
             // Update the user entity
@@ -894,9 +762,9 @@ public class ConnectToDataBase {
         Task task1 = new Task(LocalDate.of(2024, 2, 22), LocalTime.of(3, 50), 2,"215630125", "Walk my dog", "", 0.0f);
         task1.setUser(user2);
         Task task2 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(9, 30), 3,"", "Buy Medicine", "", 0.0f);
-        Task task3 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(11, 15), 0,"", "Nanny", "", 0.0f);
+        Task task3 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(11, 15), 3,"", "Nanny", "", 0.0f);
         Task task4 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(13, 4), 3,"", "Transportation", "I want to go to the Hospital", 0.0f);
-        Task task5 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(15, 20), 0,"", "Transportation", "", 0.0f);
+        Task task5 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(15, 20), 2,"", "Transportation", "", 0.0f);
         Task task6 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(17, 10), 0,"", "Buy Medicine", "", 0.0f);
         Task task7 = new Task(LocalDate.of(2024, 4, 15), LocalTime.of(17, 15), 0,"", "Home cleaning", "", 0.0f);
         user2.getTasks().add(task1);
@@ -962,6 +830,9 @@ public class ConnectToDataBase {
         EmergencyCenter center13 = new EmergencyCenter("123-456-7810", 8.0f, 20.0f, "Kukab", "Ambulance Alert");
         EmergencyCenter center14 = new EmergencyCenter("123-456-7820", 8.0f, 20.0f, "Kukab", "Police Alret");
         EmergencyCenter center15 = new EmergencyCenter("123-456-7805", 8.0f, 20.0f, "Kukab", "Fire Alret");
+
+        //DistressCall distressCall = new DistressCall(true, LocalTime.of(13, 4), "Tamra", LocalDate.of(2024, 2, 21), "345869321");
+
         session.save(center15);
         session.flush();
         session.save(center14);
@@ -992,6 +863,7 @@ public class ConnectToDataBase {
         session.flush();
         session.save(center1);
         session.flush();
+
         System.out.print("Data Creation Finish");
 
     }
@@ -1003,6 +875,7 @@ public class ConnectToDataBase {
 
             if (tasks != null && !tasks.isEmpty() && usersList != null && !usersList.isEmpty()) {
                 users = usersList;
+                setAllUsers((ArrayList<User>) usersList);
                 return;
             }
         } catch (Exception e) {

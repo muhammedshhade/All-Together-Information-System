@@ -28,7 +28,13 @@ public class CommunityMembers {
 
     public static List<User> users = new ArrayList<>();
     private User selectedUser = null;
+    @FXML
+    private Button DistressButtonControl;
 
+    @FXML
+    void distress(ActionEvent event) throws IOException {
+        App.setRoot("distressCallsecondary");
+    }
 
     public void initialize() {
         if (users.isEmpty()) {

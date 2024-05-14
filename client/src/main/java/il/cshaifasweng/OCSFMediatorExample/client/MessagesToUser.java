@@ -31,7 +31,13 @@ public class MessagesToUser {
     public static List<MessageToUser> message = new ArrayList<>();
     private MessageToUser selectedmessage = null;
     public static List<User> users = new ArrayList<>();
+    @FXML
+    private Button DistressButtonControl;
 
+    @FXML
+    void distress(ActionEvent event) throws IOException {
+        App.setRoot("distressCallsecondary");
+    }
     @FXML
     void Refresh(ActionEvent event) {
         try {

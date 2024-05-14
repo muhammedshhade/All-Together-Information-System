@@ -241,7 +241,6 @@ public class SimpleClient extends AbstractClient {
                     {
                         List<DistressCall> distressCalls=(List<DistressCall>) messageParts[1];
                         Map<LocalDate, Integer> dateCounts = new HashMap<>();
-
                         // Count each date
                         for (DistressCall call : distressCalls) {
                             LocalDate date = call.getDate();
@@ -250,12 +249,12 @@ public class SimpleClient extends AbstractClient {
                         Histogram.dateCounts=dateCounts;
                         Platform.runLater(() -> {
                             try {
+                                System.out.println("adan client");
                                 App.setRoot("histogram");
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
                         });
-
                     }
                     else if (messageParts[0].equals("accept")) {
                         Platform.runLater(() -> {
@@ -306,9 +305,13 @@ public class SimpleClient extends AbstractClient {
                         alert.setContentText("Thanks for contacting us. \nThe request has been sent."); // Set the main message/content
                         alert.showAndWait(); // Display the alert and wait for the user to close it
                     });
-
-
-                    App.setRoot("primary");
+                    Platform.runLater(() -> {
+                        try {
+                            App.setRoot("primary");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
 
                 }
                 if ("distresscall added successfully to the database.".equals(message)) {
@@ -320,15 +323,12 @@ public class SimpleClient extends AbstractClient {
                         alert.showAndWait(); // Display the alert and wait for the user to close it
                     });
                     Platform.runLater(() -> {
-
-
                         try {
                             App.setRoot("secondary");
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
                     });
-
                 }
                 if ("The key id is false".equals(message)) {
                     Platform.runLater(() -> {
@@ -338,8 +338,6 @@ public class SimpleClient extends AbstractClient {
                         alert.setContentText("Unidentified Code. Please try again."); // Set the main message/content
                         alert.showAndWait(); // Display the alert and wait for the user to close it
                     });
-
-
                 }
                 // Handling LOGIN_FAIL message
                 if ("LOGIN_FAIL".equals(message)) {
@@ -402,6 +400,9 @@ public class SimpleClient extends AbstractClient {
                     EventBus.getDefault().post(new ModifyTaskDetailEvent((Task) ((Message) msg).getObj()));
                 else if (((Message) msg).getMsg().equals("update manager distress call list"))
                     EventBus.getDefault().post(new AddCallEvent((DistressCall) ((Message) msg).getObj()));
+                else if (((Message) msg).getMsg().equals("update manager distress call histogram")) {
+                    EventBus.getDefault().post(new AddCallEvent((DistressCall) ((Message) msg).getObj()));
+                }
                 return;
             }
             if (msg.getClass().equals(Task.class)) {

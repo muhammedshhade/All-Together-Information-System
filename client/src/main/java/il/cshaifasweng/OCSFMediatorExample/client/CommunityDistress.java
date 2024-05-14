@@ -22,6 +22,13 @@ public class CommunityDistress {
     public static List<DistressCall> getCommunitycalls = new ArrayList<>();
     private DistressCall requestedcall = null;
 
+    @FXML
+    private Button DistressButtonControl;
+
+    @FXML
+    void distress(ActionEvent event) throws IOException {
+        App.setRoot("distressCallsecondary");
+    }
     public void initialize() {
         if (getCommunitycalls.isEmpty()) {
             Platform.runLater(() -> {

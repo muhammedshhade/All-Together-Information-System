@@ -27,7 +27,13 @@ public class PerformedTaskControl {
     public static List<Task> doneTasks =new ArrayList<>();
     private Task requestedTask = null;
 
+    @FXML
+    private Button DistressButtonControl;
 
+    @FXML
+    void distress(ActionEvent event) throws IOException {
+        App.setRoot("distressCallsecondary");
+    }
     private void showCompletionMessage(String title, String message) {
         // Display an alert dialog to the user
         Alert alert = new Alert(Alert.AlertType.INFORMATION); // Use INFORMATION type for completion message

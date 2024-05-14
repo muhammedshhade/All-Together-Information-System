@@ -38,6 +38,13 @@ public class CheckRequestService {
     @FXML
     private Button refresh;
 
+    @FXML
+    private Button DistressButtonControl;
+
+    @FXML
+    void distress(ActionEvent event) throws IOException {
+        App.setRoot("distressCallsecondary");
+    }
     public static List<Task> requests = new ArrayList<>();
     private static Task requestedTask = null;
 

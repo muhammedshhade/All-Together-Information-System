@@ -57,10 +57,7 @@ public class PrimaryController implements Initializable {
     @FXML
     void distressRequest(ActionEvent event) throws IOException {
           App.setRoot("distressCall");
-
     }
-
-
 
     @FXML
     void sendWarning(ActionEvent event) {

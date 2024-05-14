@@ -5,28 +5,62 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="196ef901-2346-44b5-9c47-794d17627dfd" name="Changes" comment="prototype">
-      <change afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/Histogram.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/histogram.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/il/cshaifasweng/OCSFMediatorExample/server/Sceduler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/server/src/main/java/il/cshaifasweng/OCSFMediatorExample/server/TaskScheduler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/AllCalls.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/AllCalls.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/CancelServiceRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/CancelServiceRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/CheckRequestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/CheckRequestService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/CommunityDistress.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/CommunityDistress.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/CommunityMembers.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/CommunityMembers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/CommunityTaskControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/CommunityTaskControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/DistressCallsecondary.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/DistressCallsecondary.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/Distresscalloption.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/Distresscalloption.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/Histogram.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/Histogram.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/Managercontrol.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/Managercontrol.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/MessagesToUser.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/MessagesToUser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/NewTaskDataControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/NewTaskDataControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/PerformedTaskControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/PerformedTaskControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/PrimaryController.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/PrimaryController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/RejectControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/RejectControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/RequestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/RequestController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/SimpleClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/SimpleClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/UpdateTaskDetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/UpdateTaskDetails.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/VolunterControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/VolunterControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/confirmVol.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/confirmVol.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/displayTaskController.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/displayTaskController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/distressCallControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/distressCallControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/CommunityTasks.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/CommunityTasks.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/Community_distress.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/Community_distress.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/Distresscalloption.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/Distresscalloption.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/MessagesToUser.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/MessagesToUser.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/Reject_control.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/Reject_control.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/allCalls.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/allCalls.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/cancelServiceRequest.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/cancelServiceRequest.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/cancelVolunteerRequest.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/cancelVolunteerRequest.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/checkRequestService.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/checkRequestService.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/communityMembers.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/communityMembers.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/confirm_volunteering.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/confirm_volunteering.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/createTask.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/createTask.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/displayTaskDetails.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/displayTaskDetails.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/histogram.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/histogram.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/manager_control.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/manager_control.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/newTaskData.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/newTaskData.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/performedTask.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/performedTask.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/primary.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/primary.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/request_control.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/request_control.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/updateTaskDetails.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/updateTaskDetails.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/volunter_control.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/volunter_control.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/target/classes/il/cshaifasweng/OCSFMediatorExample/client/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/client/target/classes/il/cshaifasweng/OCSFMediatorExample/client/App.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/target/classes/il/cshaifasweng/OCSFMediatorExample/client/PrimaryController.class" beforeDir="false" afterPath="$PROJECT_DIR$/client/target/classes/il/cshaifasweng/OCSFMediatorExample/client/PrimaryController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/target/classes/il/cshaifasweng/OCSFMediatorExample/client/SimpleClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/client/target/classes/il/cshaifasweng/OCSFMediatorExample/client/SimpleClient.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/client/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/client/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entities/src/main/java/il/cshaifasweng/OCSFMediatorExample/entities/GlobalDataSaved.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/target/classes/il/cshaifasweng/OCSFMediatorExample/client/primary.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/target/classes/il/cshaifasweng/OCSFMediatorExample/client/primary.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/il/cshaifasweng/OCSFMediatorExample/server/ConnectToDataBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/il/cshaifasweng/OCSFMediatorExample/server/ConnectToDataBase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/src/main/java/il/cshaifasweng/OCSFMediatorExample/server/SimpleServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/il/cshaifasweng/OCSFMediatorExample/server/SimpleServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/il/cshaifasweng/OCSFMediatorExample/server/TaskChecker.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/il/cshaifasweng/OCSFMediatorExample/server/TaskChecker.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/target/classes/il/cshaifasweng/OCSFMediatorExample/server/SimpleServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/server/target/classes/il/cshaifasweng/OCSFMediatorExample/server/SimpleServer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/server/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/server/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/target/server-0.0.1-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/server/target/server-0.0.1-SNAPSHOT.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/target/surefire-reports/TEST-il.cshaifasweng.server.AppTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/server/target/surefire-reports/TEST-il.cshaifasweng.server.AppTest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/target/surefire-reports/il.cshaifasweng.server.AppTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/server/target/surefire-reports/il.cshaifasweng.server.AppTest.txt" afterDir="false" />
@@ -43,8 +77,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Kotlin Class" />
-        <option value="Class" />
         <option value="FxmlFile" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -607,7 +641,12 @@
       <workItem from="1713911567599" duration="3577000" />
       <workItem from="1713954701794" duration="19589000" />
       <workItem from="1713992329027" duration="10194000" />
-      <workItem from="1715517931165" duration="18157000" />
+      <workItem from="1715517931165" duration="18428000" />
+      <workItem from="1715550165476" duration="150000" />
+      <workItem from="1715636299608" duration="18114000" />
+      <workItem from="1715689067789" duration="5989000" />
+      <workItem from="1715695116995" duration="2733000" />
+      <workItem from="1715698913075" duration="1006000" />
     </task>
     <task id="LOCAL‎-00001" summary="prototype">
       <option name="closed" value="true" />
@@ -785,7 +824,15 @@
       <option name="project" value="LOCAL‎" />
       <updated>1715533533301</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL‎-00023" summary="prototype">
+      <option name="closed" value="true" />
+      <created>1715546781362</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL‎-00023" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1715546781362</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
