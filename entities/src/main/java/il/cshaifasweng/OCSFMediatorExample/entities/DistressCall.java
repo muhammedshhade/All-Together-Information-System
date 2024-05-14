@@ -30,6 +30,15 @@ public class DistressCall implements Serializable {
         this.user = user;
 
     }
+    public DistressCall(boolean isRegistered, LocalTime time, String location, LocalDate date, String User_ID, EmergencyCenter emergencyCenter, User user) {
+        this.isRegistered = isRegistered;
+        this.time = time;
+        this.location = location;
+        this.date = date;
+        this.User_ID = User_ID;
+        this.emergencyCenter = emergencyCenter;
+        this.user = user;
+    }
 
 
     // Constructor

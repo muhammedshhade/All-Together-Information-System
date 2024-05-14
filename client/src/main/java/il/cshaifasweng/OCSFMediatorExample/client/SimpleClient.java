@@ -25,6 +25,9 @@ public class SimpleClient extends AbstractClient {
 
     protected void handleMessageFromServer(Object msg) throws IOException {
         try {
+            if (msg == null)
+                return;
+
             if (msg.equals("back to list")) {
                 Platform.runLater(() -> {
                     try {
