@@ -831,7 +831,6 @@ public class ConnectToDataBase {
         EmergencyCenter center14 = new EmergencyCenter("123-456-7820", 8.0f, 20.0f, "Kukab", "Police Alret");
         EmergencyCenter center15 = new EmergencyCenter("123-456-7805", 8.0f, 20.0f, "Kukab", "Fire Alret");
 
-        //DistressCall distressCall = new DistressCall(true, LocalTime.of(13, 4), "Tamra", LocalDate.of(2024, 2, 21), "345869321");
 
         session.save(center15);
         session.flush();
@@ -863,6 +862,25 @@ public class ConnectToDataBase {
         session.flush();
         session.save(center1);
         session.flush();
+        DistressCall distressCall1 = new DistressCall(true, LocalTime.of(13, 4), "Tamra", LocalDate.of(2024, 4, 21), "345869321", center1,user8);
+        session.save(distressCall1);
+        session.flush();
+        DistressCall distressCall2 = new DistressCall(true, LocalTime.of(13, 28), "Tamra", LocalDate.of(2024, 4, 21), "213011398", center2,user2);
+        session.save(distressCall2);
+        session.flush();
+        DistressCall distressCall3 = new DistressCall(true, LocalTime.of(18, 34), "Tamra", LocalDate.of(2024, 5, 2), "213011398", center3,user2);
+        session.save(distressCall3);
+        session.flush();
+        DistressCall distressCall4 = new DistressCall(true, LocalTime.of(10, 30), "Yaffa Nazareth", LocalDate.of(2024, 4, 21), "215630125", center5,user7);
+        session.save(distressCall4);
+        session.flush();
+        DistressCall distressCall5 = new DistressCall(true, LocalTime.of(9, 14), "Nazareth", LocalDate.of(2024, 4, 29), "213011398", center6,user2);
+        session.save(distressCall5);
+        session.flush();
+        DistressCall distressCall6 = new DistressCall(true, LocalTime.of(17, 40), "Yaffa Nazareth", LocalDate.of(2024, 5, 1), "215630125", center7,user7);
+        session.save(distressCall6);
+        session.flush();
+
 
         System.out.print("Data Creation Finish");
 
