@@ -25,6 +25,15 @@ public class RejectControl {
 
     @FXML
     private ImageView im;
+
+
+    @FXML
+    private Button DistressButtonControl;
+
+    @FXML
+    void distress(ActionEvent event) throws IOException {
+        App.setRoot("distressCallsecondary");
+    }
     @FXML
     void initialize() {
         // Initialize the ChoiceBox with choices

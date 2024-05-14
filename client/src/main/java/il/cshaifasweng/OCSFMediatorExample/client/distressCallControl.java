@@ -38,31 +38,16 @@ public class distressCallControl {
     @FXML
     void initialize() {
         // Initialize the ChoiceBox with choices
-
         Location.getItems().add("Yaffa Nazareth");
         Location.getItems().add("Kabul");
         Location.getItems().add("Nazareth");
         Location.getItems().add("Tamra");
         Location.getItems().add("Kukab");
         Location.getItems().add("UMM El Fahem");
-
     }
 
     @FXML
     void codetxt(ActionEvent event) {
-//        User loggedInUser = UserControl.getLoggedInUser();
-//        String x=codetx.getText();
-//        int number = Integer.parseInt(x);
-//        System.out.println(number);
-//        if(loggedInUser.getkeyId()==number)
-//        {
-//            Ambulancebtn.setDisable(true);
-//            FireBtn.setDisable(true);
-//            policebtn.setDisable(true);
-//
-//        }
-
-
     }
 
 
@@ -71,9 +56,6 @@ public class distressCallControl {
         Button clickedButton = (Button) event.getSource();
         String x = codetx.getText();
         String buttonText = clickedButton.getText();
-
-        // Check if the TextField is empty
-        //if (clickedButton == Ambulancebtn) {
         if (x.isEmpty()) {
             SimpleClient.getClient().sendToServer("is not Registered");
             System.out.println("Wrong");

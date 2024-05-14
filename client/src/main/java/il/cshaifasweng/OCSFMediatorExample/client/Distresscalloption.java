@@ -5,10 +5,7 @@ import il.cshaifasweng.OCSFMediatorExample.entities.UserControl;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 
 import java.io.IOException;
@@ -30,7 +27,14 @@ public class Distresscalloption {
     private ImageView im; // Value injected by FXMLLoader
 
     public static LocalDate selectedDate;
+    public static int type_calls = 0;
+    @FXML
+    private Button DistressButtonControl;
 
+    @FXML
+    void distress(ActionEvent event) throws IOException {
+        App.setRoot("distressCallsecondary");
+    }
     public void initialize() {
         ArrayList<User> loggedInList = UserControl.getLoggedInList();
         if (!loggedInList.isEmpty()) {
@@ -46,8 +50,6 @@ public class Distresscalloption {
     @FXML
     void date(ActionEvent event) {
         System.out.println(date.getValue());
-
-
     }
 
     public static User getManagerLogIn() {
@@ -61,16 +63,14 @@ public class Distresscalloption {
 
     @FXML
     void Back(ActionEvent event) throws IOException {
-
         App.setRoot("manager_control");
-
     }
 
     @FXML
     void All(ActionEvent event) {
+        type_calls = 1;
         if (date.getValue() == null) {
             //SimpleClient.getClient().sendToServer("is not Registered");
-
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
                 alert.setTitle("Request Error"); // Set the window's title
@@ -108,6 +108,7 @@ public class Distresscalloption {
 
     @FXML
     void YOUR_Community(ActionEvent event) {
+        type_calls = 0;
         if (date.getValue() == null) {
             //SimpleClient.getClient().sendToServer("is not Registered");
 
@@ -128,8 +129,6 @@ public class Distresscalloption {
                     alert.setContentText("Your Request is denied,please select a correct date"); // Set the main message/content
                     alert.showAndWait(); // Display the alert and wait for the user to close it
                 });
-
-
             } else {
                 selectedDate = date.getValue();
                 SimpleClient.getClient().sendToServer("My community@" + managerLogIn.getCommunityManager() + "@" + date.getValue());
@@ -141,13 +140,12 @@ public class Distresscalloption {
             e.printStackTrace();
         }
     }
+
     @FXML
     void histogram(ActionEvent event) throws IOException {
-
-        if(date.getValue()==null)
-        {
+        type_calls = 1;
+        if (date.getValue() == null) {
             //SimpleClient.getClient().sendToServer("is not Registered");
-
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
                 alert.setTitle("Request Error"); // Set the window's title
@@ -155,11 +153,9 @@ public class Distresscalloption {
                 alert.setContentText("your Request is denied,please select date"); // Set the main message/content
                 alert.showAndWait(); // Display the alert and wait for the user to close it
             });
-        }
-        else try {
+        } else try {
             LocalDate currentDate = LocalDate.now();
-            if(date.getValue().isAfter(currentDate))
-            {
+            if (date.getValue().isAfter(currentDate)) {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
                     alert.setTitle("Request Error"); // Set the window's title
@@ -169,24 +165,22 @@ public class Distresscalloption {
                 });
 
 
-            }
-            else {
-                SimpleClient.getClient().sendToServer("11get all calls@"+date.getValue());
-
+            } else {
+                selectedDate = date.getValue();
+                SimpleClient.getClient().sendToServer("11get all calls@" + date.getValue());
             }
 
         } catch (IOException e) {
             showAlert("Error", "Failed to get community Distress calls: " + e.getMessage());
             e.printStackTrace();
         }
-
     }
+
     @FXML
     void community_histogram(ActionEvent event) {
-        if(date.getValue()==null)
-        {
+        type_calls = 0;
+        if (date.getValue() == null) {
             //SimpleClient.getClient().sendToServer("is not Registered");
-
             Platform.runLater(() -> {
                 Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
                 alert.setTitle("Request Error"); // Set the window's title
@@ -194,11 +188,9 @@ public class Distresscalloption {
                 alert.setContentText("your Request is denied,please select date"); // Set the main message/content
                 alert.showAndWait(); // Display the alert and wait for the user to close it
             });
-        }
-        else try {
+        } else try {
             LocalDate currentDate = LocalDate.now();
-            if(date.getValue().isAfter(currentDate))
-            {
+            if (date.getValue().isAfter(currentDate)) {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
                     alert.setTitle("Request Error"); // Set the window's title
@@ -206,20 +198,14 @@ public class Distresscalloption {
                     alert.setContentText("your Request is denied,please select a correct date"); // Set the main message/content
                     alert.showAndWait(); // Display the alert and wait for the user to close it
                 });
-
-
-            }
-            else {
-                SimpleClient.getClient().sendToServer("11get my calls@"+managerLogIn.getCommunityManager()+"@"+date.getValue());
+            } else {
+                selectedDate = date.getValue();
+                SimpleClient.getClient().sendToServer("11get my calls@" + managerLogIn.getCommunityManager() + "@" + date.getValue());
 
             }
-
         } catch (IOException e) {
             showAlert("Error", "Failed to get community Distress calls: " + e.getMessage());
             e.printStackTrace();
         }
-
-
     }
-
 }

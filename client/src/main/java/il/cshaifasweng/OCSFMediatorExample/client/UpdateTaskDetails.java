@@ -27,7 +27,13 @@ public class UpdateTaskDetails {
     private ImageView im;
     private static String updateVale;
 
-    //Image myImage = new Image(stream);
+    @FXML
+    private Button DistressButtonControl;
+
+    @FXML
+    void distress(ActionEvent event) throws IOException {
+        App.setRoot("distressCallsecondary");
+    }
     public static String getUpdateVale() {
         return updateVale;
     }

@@ -17,7 +17,6 @@ import java.util.List;
 
 public class SimpleServer extends AbstractServer {
     private long key;
-
     public SimpleServer(int port) {
         super(port);
     }
@@ -25,9 +24,16 @@ public class SimpleServer extends AbstractServer {
     private static void modifyTask(int TaskID) {
         try {
             List<Task> tasks = ConnectToDataBase.getAllTasks();
-            for (Task task : tasks) {
-                if (task.getIdNum() == TaskID)
-                    task.setStatus(1);
+            if (tasks != null) {
+                for (Task task : tasks) {
+                    if (task.getIdNum() == TaskID) {
+                        task.setStatus(1);
+                        // Optionally, break the loop if you found the task
+                        break;
+                    }
+                }
+            } else {
+                System.out.println("Tasks list is null.");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -41,6 +47,8 @@ public class SimpleServer extends AbstractServer {
                 if (task.getIdNum() == TaskID) {
                     task.setStatus(2);
                     ConnectToDataBase.updateTaskData("2", task, "status");
+                    // Delete reminder messages associated with this task ID
+                    ConnectToDataBase.deleteMessagesByTaskId(String.valueOf(TaskID));
                 }
             }
         } catch (Exception e) {
@@ -48,7 +56,7 @@ public class SimpleServer extends AbstractServer {
         }
     }
 
-    private static void myModifyTask(int TaskID,String volunteerId) {
+    private static void myModifyTask(int TaskID, String volunteerId) {
         try {
             List<Task> tasks = ConnectToDataBase.getAllTasks();
             String TaskIDString = String.valueOf(TaskID);
@@ -56,6 +64,10 @@ public class SimpleServer extends AbstractServer {
                 if (task.getIdNum() == TaskID) {
                     task.setStatus(1);
                     ConnectToDataBase.updateTaskData("1", task, "status");
+
+                    // Schedule reminder for this task
+                    TaskScheduler.scheduleTaskReminder(TaskID, volunteerId);
+
                     ConnectToDataBase.deleteMessagesByTaskId(TaskIDString);
                     task.setVolId(volunteerId);
                     ConnectToDataBase.updateTaskVolunteerId(volunteerId, task);
@@ -87,12 +99,12 @@ public class SimpleServer extends AbstractServer {
                     array[0] = "ToCancel"; // Assign a String object to the first index
                     array[1] = requests;
                     client.sendToClient(array);
-                }else if (messageParts.length == 2 && messageParts[0] instanceof String &&
+                } else if (messageParts.length == 2 && messageParts[0] instanceof String &&
                         messageParts[0].equals("Confirm Volunteer") && messageParts[1] instanceof User) {
                     List<Task> volunteers = ConnectToDataBase.getTasksWithVolId(((User) messageParts[1]).getID());
                     List<Task> newOne = new ArrayList<>();
-                    for(Task task: volunteers){
-                        if(task.getStatus() == 1){
+                    for (Task task : volunteers) {
+                        if (task.getStatus() == 1) {
                             newOne.add(task);
                         }
                     }
@@ -100,16 +112,14 @@ public class SimpleServer extends AbstractServer {
                     array[0] = "ToConfirm"; // Assign a String object to the first index
                     array[1] = newOne;
                     client.sendToClient(array);
-                }
-                else if (messageParts.length == 2 && messageParts[0] instanceof String &&
+                } else if (messageParts.length == 2 && messageParts[0] instanceof String &&
                         messageParts[0].equals("Get uploaded messages") && messageParts[1] instanceof User) {
                     List<MessageToUser> requests = ConnectToDataBase.getMessagesBySender(((User) messageParts[1]).getID());
                     Object[] array = new Object[2];
                     array[0] = "Messages"; // Assign a String object to the first index
                     array[1] = requests;
                     client.sendToClient(array);
-                }
-                else if (messageParts.length == 2 && messageParts[0] instanceof String &&
+                } else if (messageParts.length == 2 && messageParts[0] instanceof String &&
                         messageParts[0].equals("Get maneger messages")) {
                     //List<MessageToManeger> requests = ConnectToDataBase.getMessagesByRecipient(String.valueOf(messageParts[1]));
                     Object[] array = new Object[2];
@@ -129,19 +139,13 @@ public class SimpleServer extends AbstractServer {
                 client.sendToClient(array);
 
             }
-            if (message.startsWith("11get my calls"))
-            {
+            if (message.startsWith("11get my calls")) {
                 String[] parts1 = message.split("@");
-                List<DistressCall> calls = ConnectToDataBase.getDistressCallsBetweenDates(parts1[1],LocalDate.parse(parts1[2]));
+                List<DistressCall> calls = ConnectToDataBase.getDistressCallsBetweenDates(parts1[1], LocalDate.parse(parts1[2]));
                 Object[] array = new Object[2];
                 array[0] = "histograms calls"; // Assign a String object to the first index
                 array[1] = calls;
                 client.sendToClient(array);
-
-
-
-
-
             }
             if (message.startsWith("11get all calls")) {
                 String[] parts1 = message.split("@");
@@ -150,16 +154,15 @@ public class SimpleServer extends AbstractServer {
                 array[0] = "histograms calls"; // Assign a String object to the first index
                 array[1] = calls;
                 client.sendToClient(array);
-            }
 
-            else if (message.startsWith("All communities@")) {
+            } else if (message.startsWith("All communities@")) {
                 String[] parts1 = message.split("@");
                 // Extract the target date from the message
                 LocalDate targetDate = LocalDate.parse(parts1[1]);
 
                 // Retrieve distress calls between the target date
                 List<DistressCall> calls = ConnectToDataBase.getallDistressCallsBetweenDates(targetDate);
-                System.out.println("all communities"+ targetDate + "size"+ calls.size());
+                System.out.println("all communities" + targetDate + "size" + calls.size());
 
                 // Prepare data to send to the client
                 Object[] array = new Object[2];
@@ -183,7 +186,7 @@ public class SimpleServer extends AbstractServer {
                     try {
                         int keyId = Integer.parseInt(keyStr);
                         System.out.println("The key id is a number: " + keyId);
-                        List<User> allUsers = ConnectToDataBase.getAllUsers();
+                        List<User> allUsers = ConnectToDataBase.getusersList();
                         boolean x = false;
                         for (User user : allUsers) {
                             if (user.getkeyId() == keyId) {
@@ -206,6 +209,9 @@ public class SimpleServer extends AbstractServer {
                                             Message update = new Message("update manager distress call list");
                                             update.setObj(newdistress);
                                             sendToAllClients(update);// to update the requests that the client can cancel.
+                                            update = new Message("update manager distress call histogram");
+                                            update.setObj(newdistress);
+                                            sendToAllClients(update);
                                         }
                                     }
                                 }
@@ -229,6 +235,9 @@ public class SimpleServer extends AbstractServer {
                                         update.setObj(newdistress);
                                         client.sendToClient("The key id is false");
                                         sendToAllClients(update);// to update the requests that the client can cancel.
+                                        update = new Message("update manager distress call histogram");
+                                        update.setObj(newdistress);
+                                        sendToAllClients(update);
                                     }
                                 }
                             }
@@ -251,9 +260,7 @@ public class SimpleServer extends AbstractServer {
                 } else {
                     // Attempt to convert the trimmed string to an int
                     try {
-                        // int keyId = Integer.parseInt(keyStr);
-                        //System.out.println("The key id is a number: " + keyId);
-                        List<User> allUsers = ConnectToDataBase.getAllUsers();
+                        List<User> allUsers = ConnectToDataBase.getusersList();
                         boolean x = false;
                         for (User user : allUsers) {
                             if (user.getID().equals(keyStr)) {
@@ -276,6 +283,9 @@ public class SimpleServer extends AbstractServer {
                                             Message update = new Message("update manager distress call list");
                                             update.setObj(newdistress);
                                             sendToAllClients(update);// to update the requests that the client can cancel.
+                                            update = new Message("update manager distress call histogram");
+                                            update.setObj(newdistress);
+                                            sendToAllClients(update);
                                         }
                                     }
                                 }
@@ -296,6 +306,12 @@ public class SimpleServer extends AbstractServer {
                                         newdistress.setEmergencyCenter(emergencyCenter);
                                         ConnectToDataBase.Add_distress(newdistress);
                                         client.sendToClient("The key id is false");
+                                        Message update = new Message("update manager distress call list");
+                                        update.setObj(newdistress);
+                                        sendToAllClients(update);// to update the requests that the client can cancel.
+                                        update = new Message("update manager distress call histogram");
+                                        update.setObj(newdistress);
+                                        sendToAllClients(update);
                                     }
                                 }
                             }
@@ -304,7 +320,6 @@ public class SimpleServer extends AbstractServer {
                         System.out.println("The provided key id is not a valid number.");
                     }
                 }
-
             }
             if (message.equals("get tasks")) {
                 List<Task> alltasks = ConnectToDataBase.getAllTasks();
@@ -320,9 +335,8 @@ public class SimpleServer extends AbstractServer {
                     List<User> members = ConnectToDataBase.getCommunityMembers(communityManager);
                     // Send the community members list to the client
                     client.sendToClient(members);
-                    System.out.println("hi");
                 }
-            }else if (message.startsWith("Get performed tasks")) {
+            } else if (message.startsWith("Get performed tasks")) {
                 String[] parts = message.split("@");
                 if (parts.length == 2 && parts[1] != null) {
                     String communityManager = parts[1];
@@ -342,10 +356,8 @@ public class SimpleServer extends AbstractServer {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-
                     // Get the performed tasks based on the community manager's ID
                     List<Task> tasks = ConnectToDataBase.getTasksWithUserCommunityAndStatus(communityManager);
-                    System.out.println("returnnnn");
                     if (tasks != null) {
                         System.out.println("Community tasks for " + communityManager + ":");
                         System.out.println("size: " + tasks.size());
@@ -360,8 +372,7 @@ public class SimpleServer extends AbstractServer {
 
                     client.sendToClient(tasks);
                 }
-            }
-            else if (message.startsWith("Get uploaded tasks by community members")) {
+            } else if (message.startsWith("Get uploaded tasks by community members")) {
                 String[] parts = message.split("@");
                 if (parts.length == 2 && parts[1] != null) {
                     String communityManager = parts[1];
@@ -385,11 +396,11 @@ public class SimpleServer extends AbstractServer {
                     client.sendToClient(array);
                 }
 
-            }else if (message.equals("getVolunteerTasks")) {
+            } else if (message.equals("getVolunteerTasks")) {
                 List<Task> alltasks = ConnectToDataBase.getAllTasks();
                 List<Task> newOne = new ArrayList<>();
-                for(Task task: alltasks){
-                    if(task.getStatus() == 0){
+                for (Task task : alltasks) {
+                    if (task.getStatus() == 0) {
                         newOne.add(task);
                     }
                 }
@@ -403,11 +414,11 @@ public class SimpleServer extends AbstractServer {
                 Message update = new Message("update volunteer");
                 String taskid = message.split(" ")[1];
                 String volI = message.split(" ")[2];
-                myModifyTask(Integer.parseInt(taskid),volI);
+                myModifyTask(Integer.parseInt(taskid), volI);
                 List<Task> alltasks = ConnectToDataBase.getAllTasks();
                 List<Task> newOne = new ArrayList<>();
-                for(Task task: alltasks){
-                    if(task.getStatus() == 0){
+                for (Task task : alltasks) {
+                    if (task.getStatus() == 0) {
                         newOne.add(task);
                         update.setObj(task);
                     }
@@ -426,8 +437,8 @@ public class SimpleServer extends AbstractServer {
 
                 List<Task> volunteers = ConnectToDataBase.getTasksWithVolId(userId);
                 List<Task> newOne = new ArrayList<>();
-                for(Task task: volunteers){
-                    if(task.getStatus() == 1){
+                for (Task task : volunteers) {
+                    if (task.getStatus() == 1) {
                         newOne.add(task);
                         update.setObj(task);
                     }
@@ -437,7 +448,7 @@ public class SimpleServer extends AbstractServer {
                 array[1] = newOne;
                 client.sendToClient(array);
                 sendToAllClients(update);
-            }else if (message.startsWith("sendMessage")){
+            } else if (message.startsWith("sendMessage")) {
                 String taskid = message.split("@")[1];
                 String userId = message.split("@")[2];
                 String community = message.split("@")[3];
@@ -447,9 +458,7 @@ public class SimpleServer extends AbstractServer {
                 String str = String.format("Task ID: %d is performed by user whose ID is: %s", taskid, userId);
 
 
-
-            }
-            else if (message.startsWith("modify")) {
+            } else if (message.startsWith("modify")) {
                 String taskid = message.split(" ")[1];
                 modifyTask(Integer.parseInt(taskid));
                 client.sendToClient(ConnectToDataBase.getAllTasks());
@@ -531,6 +540,10 @@ public class SimpleServer extends AbstractServer {
                         Task task = ConnectToDataBase.getTaskById(taskIdInt);
                         if (task != null) {
                             ConnectToDataBase.updateTaskData(newData, task, "status");
+
+                            // Schedule timer to check if task is not accepted after 24 hours
+                            Sceduler.scheduleTaskVolunteerCheck(taskIdInt);
+
                             List<Task> requests = ConnectToDataBase.getTasksWithStatus(task.getUser().getCommunity(), 3);
                             Object[] array = new Object[2];
                             array[0] = "accept"; // Assign a String object to the first index
@@ -567,7 +580,6 @@ public class SimpleServer extends AbstractServer {
                             sendToAllClients(task);
                             Warning warning = new Warning(notify);
                             sendToAllClients(warning);
-
                             Message update = new Message("update uploaded tasks list");
                             update.setObj(task);
                             sendToAllClients(update);// to update the requests that the client can cancel.
@@ -580,7 +592,7 @@ public class SimpleServer extends AbstractServer {
                         e.printStackTrace();
                     }
                 }
-            }else if (message.startsWith("confirm volunteer")) {
+            } else if (message.startsWith("confirm volunteer")) {
                 String[] parts = message.split("@");
                 if (parts.length >= 2 && parts[0].equals("confirm volunteer")) {
                     String taskId = parts[1];
@@ -593,8 +605,8 @@ public class SimpleServer extends AbstractServer {
                             System.out.println("user id: " + task.getUser().getID());
                             List<Task> volunteers = ConnectToDataBase.getTasksWithVolId(userID);
                             List<Task> newOne = new ArrayList<>();
-                            for(Task tasks: volunteers){
-                                if(tasks.getStatus() == 1){
+                            for (Task tasks : volunteers) {
+                                if (tasks.getStatus() == 1) {
                                     newOne.add(tasks);
                                 }
                             }
@@ -616,14 +628,14 @@ public class SimpleServer extends AbstractServer {
                         e.printStackTrace();
                     }
                 }
-            }else if (message.startsWith("The reason of rejected is")) {
+            } else if (message.startsWith("The reason of rejected is")) {
                 String[] parts = message.split("@");
                 String reason = parts[1];
                 System.out.println(reason);
                 String newData = parts[2];
                 System.out.println(newData);
                 String news = parts[3];
-                List<User> allUsers = ConnectToDataBase.getAllUsers();
+                List<User> allUsers = ConnectToDataBase.getusersList();
                 User manger;
                 MessageToUser Message = new MessageToUser();
                 Message.setContent(reason);
@@ -668,7 +680,7 @@ public class SimpleServer extends AbstractServer {
                     }
                 }
             } else if (message.equals("Get all users")) {
-                List<User> allUsers = ConnectToDataBase.getAllUsers();
+                List<User> allUsers = ConnectToDataBase.getusersList();
                 Object[] array = new Object[2];
                 array[0] = "all users send"; // Assign a String object to the first index
                 array[1] = allUsers;
@@ -695,7 +707,7 @@ public class SimpleServer extends AbstractServer {
                 String password = credentials[1];
                 // Perform password validation here by querying the database
                 List<UserControl> userControls = new ArrayList<>();
-                List<User> allUsers = ConnectToDataBase.getAllUsers();
+                List<User> allUsers = ConnectToDataBase.getusersList();
                 for (User user : allUsers) {
                     UserControl userControl = new UserControl(user.getID(), user.getFirstName(), user.getLastName(), user.getisConnected(), user.getCommunity(), user.getUsername(), user.getCommunityManager(), "0", user.getAddress(), user.getEmail(), user.getRole());
                     userControl.setSalt(user.getSalt());

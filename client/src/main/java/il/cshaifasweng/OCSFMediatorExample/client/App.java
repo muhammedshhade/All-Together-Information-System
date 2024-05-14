@@ -18,6 +18,7 @@ import org.greenrobot.eventbus.Subscribe;
 import java.io.IOException;
 
 import static il.cshaifasweng.OCSFMediatorExample.client.Distresscalloption.selectedDate;
+import static il.cshaifasweng.OCSFMediatorExample.client.Distresscalloption.type_calls;
 
 
 /**
@@ -69,10 +70,8 @@ public class App extends Application {
         try {
             FXMLLoader loader = new FXMLLoader(App.class.getResource("displayTaskDetails.fxml"));
             Parent root = loader.load();
-
             // Get the controller instance
             il.cshaifasweng.OCSFMediatorExample.client.displayTaskController controller = loader.getController();
-
             // Call the initData method to pass the task
             controller.initData(task);
 
@@ -155,7 +154,6 @@ public class App extends Application {
                     if (Managercontrol.getManagerLogIn() != null &&
                             Managercontrol.getManagerLogIn().getCommunityManager().equals(event.getCanceledTask().getUser().getCommunity())) {
                         client.sendToServer("check requests@" + Managercontrol.getManagerLogIn().getCommunityManager());
-                        System.out.println("in app");
                     }
                 }
                 else if (getStage() != null && getStage().getTitle().equals("volunter_control")){
@@ -174,7 +172,6 @@ public class App extends Application {
                 if (getStage() != null && getStage().getTitle().equals("volunter_control")) {
                     {
                         client.sendToServer("getVolunteerTasks");
-                        System.out.println("in app");
                     }
                 }
             } catch (IOException e) {
@@ -194,7 +191,15 @@ public class App extends Application {
                 }
                 if (getStage() != null && getStage().getTitle().equals("allCalls")) {
                     SimpleClient.getClient().sendToServer("All communities@" + selectedDate);
+                }
+                if (getStage() != null && getStage().getTitle().equals("histogram") && type_calls==1) {
+                    System.out.println("adan app"+ Distresscalloption.selectedDate);
+                    SimpleClient.getClient().sendToServer("11get all calls@"+Distresscalloption.selectedDate);
+                }
+                if (getStage() != null && getStage().getTitle().equals("histogram") &&  type_calls==0) {
+                    System.out.println("adan app my calls");
 
+                    SimpleClient.getClient().sendToServer("11get my calls@"+Managercontrol.getManagerLogIn().getCommunityManager()+"@"+selectedDate);
                 }
 
             } catch (IOException e) {
