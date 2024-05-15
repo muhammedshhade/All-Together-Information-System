@@ -156,7 +156,7 @@ public class App extends Application {
                         client.sendToServer("check requests@" + Managercontrol.getManagerLogIn().getCommunityManager());
                     }
                 }
-                else if (getStage() != null && getStage().getTitle().equals("volunter_control")){
+                 if (getStage() != null && getStage().getTitle().equals("volunter_control")){
                     client.sendToServer("getVolunteerTasks");
                     System.out.println("in app");
                 }

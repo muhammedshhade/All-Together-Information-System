@@ -6,12 +6,12 @@
   <component name="ChangeListManager">
     <list default="true" id="196ef901-2346-44b5-9c47-794d17627dfd" name="Changes" comment="prototype">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/App.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/SimpleClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/il/cshaifasweng/OCSFMediatorExample/client/SimpleClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/CommunityTasks.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/CommunityTasks.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/histogram.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/histogram.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/updateTaskDetails.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/il/cshaifasweng/OCSFMediatorExample/client/updateTaskDetails.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/entities/src/main/java/il/cshaifasweng/OCSFMediatorExample/entities/DistressCall.java" beforeDir="false" afterPath="$PROJECT_DIR$/entities/src/main/java/il/cshaifasweng/OCSFMediatorExample/entities/DistressCall.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/src/main/java/il/cshaifasweng/OCSFMediatorExample/server/ConnectToDataBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/main/java/il/cshaifasweng/OCSFMediatorExample/server/ConnectToDataBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/target/classes/il/cshaifasweng/OCSFMediatorExample/client/SimpleClient.class" beforeDir="false" afterPath="$PROJECT_DIR$/client/target/classes/il/cshaifasweng/OCSFMediatorExample/client/SimpleClient.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/target/classes/il/cshaifasweng/OCSFMediatorExample/server/SimpleServer.class" beforeDir="false" afterPath="$PROJECT_DIR$/server/target/classes/il/cshaifasweng/OCSFMediatorExample/server/SimpleServer.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/server/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/server/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/target/server-0.0.1-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/server/target/server-0.0.1-SNAPSHOT.jar" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/target/surefire-reports/TEST-il.cshaifasweng.server.AppTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/server/target/surefire-reports/TEST-il.cshaifasweng.server.AppTest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/target/surefire-reports/il.cshaifasweng.server.AppTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/server/target/surefire-reports/il.cshaifasweng.server.AppTest.txt" afterDir="false" />
@@ -598,7 +598,8 @@
       <workItem from="1715689067789" duration="5989000" />
       <workItem from="1715695116995" duration="2733000" />
       <workItem from="1715698913075" duration="1006000" />
-      <workItem from="1715707026197" duration="4774000" />
+      <workItem from="1715707026197" duration="5161000" />
+      <workItem from="1715767095948" duration="1619000" />
     </task>
     <task id="LOCAL‎-00001" summary="prototype">
       <option name="closed" value="true" />
@@ -784,7 +785,15 @@
       <option name="project" value="LOCAL‎" />
       <updated>1715546781362</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL‎-00024" summary="prototype">
+      <option name="closed" value="true" />
+      <created>1715712165129</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL‎-00024" />
+      <option name="project" value="LOCAL‎" />
+      <updated>1715712165129</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
