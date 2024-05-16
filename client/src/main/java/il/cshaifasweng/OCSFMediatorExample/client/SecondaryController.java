@@ -159,6 +159,4 @@ public class SecondaryController implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-
 }

@@ -38,6 +38,16 @@ public class SimpleClient extends AbstractClient {
                 });
                 return;
             }
+            else if (msg.equals("performedtaskisEmpty")) {
+                Platform.runLater(() -> {
+                    try {
+                        App.setRoot("performedTask");
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+            }
+
             if ("The key id is false".equals(msg)) {
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.ERROR); // Use ERROR alert type
@@ -225,6 +235,7 @@ public class SimpleClient extends AbstractClient {
                             alert.setContentText("Your request has been canceled."); // Set the main message/content
                             alert.showAndWait(); // Display the alert and wait for the user to close it
                             EventBus.getDefault().post((List<Task>) messageParts[1]);
+                            System.out.println("CANCELED");
                         });
                     } else if (messageParts[0].equals("confired!")) {
                         Platform.runLater(() -> {

@@ -23,6 +23,7 @@ public class ConnectToDataBase {
     public static ArrayList<User> getusersList() {
         return (ArrayList<User>) users;
     }
+
     // Set method to modify the allUsers list
     public static void setAllUsers(ArrayList<User> usersList) {
         users = usersList;
@@ -96,6 +97,7 @@ public class ConnectToDataBase {
         }
         return null;
     }
+
     static List<Task> getTasksWithUserCommunityAndStatus(String community) throws Exception {
         try {
             SessionFactory sessionFactory = getSessionFactory();
@@ -203,6 +205,7 @@ public class ConnectToDataBase {
         }
         return null;
     }
+
     static void Add_distress(DistressCall distressCall) throws Exception {
         try {
             System.out.println("Trying to add a distresscall to the database...");
@@ -228,6 +231,7 @@ public class ConnectToDataBase {
             }
         }
     }
+
     public static List<Task> getTasksUploadedByCommunityMembers(String community) {
         try {
             SessionFactory sessionFactory = getSessionFactory();
@@ -319,6 +323,7 @@ public class ConnectToDataBase {
         }
         return null;
     }
+
     static List<Task> getTasksForVolunteerInCommunity(String community, String userId) throws Exception {
         try {
             SessionFactory sessionFactory = getSessionFactory();
@@ -352,7 +357,6 @@ public class ConnectToDataBase {
         }
         return null;
     }
-
 
 
     public static List<Task> getTasksWithStatus(String community, int status) {
@@ -439,7 +443,6 @@ public class ConnectToDataBase {
     }
 
 
-
     public static List<DistressCall> getallDistressCallsBetweenDates(LocalDate targetDate) {
         Session session = null;
         try {
@@ -471,6 +474,7 @@ public class ConnectToDataBase {
         }
         return null;
     }
+
     public static void updateTaskData(String newData, Task task, String updateValue) throws Exception {
         SessionFactory sessionFactory = getSessionFactory();
         try {
@@ -652,13 +656,17 @@ public class ConnectToDataBase {
         } catch (Exception e) {
             System.out.println("Error updating user connection status: " + e.getMessage());
             throw e; // Rethrow the exception after logging
+        }finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 
     static void addTask(Task task) throws Exception {
         User temp = null;
         try {
-            users = getusersList();
+            users = getAllUsers();
             for (User user : users) {
                 if (user.getID().equals(task.getUser().getID())) {
                     temp = user;
@@ -668,7 +676,6 @@ public class ConnectToDataBase {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-
         try {
             System.out.println("try to add task to database");
             SessionFactory sessionFactory = getSessionFactory();
@@ -759,14 +766,14 @@ public class ConnectToDataBase {
         session.flush();
         session.save(user12);
         session.flush();
-        Task task1 = new Task(LocalDate.of(2024, 2, 22), LocalTime.of(3, 50), 2,"215630125", "Walk my dog", "", 0.0f);
+        Task task1 = new Task(LocalDate.of(2024, 2, 22), LocalTime.of(3, 50), 2, "215630125", "Walk my dog", "", 0.0f);
         task1.setUser(user2);
-        Task task2 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(9, 30), 3,"", "Buy Medicine", "", 0.0f);
-        Task task3 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(11, 15), 3,"", "Nanny", "", 0.0f);
-        Task task4 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(13, 4), 3,"", "Transportation", "I want to go to the Hospital", 0.0f);
-        Task task5 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(15, 20), 2,"", "Transportation", "", 0.0f);
-        Task task6 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(17, 10), 0,"", "Buy Medicine", "", 0.0f);
-        Task task7 = new Task(LocalDate.of(2024, 4, 15), LocalTime.of(17, 15), 0,"", "Home cleaning", "", 0.0f);
+        Task task2 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(9, 30), 3, "", "Buy Medicine", "", 0.0f);
+        Task task3 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(11, 15), 3, "", "Nanny", "", 0.0f);
+        Task task4 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(13, 4), 3, "", "Transportation", "I want to go to the Hospital", 0.0f);
+        Task task5 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(15, 20), 2, "", "Transportation", "", 0.0f);
+        Task task6 = new Task(LocalDate.of(2024, 2, 21), LocalTime.of(17, 10), 0, "", "Buy Medicine", "", 0.0f);
+        Task task7 = new Task(LocalDate.of(2024, 4, 15), LocalTime.of(17, 15), 0, "", "Home cleaning", "", 0.0f);
         user2.getTasks().add(task1);
         user7.getTasks().add(task2);
         user3.getTasks().add(task3);
@@ -862,22 +869,22 @@ public class ConnectToDataBase {
         session.flush();
         session.save(center1);
         session.flush();
-        DistressCall distressCall1 = new DistressCall(true, LocalTime.of(13, 4), "Tamra", LocalDate.of(2024, 4, 21), "345869321", center1,user8);
+        DistressCall distressCall1 = new DistressCall(true, LocalTime.of(13, 4), "Tamra", LocalDate.of(2024, 4, 21), "345869321", center1, user8);
         session.save(distressCall1);
         session.flush();
-        DistressCall distressCall2 = new DistressCall(true, LocalTime.of(13, 28), "Tamra", LocalDate.of(2024, 4, 21), "213011398", center2,user2);
+        DistressCall distressCall2 = new DistressCall(true, LocalTime.of(13, 28), "Tamra", LocalDate.of(2024, 4, 21), "213011398", center2, user2);
         session.save(distressCall2);
         session.flush();
-        DistressCall distressCall3 = new DistressCall(true, LocalTime.of(18, 34), "Tamra", LocalDate.of(2024, 5, 2), "213011398", center3,user2);
+        DistressCall distressCall3 = new DistressCall(true, LocalTime.of(18, 34), "Tamra", LocalDate.of(2024, 5, 2), "213011398", center3, user2);
         session.save(distressCall3);
         session.flush();
-        DistressCall distressCall4 = new DistressCall(true, LocalTime.of(10, 30), "Yaffa Nazareth", LocalDate.of(2024, 4, 21), "215630125", center5,user7);
+        DistressCall distressCall4 = new DistressCall(true, LocalTime.of(10, 30), "Yaffa Nazareth", LocalDate.of(2024, 4, 21), "215630125", center5, user7);
         session.save(distressCall4);
         session.flush();
-        DistressCall distressCall5 = new DistressCall(true, LocalTime.of(9, 14), "Nazareth", LocalDate.of(2024, 4, 29), "213011398", center6,user2);
+        DistressCall distressCall5 = new DistressCall(true, LocalTime.of(9, 14), "Nazareth", LocalDate.of(2024, 4, 29), "213011398", center6, user2);
         session.save(distressCall5);
         session.flush();
-        DistressCall distressCall6 = new DistressCall(true, LocalTime.of(17, 40), "Yaffa Nazareth", LocalDate.of(2024, 5, 1), "215630125", center7,user7);
+        DistressCall distressCall6 = new DistressCall(true, LocalTime.of(17, 40), "Yaffa Nazareth", LocalDate.of(2024, 5, 1), "215630125", center7, user7);
         session.save(distressCall6);
         session.flush();
 

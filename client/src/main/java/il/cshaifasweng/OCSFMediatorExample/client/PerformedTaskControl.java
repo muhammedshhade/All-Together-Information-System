@@ -45,7 +45,7 @@ public class PerformedTaskControl {
     public void initialize(){
         if (doneTasks.isEmpty()) {
             Platform.runLater(() -> {
-                showCompletionMessage("Empty", "There are no performed tasks.");
+                showCompletionMessage("Empty", "There are no performed tasks in your community.");
                 try {
                     App.setRoot("manager_control");
                 } catch (IOException e) {

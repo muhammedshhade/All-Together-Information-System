@@ -102,7 +102,7 @@ public class CheckRequestService {
                 return;
             }
             for (Task task : requests) {
-                this.communityTasks.getItems().add("Task id:" + task.getIdNum() + " - " + task.getServiceType());
+                this.communityTasks.getItems().addAll("Task id:" + task.getIdNum() + " - " + task.getServiceType());
             }
             this.communityTasks.setOnMouseClicked(event -> {
                 String selectedTaskName = this.communityTasks.getSelectionModel().getSelectedItem();
@@ -165,7 +165,7 @@ public class CheckRequestService {
         if (requestedTask != null) {
             int id = requestedTask.getIdNum();
             System.out.println(id);
-            String message = "Task is Accept@" + String.valueOf(id) + "@" + "0";
+            String message = "Task is Accept@" + (id);
             SimpleClient.getClient().sendToServer(message);
         }
         try {

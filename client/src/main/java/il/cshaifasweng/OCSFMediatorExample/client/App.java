@@ -154,6 +154,7 @@ public class App extends Application {
                     if (Managercontrol.getManagerLogIn() != null &&
                             Managercontrol.getManagerLogIn().getCommunityManager().equals(event.getCanceledTask().getUser().getCommunity())) {
                         client.sendToServer("check requests@" + Managercontrol.getManagerLogIn().getCommunityManager());
+
                     }
                 }
                  if (getStage() != null && getStage().getTitle().equals("volunter_control")){
@@ -193,12 +194,9 @@ public class App extends Application {
                     SimpleClient.getClient().sendToServer("All communities@" + selectedDate);
                 }
                 if (getStage() != null && getStage().getTitle().equals("histogram") && type_calls==1) {
-                    System.out.println("adan app"+ Distresscalloption.selectedDate);
                     SimpleClient.getClient().sendToServer("11get all calls@"+Distresscalloption.selectedDate);
                 }
                 if (getStage() != null && getStage().getTitle().equals("histogram") &&  type_calls==0) {
-                    System.out.println("adan app my calls");
-
                     SimpleClient.getClient().sendToServer("11get my calls@"+Managercontrol.getManagerLogIn().getCommunityManager()+"@"+selectedDate);
                 }
 
@@ -220,6 +218,11 @@ public class App extends Application {
                         client.sendToServer(array);
                         System.out.println("in app");
                     }
+                } else if(getStage() != null && getStage().getTitle().equals("performedTask")){
+                    if (Managercontrol.getManagerLogIn() != null) {
+                        SimpleClient.getClient().sendToServer("Get performed tasks@"+Managercontrol.getManagerLogIn().getCommunityManager());
+                    }
+
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);

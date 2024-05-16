@@ -47,7 +47,6 @@ public class VolunterControl {
                 }catch (IOException e){
                     throw new RuntimeException(e);
                 }
-
             });
             return;
         }
