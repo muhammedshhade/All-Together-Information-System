@@ -40,13 +40,7 @@ public class displayTaskController {
         // Close the stage
         stage.close();
     }
-    @FXML
-    private Button DistressButtonControl;
 
-    @FXML
-    void distress(ActionEvent event) throws IOException {
-        App.setRoot("distressCallsecondary");
-    }
     public void initData(Task task) {
         // Update UI elements with task details
 

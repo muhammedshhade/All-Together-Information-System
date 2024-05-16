@@ -340,37 +340,14 @@ public class SimpleServer extends AbstractServer {
                 String[] parts = message.split("@");
                 if (parts.length == 2 && parts[1] != null) {
                     String communityManager = parts[1];
-
-                    try {
-                        // Assuming 'communityManager' is the name of the community
-                        List<User> members = ConnectToDataBase.getCommunityMembers(communityManager);
-                        if (members != null) {
-                            System.out.println("Community Members for " + communityManager + ":");
-                            for (User member : members) {
-                                System.out.println("Member Name: " + member.getFirstName() + ", Email: " + member.getEmail() + ", Community: " + member.getCommunity());
-                                // Assuming your User entity has methods like getName(), getEmail(), and getCommunity() to retrieve member details
-                            }
-                        } else {
-                            System.out.println("No members found for " + communityManager);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
                     // Get the performed tasks based on the community manager's ID
                     List<Task> tasks = ConnectToDataBase.getTasksWithUserCommunityAndStatus(communityManager);
-                    if (tasks != null) {
-                        System.out.println("Community tasks for " + communityManager + ":");
-                        System.out.println("size: " + tasks.size());
-                        for (Task task : tasks) {
-
-                            System.out.println("Task: " + task.getServiceType());
-                            // Assuming your User entity has methods like getName(), getEmail(), and getCommunity() to retrieve member details
-                        }
-                    } else {
-                        System.out.println("No Tasks found for " + communityManager);
+                    if (!tasks.isEmpty()){
+                        client.sendToClient(tasks);}
+                    else{
+                        client.sendToClient("performedtaskisEmpty");
                     }
 
-                    client.sendToClient(tasks);
                 }
             } else if (message.startsWith("Get uploaded tasks by community members")) {
                 String[] parts = message.split("@");
@@ -530,26 +507,25 @@ public class SimpleServer extends AbstractServer {
             } else if (message.startsWith("Task is Accept")) {
 
                 Message update = new Message("acceptVolunteer");
-
                 String[] parts = message.split("@");
-                if (parts.length >= 3 && parts[0].equals("Task is Accept")) {
+                if (parts.length >= 2 && parts[0].equals("Task is Accept")) {
                     String taskId = parts[1];
-                    String newData = parts[2];
                     try {
                         int taskIdInt = Integer.parseInt(taskId);
                         Task task = ConnectToDataBase.getTaskById(taskIdInt);
                         if (task != null) {
-                            ConnectToDataBase.updateTaskData(newData, task, "status");
+                            ConnectToDataBase.updateTaskData(String.valueOf(0), task, "status");
 
                             // Schedule timer to check if task is not accepted after 24 hours
                             Sceduler.scheduleTaskVolunteerCheck(taskIdInt);
-
                             List<Task> requests = ConnectToDataBase.getTasksWithStatus(task.getUser().getCommunity(), 3);
                             Object[] array = new Object[2];
                             array[0] = "accept"; // Assign a String object to the first index
                             array[1] = requests;
                             client.sendToClient(array);
                             update.setObj(task);
+                            sendToAllClients(update);
+
                         } else {
                             System.out.println("Task with ID " + taskId + " not found.");
                         }
@@ -558,7 +534,6 @@ public class SimpleServer extends AbstractServer {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    sendToAllClients(update);
                 }
 
             } else if (message.startsWith("cancel request")) {
