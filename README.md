@@ -15,10 +15,21 @@
 - **Task (Help Request)**: ID, type of help, requester, creation time, volunteer (if any), status (requested, pre-execution, executed), completion time.
 
 ## 🧩 System Architecture
-- **Backend**: Java-based application server handling user sessions, distress calls, help tasks, and manager tools.
-- **Frontend**: GUI for users and managers built for desktop use (not web-based in this version).
+- **Backend (Server)**: Java-based application server that handles all system logic, data management, and communication coordination. It manages:
+  - Receiving and processing distress calls
+  - Managing user sessions and authentication
+  - Handling task creation, assignment, and status updates
+  - Responding to data requests from clients
+
+- **Frontend (Client)**: Java-based desktop application that runs on user machines and allows interaction with the system. It supports:
+  - User login and role-based access
+  - Submitting help requests and volunteering for tasks
+  - Triggering distress calls
+  - Manager views for handling requests and viewing statistics
+
 - **Database**: Relational database (SQL-based) storing all user data, tasks, and distress call records.
-- **Communication**: TCP/IP over LAN (local network only).
+
+- **Communication**: Client-server communication is done via TCP/IP over LAN (local network only), following a request-response protocol.
 
 ## 🏗️ Design Goals
 - 💡 User-friendly interface and clear role separation.
