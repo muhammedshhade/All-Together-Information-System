@@ -1,13 +1,61 @@
-# OCSF Mediator Example
+# ATIS - System Information Together All
 
-## Structure
-Pay attention to the three modules:
-1. **client** - a simple client built using JavaFX and OCSF. We use EventBus (which implements the mediator pattern) in order to pass events between classes (in this case: between SimpleClient and PrimaryController.
-2. **server** - a simple server built using OCSF.
-3. **entities** - a shared module where all the entities of the project live.
+## 🧠 Project Overview
+**ATIS (System Information Together All)** is a distributed Java-based emergency response system developed for the Ministry of Social Services. It enables users to request help or volunteer during emergency situations. The system is designed using a client-server architecture and operates over a local area network (LAN) in its first version.
 
-## Running
-1. Run Maven install **in the parent project**.
-2. Run the server using the exec:java goal in the server module.
-3. Run the client using the javafx:run goal in the client module.
-4. Press the button and see what happens!
+## 🎯 Main Features
+- 📢 **Distress Button**: Registered users can send distress signals in emergency situations (e.g., medical, safety threats).
+- 🤝 **Help Requests**: Users can request assistance such as transportation, babysitting, or buying medicine.
+- 👥 **Volunteering**: Other users may volunteer to complete tasks based on help requests.
+- 📊 **Community Manager Tools**: Community managers can manage members, approve or reject help requests, view distress call statistics, and generate reports.
+
+## 🗃️ Data Model Overview
+- **User**: Name, ID, role (User/Manager), credentials, community affiliation.
+- **Distress Call**: User, community, timestamp, optional location/code.
+- **Task (Help Request)**: ID, type of help, requester, creation time, volunteer (if any), status (requested, pre-execution, executed), completion time.
+
+## 🧩 System Architecture
+- **Backend**: Java-based application server handling user sessions, distress calls, help tasks, and manager tools.
+- **Frontend**: GUI for users and managers built for desktop use (not web-based in this version).
+- **Database**: Relational database (SQL-based) storing all user data, tasks, and distress call records.
+- **Communication**: TCP/IP over LAN (local network only).
+
+## 🏗️ Design Goals
+- 💡 User-friendly interface and clear role separation.
+- 🔐 Secure user identification via login.
+- ⚙️ Real-time task updates and synchronization across clients.
+- 🔄 Flexible architecture designed for future transition to an internet-accessible version.
+
+## 🧪 Key Functionalities Implemented
+- Sending and logging distress calls with validation.
+- Creating, approving, rejecting, and assigning help tasks.
+- Viewing distress call history with and without histograms.
+- Dynamic updates in real-time across all open sessions.
+- Visual distinction between user types using color-coded UIs.
+
+## 👨‍👩‍👧‍👦 Team Members
+- **Moataz Odeh** – moataz.ody44@gmail.com
+- **Siraj Jabarin** – serajwazza@gmail.com
+- **Adan Sulaimani** – adanslemany@gmail.com
+- **Adan Hammod** – adanhammod@gmail.com
+- **Muhammad Shahadeh** – muhammed.sh.181@gmail.com
+- **Najm Hijazi** – najm.hijaze@gmail.com
+
+## 👥 Collaboration Summary
+Our team began by dividing the project into server-side and client-side components. After facing integration issues, we reorganized by feature: user functions, distress calls, help requests, manager views. We ensured real-time dynamic functionality and consistent UI/UX across components. Every team member contributed to all parts, with shared responsibilities and clear communication.
+
+## 🔧 Challenges & Solutions
+We encountered issues in synchronizing client-server communication, especially around real-time events and multi-threaded access. By designing a robust request-handling protocol and using mock user sessions for testing, we overcame these hurdles and ensured stable functionality.
+
+## 📷 UI Highlights
+- Color-coded interfaces: Red for distress, Blue for users, Purple for managers.
+- Multiple simultaneous user logins supported.
+- Real-time data updates across open sessions.
+
+## 📁 Future Work
+In the next phase, ATIS will be upgraded to support internet access and a web-based interface, using the flexible architecture already designed.
+
+---
+
+> This project was developed as part of the Java Distributed Systems course. All code and components were created by the project team from scratch with a focus on clean design, reusability, and real-world applicability.
+
