@@ -1,7 +1,7 @@
-# ATIS - System Information Together All
+# ATIS - All Together Information System
 
 ## 🧠 Project Overview
-**ATIS (System Information Together All)** is a distributed Java-based emergency response system developed for the Ministry of Social Services. It enables users to request help or volunteer during emergency situations. The system is designed using a client-server architecture and operates over a local area network (LAN) in its first version.
+**ATIS** is a distributed Java-based emergency response system developed for the Ministry of Social Services. It enables users to request help or volunteer during emergency situations. The system is designed using a client-server architecture and operates over a local area network (LAN) in its first version.
 
 ## 🎯 Main Features
 - 📢 **Distress Button**: Registered users can send distress signals in emergency situations (e.g., medical, safety threats).
